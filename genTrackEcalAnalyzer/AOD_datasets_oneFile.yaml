@@ -1,0 +1,2568 @@
+Q12_M100:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-12_M-100_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/1198CC2D-7D17-934F-8887-DA2BC963BB09.root
+    : Events
+  metadata:
+    charge: 4
+    is_mc: true
+    mass: 100
+Q12_M1000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-12_M-1000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/0FB675BE-CDCA-8243-80E6-EE5BB2F1E3DD.root
+    : Events
+  metadata:
+    charge: 4
+    is_mc: true
+    mass: 1000
+Q12_M1200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-12_M-1200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/5EC6F6D0-109A-8C4A-9977-7B92332779FD.root
+    : Events
+  metadata:
+    charge: 4
+    is_mc: true
+    mass: 1200
+Q12_M1400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-12_M-1400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/82F0EDDD-9634-A442-850F-B0E38B5237FE.root
+    : Events
+  metadata:
+    charge: 4
+    is_mc: true
+    mass: 1400
+Q12_M1600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-12_M-1600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/2235D201-700F-7C41-9336-AD09359C13CE.root
+    : Events
+  metadata:
+    charge: 4
+    is_mc: true
+    mass: 1600
+Q12_M1800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-12_M-1800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/BD61CFFF-D422-104B-A9A0-DC065048DFCE.root
+    : Events
+  metadata:
+    charge: 4
+    is_mc: true
+    mass: 1800
+Q12_M200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-12_M-200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/6E47DD6D-B68D-A64A-98CA-28E530C42E80.root
+    : Events
+  metadata:
+    charge: 4
+    is_mc: true
+    mass: 200
+Q12_M2000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-12_M-2000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/E18EFAB4-26C7-0042-AD08-448C446048B4.root
+    : Events
+  metadata:
+    charge: 4
+    is_mc: true
+    mass: 2000
+Q12_M2400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-12_M-2400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/F17BC3D0-DCFC-7D4B-84CF-825DCD7AE8BE.root
+    : Events
+  metadata:
+    charge: 4
+    is_mc: true
+    mass: 2400
+Q12_M2800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-12_M-2800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/39FB2497-ABC1-E946-93B3-15F899BBF816.root
+    : Events
+  metadata:
+    charge: 4
+    is_mc: true
+    mass: 2800
+Q12_M300:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-12_M-300_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/7A935314-ACFC-CB4A-86BD-E0705BFA78FB.root
+    : Events
+  metadata:
+    charge: 4
+    is_mc: true
+    mass: 300
+Q12_M400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-12_M-400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/096B7F16-A2FA-2146-8ED9-89C47A53B9E2.root
+    : Events
+  metadata:
+    charge: 4
+    is_mc: true
+    mass: 400
+Q12_M500:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-12_M-500_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/6E249C65-92F8-CB48-B950-4A50D934286A.root
+    : Events
+  metadata:
+    charge: 4
+    is_mc: true
+    mass: 500
+Q12_M600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-12_M-600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/AD93155B-EF03-1844-98CF-492AE66A781C.root
+    : Events
+  metadata:
+    charge: 4
+    is_mc: true
+    mass: 600
+Q12_M700:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-12_M-700_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/0B53EBCE-0C60-1240-B83C-07445A98DAD6.root
+    : Events
+  metadata:
+    charge: 4
+    is_mc: true
+    mass: 700
+Q12_M800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-12_M-800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/39404B4B-C2AB-BE46-8D48-B63DDBCB9A45.root
+    : Events
+  metadata:
+    charge: 4
+    is_mc: true
+    mass: 800
+Q12_M900:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-12_M-900_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/72580F96-B3CF-8A47-97D0-FD03A6A6B142.root
+    : Events
+  metadata:
+    charge: 4
+    is_mc: true
+    mass: 900
+Q15_M100:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-15_M-100_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/67A91E04-0565-0246-BE6A-643A67A36504.root
+    : Events
+  metadata:
+    charge: 5
+    is_mc: true
+    mass: 100
+Q15_M1000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-15_M-1000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/3339ADE0-3DA6-C947-81F5-BB078684AB36.root
+    : Events
+  metadata:
+    charge: 5
+    is_mc: true
+    mass: 1000
+Q15_M1200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-15_M-1200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/226783E6-5757-9149-8FA4-E24B095B1105.root
+    : Events
+  metadata:
+    charge: 5
+    is_mc: true
+    mass: 1200
+Q15_M1400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-15_M-1400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/F8E940C9-08ED-F84D-9A80-040F70C95299.root
+    : Events
+  metadata:
+    charge: 5
+    is_mc: true
+    mass: 1400
+Q15_M1600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-15_M-1600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/5F1C12EB-5FD4-E649-8F79-3ACD8B5AF8A9.root
+    : Events
+  metadata:
+    charge: 5
+    is_mc: true
+    mass: 1600
+Q15_M1800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-15_M-1800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/89E29DBF-2CCD-9144-8B76-4156F53F9AE9.root
+    : Events
+  metadata:
+    charge: 5
+    is_mc: true
+    mass: 1800
+Q15_M200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-15_M-200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/7B30E61F-5C23-A340-8D55-B1DA72BB368E.root
+    : Events
+  metadata:
+    charge: 5
+    is_mc: true
+    mass: 200
+Q15_M2000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-15_M-2000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/C88BE5AA-AA68-0C4B-8B4C-A5F07D0BAB71.root
+    : Events
+  metadata:
+    charge: 5
+    is_mc: true
+    mass: 2000
+Q15_M2400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-15_M-2400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/042FEC68-05AC-D94B-94CF-4AD4E51380B7.root
+    : Events
+  metadata:
+    charge: 5
+    is_mc: true
+    mass: 2400
+Q15_M2800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-15_M-2800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/52BA140B-CC22-A34C-AD40-43DE4DE44891.root
+    : Events
+  metadata:
+    charge: 5
+    is_mc: true
+    mass: 2800
+Q15_M300:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-15_M-300_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/2CDFF9CF-6EF1-2E4F-8926-77916C7147A1.root
+    : Events
+  metadata:
+    charge: 5
+    is_mc: true
+    mass: 300
+Q15_M400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-15_M-400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/398911CD-7E38-354D-8B96-425AE0FDDCEE.root
+    : Events
+  metadata:
+    charge: 5
+    is_mc: true
+    mass: 400
+Q15_M500:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-15_M-500_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/D4C6182B-BC4F-A743-8971-2B0BDE15ABAF.root
+    : Events
+  metadata:
+    charge: 5
+    is_mc: true
+    mass: 500
+Q15_M600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-15_M-600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/8AA38F36-3B5B-204D-B8EC-4614EF09E45E.root
+    : Events
+  metadata:
+    charge: 5
+    is_mc: true
+    mass: 600
+Q15_M700:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-15_M-700_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/C9CE8EF9-08D1-084F-B76F-B1D82D6FD242.root
+    : Events
+  metadata:
+    charge: 5
+    is_mc: true
+    mass: 700
+Q15_M800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-15_M-800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/EE871FC9-2F01-A942-B4A9-2C321D2B756F.root
+    : Events
+  metadata:
+    charge: 5
+    is_mc: true
+    mass: 800
+Q15_M900:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-15_M-900_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/9A7EB310-1D3B-AD47-9D93-3C7EAA6B34B3.root
+    : Events
+  metadata:
+    charge: 5
+    is_mc: true
+    mass: 900
+Q18_M100:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-18_M-100_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/92D29F72-3756-1640-844C-081A9869579B.root
+    : Events
+  metadata:
+    charge: 6
+    is_mc: true
+    mass: 100
+Q18_M1000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-18_M-1000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/F06C9CB9-60A5-D842-B398-40204B738670.root
+    : Events
+  metadata:
+    charge: 6
+    is_mc: true
+    mass: 1000
+Q18_M1200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-18_M-1200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/307CC803-A7C1-C140-B7FA-3A3FF5ECC136.root
+    : Events
+  metadata:
+    charge: 6
+    is_mc: true
+    mass: 1200
+Q18_M1400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-18_M-1400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/ACE3231E-0767-6140-8740-54CF54BEDE81.root
+    : Events
+  metadata:
+    charge: 6
+    is_mc: true
+    mass: 1400
+Q18_M1600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-18_M-1600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/C15A4D4E-0550-E04B-A61A-6687027BB030.root
+    : Events
+  metadata:
+    charge: 6
+    is_mc: true
+    mass: 1600
+Q18_M1800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-18_M-1800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/4266D82C-68AC-064C-83F4-E238101EE535.root
+    : Events
+  metadata:
+    charge: 6
+    is_mc: true
+    mass: 1800
+Q18_M200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-18_M-200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/32E43461-F65B-4E4D-99C4-1165CFB933A9.root
+    : Events
+  metadata:
+    charge: 6
+    is_mc: true
+    mass: 200
+Q18_M2000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-18_M-2000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/FDDEF025-6A71-CB4D-A37E-F08D56EFEB09.root
+    : Events
+  metadata:
+    charge: 6
+    is_mc: true
+    mass: 2000
+Q18_M2400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-18_M-2400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/9D0724C4-B1F3-C14D-9603-6FFE306377EC.root
+    : Events
+  metadata:
+    charge: 6
+    is_mc: true
+    mass: 2400
+Q18_M2800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-18_M-2800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/DE05EF61-CFD9-B94F-B26B-1730759F5957.root
+    : Events
+  metadata:
+    charge: 6
+    is_mc: true
+    mass: 2800
+Q18_M300:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-18_M-300_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/4F49751A-3B56-8541-93D5-BDBA5D34D768.root
+    : Events
+  metadata:
+    charge: 6
+    is_mc: true
+    mass: 300
+Q18_M400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-18_M-400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/490D083E-813B-B149-8574-D06F96872653.root
+    : Events
+  metadata:
+    charge: 6
+    is_mc: true
+    mass: 400
+Q18_M500:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-18_M-500_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/687A8B95-0170-984C-8739-163D27489BC9.root
+    : Events
+  metadata:
+    charge: 6
+    is_mc: true
+    mass: 500
+Q18_M600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-18_M-600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/4896CCCF-FCA6-DD42-A5DD-813DDE04A063.root
+    : Events
+  metadata:
+    charge: 6
+    is_mc: true
+    mass: 600
+Q18_M700:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-18_M-700_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/53BBE3D8-3A68-CC4E-BF40-D615009FD988.root
+    : Events
+  metadata:
+    charge: 6
+    is_mc: true
+    mass: 700
+Q18_M800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-18_M-800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/E2AE3060-46BE-1F44-AD5F-B13FED707A10.root
+    : Events
+  metadata:
+    charge: 6
+    is_mc: true
+    mass: 800
+Q18_M900:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-18_M-900_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/21C4D57A-5D34-414A-89CE-0666E7F11F3D.root
+    : Events
+  metadata:
+    charge: 6
+    is_mc: true
+    mass: 900
+Q21_M100:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-21_M-100_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/B86C9A7B-E996-6C49-9FE6-B2334EDB0F3D.root
+    : Events
+  metadata:
+    charge: 7
+    is_mc: true
+    mass: 100
+Q21_M1000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-21_M-1000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/ACEA66A7-4F66-004D-AFF3-1890C375B76D.root
+    : Events
+  metadata:
+    charge: 7
+    is_mc: true
+    mass: 1000
+Q21_M1200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-21_M-1200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/9F2AF889-3DD1-5340-934E-FABBDBA8022A.root
+    : Events
+  metadata:
+    charge: 7
+    is_mc: true
+    mass: 1200
+Q21_M1400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-21_M-1400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/AD8AE521-7BDF-F346-91B6-AD599090F168.root
+    : Events
+  metadata:
+    charge: 7
+    is_mc: true
+    mass: 1400
+Q21_M1600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-21_M-1600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/6B7C5256-9CE2-974D-8D50-27CFF5AA556F.root
+    : Events
+  metadata:
+    charge: 7
+    is_mc: true
+    mass: 1600
+Q21_M1800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-21_M-1800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/2B4BE593-BCD5-834B-9486-3ED01BE3F05A.root
+    : Events
+  metadata:
+    charge: 7
+    is_mc: true
+    mass: 1800
+Q21_M200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-21_M-200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/D0CDD189-58D5-0245-8616-481095ADA15C.root
+    : Events
+  metadata:
+    charge: 7
+    is_mc: true
+    mass: 200
+Q21_M2000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-21_M-2000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/0C5BA1A8-CC08-2C47-8B0E-FA79A5D061D5.root
+    : Events
+  metadata:
+    charge: 7
+    is_mc: true
+    mass: 2000
+Q21_M2400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-21_M-2400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/0C3ED620-9FF7-0543-89BE-D536EBCC8B2A.root
+    : Events
+  metadata:
+    charge: 7
+    is_mc: true
+    mass: 2400
+Q21_M2800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-21_M-2800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/12ADFFBC-B841-5C40-9473-6A57EC58F220.root
+    : Events
+  metadata:
+    charge: 7
+    is_mc: true
+    mass: 2800
+Q21_M300:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-21_M-300_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/78AA5FEF-EC37-6947-A8EC-BA18A680DF68.root
+    : Events
+  metadata:
+    charge: 7
+    is_mc: true
+    mass: 300
+Q21_M400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-21_M-400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/896D15D2-9687-864A-B25E-11C39C07AE41.root
+    : Events
+  metadata:
+    charge: 7
+    is_mc: true
+    mass: 400
+Q21_M500:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-21_M-500_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/B8183D72-B152-4941-999E-6AB15BD093AA.root
+    : Events
+  metadata:
+    charge: 7
+    is_mc: true
+    mass: 500
+Q21_M600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-21_M-600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/2F56E7D2-4F31-AE41-B1BE-6E7774A29A92.root
+    : Events
+  metadata:
+    charge: 7
+    is_mc: true
+    mass: 600
+Q21_M700:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-21_M-700_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/1D6732DF-0EE4-494F-B139-4FBFF0BCD71C.root
+    : Events
+  metadata:
+    charge: 7
+    is_mc: true
+    mass: 700
+Q21_M800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-21_M-800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/3F3C716A-1F63-EF4F-A8EE-CAA9E8D30F5A.root
+    : Events
+  metadata:
+    charge: 7
+    is_mc: true
+    mass: 800
+Q21_M900:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-21_M-900_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/4294AD04-916C-5A4B-9E05-6003DABEC56E.root
+    : Events
+  metadata:
+    charge: 7
+    is_mc: true
+    mass: 900
+Q24_M100:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-24_M-100_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/5053A5FE-D928-8B48-8431-AE8A8C022D4B.root
+    : Events
+  metadata:
+    charge: 8
+    is_mc: true
+    mass: 100
+Q24_M1000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-24_M-1000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/A4413C20-4F78-A942-8F02-B1B08F2C2363.root
+    : Events
+  metadata:
+    charge: 8
+    is_mc: true
+    mass: 1000
+Q24_M1200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-24_M-1200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/A2CD02E9-C8EF-0449-9C0F-1FB1F4E4246B.root
+    : Events
+  metadata:
+    charge: 8
+    is_mc: true
+    mass: 1200
+Q24_M1400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-24_M-1400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/7AD46305-DDFD-7646-BC1F-2E0ECA3FAC74.root
+    : Events
+  metadata:
+    charge: 8
+    is_mc: true
+    mass: 1400
+Q24_M1600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-24_M-1600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/FBC129DF-F5EA-314E-BEA1-32D32840AA05.root
+    : Events
+  metadata:
+    charge: 8
+    is_mc: true
+    mass: 1600
+Q24_M1800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-24_M-1800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/5E157F27-5C75-B649-A1C0-3F99C9137549.root
+    : Events
+  metadata:
+    charge: 8
+    is_mc: true
+    mass: 1800
+Q24_M200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-24_M-200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/3BB34699-1FE3-CC47-9881-D21FF04CA556.root
+    : Events
+  metadata:
+    charge: 8
+    is_mc: true
+    mass: 200
+Q24_M2000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-24_M-2000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/0E09514D-44AD-1743-B794-1B8CA862EFAE.root
+    : Events
+  metadata:
+    charge: 8
+    is_mc: true
+    mass: 2000
+Q24_M2400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-24_M-2400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/2CB30787-0F76-9242-81F8-795F4E4024E6.root
+    : Events
+  metadata:
+    charge: 8
+    is_mc: true
+    mass: 2400
+Q24_M300:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-24_M-300_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/FBE1E716-ABDD-724D-B642-0CE3A8E871B5.root
+    : Events
+  metadata:
+    charge: 8
+    is_mc: true
+    mass: 300
+Q24_M400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-24_M-400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/8CB01BEB-1A89-A945-903C-C13C0B34CE6E.root
+    : Events
+  metadata:
+    charge: 8
+    is_mc: true
+    mass: 400
+Q24_M500:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-24_M-500_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/49281BFC-007A-2A44-8D38-89AC1B3338E3.root
+    : Events
+  metadata:
+    charge: 8
+    is_mc: true
+    mass: 500
+Q24_M600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-24_M-600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/7D48A2F0-4648-B34E-BF3A-46959AEBEE55.root
+    : Events
+  metadata:
+    charge: 8
+    is_mc: true
+    mass: 600
+Q24_M700:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-24_M-700_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/86B4FD65-C2E7-C642-A66B-B0EAF52BAF5F.root
+    : Events
+  metadata:
+    charge: 8
+    is_mc: true
+    mass: 700
+Q24_M800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-24_M-800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/EE7E4F1A-6D93-9C4C-BA79-FF27BF53CA93.root
+    : Events
+  metadata:
+    charge: 8
+    is_mc: true
+    mass: 800
+Q24_M900:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-24_M-900_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/DEA1D07C-3E1A-D94E-8F3D-B139FEE3C6A3.root
+    : Events
+  metadata:
+    charge: 8
+    is_mc: true
+    mass: 900
+Q27_M100:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-27_M-100_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/87CD4C97-F60E-EE49-8AF9-3B2B18A37CB3.root
+    : Events
+  metadata:
+    charge: 9
+    is_mc: true
+    mass: 100
+Q27_M1000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-27_M-1000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/7060F8DB-49D9-B841-B817-D938BA2AD098.root
+    : Events
+  metadata:
+    charge: 9
+    is_mc: true
+    mass: 1000
+Q27_M1200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-27_M-1200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/351DD419-9CA9-F940-B5FF-FD7E9FE9D142.root
+    : Events
+  metadata:
+    charge: 9
+    is_mc: true
+    mass: 1200
+Q27_M1400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-27_M-1400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/1182074D-FFED-A64A-8A59-19A36FD7E928.root
+    : Events
+  metadata:
+    charge: 9
+    is_mc: true
+    mass: 1400
+Q27_M1600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-27_M-1600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/30C353C2-40B3-774E-A2FA-D0B5EC0EBCDD.root
+    : Events
+  metadata:
+    charge: 9
+    is_mc: true
+    mass: 1600
+Q27_M1800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-27_M-1800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/175DFA98-419F-9E47-9BA2-82EAE0B8CC8B.root
+    : Events
+  metadata:
+    charge: 9
+    is_mc: true
+    mass: 1800
+Q27_M200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-27_M-200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/272C9DBA-59E1-6F4B-A455-2610A7C3837E.root
+    : Events
+  metadata:
+    charge: 9
+    is_mc: true
+    mass: 200
+Q27_M2000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-27_M-2000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/0378BAB6-B9B3-5042-B890-272159B6F5F8.root
+    : Events
+  metadata:
+    charge: 9
+    is_mc: true
+    mass: 2000
+Q27_M2400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-27_M-2400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/52BEC05D-30B0-8D45-8B3C-0F916639FDE2.root
+    : Events
+  metadata:
+    charge: 9
+    is_mc: true
+    mass: 2400
+Q27_M2800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-27_M-2800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/D58434E0-E3D0-BB4D-8A37-7158464CC6E6.root
+    : Events
+  metadata:
+    charge: 9
+    is_mc: true
+    mass: 2800
+Q27_M300:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-27_M-300_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/FA500963-51AA-7B4E-B45A-2D004C451C71.root
+    : Events
+  metadata:
+    charge: 9
+    is_mc: true
+    mass: 300
+Q27_M400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-27_M-400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/F4ADE332-CBF3-764D-AF96-A55AC8702A02.root
+    : Events
+  metadata:
+    charge: 9
+    is_mc: true
+    mass: 400
+Q27_M500:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-27_M-500_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/23DB3057-D378-5F4B-8BF5-F18D369A4DF6.root
+    : Events
+  metadata:
+    charge: 9
+    is_mc: true
+    mass: 500
+Q27_M600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-27_M-600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/58CA546A-034D-F643-94AA-7333D8646C0E.root
+    : Events
+  metadata:
+    charge: 9
+    is_mc: true
+    mass: 600
+Q27_M700:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-27_M-700_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/ED503E57-D5E4-6942-9CD2-8CAEB7AE6B6E.root
+    : Events
+  metadata:
+    charge: 9
+    is_mc: true
+    mass: 700
+Q27_M800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-27_M-800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/BAF329D4-EF7B-2949-9AB2-0A0EE3F23ACB.root
+    : Events
+  metadata:
+    charge: 9
+    is_mc: true
+    mass: 800
+Q27_M900:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-27_M-900_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/0830EEC5-73A9-D146-8A68-58F1807D7763.root
+    : Events
+  metadata:
+    charge: 9
+    is_mc: true
+    mass: 900
+Q30_M100:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-30_M-100_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/5F034701-7019-CE49-A1EC-2E697A3B241D.root
+    : Events
+  metadata:
+    charge: 10
+    is_mc: true
+    mass: 100
+Q30_M1000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-30_M-1000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/ECCCFFD3-8716-2444-B6C5-747ED60D24E3.root
+    : Events
+  metadata:
+    charge: 10
+    is_mc: true
+    mass: 1000
+Q30_M1200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-30_M-1200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/5A6EF2A2-24C3-B54A-B675-FEA25F54E6F6.root
+    : Events
+  metadata:
+    charge: 10
+    is_mc: true
+    mass: 1200
+Q30_M1400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-30_M-1400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/7E4085C3-95D4-3E4A-842A-AE9312BC5C5C.root
+    : Events
+  metadata:
+    charge: 10
+    is_mc: true
+    mass: 1400
+Q30_M1600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-30_M-1600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/F5F0F65C-C09B-AC41-BCC2-6D89F1B682C1.root
+    : Events
+  metadata:
+    charge: 10
+    is_mc: true
+    mass: 1600
+Q30_M1800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-30_M-1800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/AC75FB27-20EC-EF46-B93F-6009A514D417.root
+    : Events
+  metadata:
+    charge: 10
+    is_mc: true
+    mass: 1800
+Q30_M200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-30_M-200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/6A30657D-C7D7-7947-9D2D-4CC6DF0457F9.root
+    : Events
+  metadata:
+    charge: 10
+    is_mc: true
+    mass: 200
+Q30_M2000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-30_M-2000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/F04E3DA4-67E0-5045-A61B-B1DF85820EBE.root
+    : Events
+  metadata:
+    charge: 10
+    is_mc: true
+    mass: 2000
+Q30_M2400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-30_M-2400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/5C0CEED9-EE6F-AD4B-A987-A3691A2D614D.root
+    : Events
+  metadata:
+    charge: 10
+    is_mc: true
+    mass: 2400
+Q30_M2800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-30_M-2800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/907BD6F5-73C2-C84F-BB6D-D2DF0E9E4D65.root
+    : Events
+  metadata:
+    charge: 10
+    is_mc: true
+    mass: 2800
+Q30_M300:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-30_M-300_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/713D3E80-EB88-AA4D-A661-76D753376CF9.root
+    : Events
+  metadata:
+    charge: 10
+    is_mc: true
+    mass: 300
+Q30_M400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-30_M-400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/2147A421-4286-7743-AB8E-1DF743B00FAE.root
+    : Events
+  metadata:
+    charge: 10
+    is_mc: true
+    mass: 400
+Q30_M500:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-30_M-500_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/5895DC79-0D9F-1549-96C1-E4B356CC943A.root
+    : Events
+  metadata:
+    charge: 10
+    is_mc: true
+    mass: 500
+Q30_M600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-30_M-600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/CCC17BD8-4B5A-4C41-852E-9867527A15C3.root
+    : Events
+  metadata:
+    charge: 10
+    is_mc: true
+    mass: 600
+Q30_M700:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-30_M-700_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/9500AF55-D497-B648-BE56-07EDA4600B9D.root
+    : Events
+  metadata:
+    charge: 10
+    is_mc: true
+    mass: 700
+Q30_M800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-30_M-800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/25D21264-8A70-514F-881B-25767CB50E2A.root
+    : Events
+  metadata:
+    charge: 10
+    is_mc: true
+    mass: 800
+Q30_M900:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-30_M-900_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/518894D0-6F5D-E746-85D8-C875582886FB.root
+    : Events
+  metadata:
+    charge: 10
+    is_mc: true
+    mass: 900
+Q33_M100:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-33_M-100_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/AA2F7709-FFBA-4642-BFA6-0C87C381F3D0.root
+    : Events
+  metadata:
+    charge: 11
+    is_mc: true
+    mass: 100
+Q33_M1000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-33_M-1000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/0CF4298D-A490-504F-A767-B923E64FD91D.root
+    : Events
+  metadata:
+    charge: 11
+    is_mc: true
+    mass: 1000
+Q33_M1200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-33_M-1200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/B227957B-9106-8A4B-8444-DC4EE1A69EA2.root
+    : Events
+  metadata:
+    charge: 11
+    is_mc: true
+    mass: 1200
+Q33_M1400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-33_M-1400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/5B26542F-5E80-AD46-8C7B-40FF768C1ADC.root
+    : Events
+  metadata:
+    charge: 11
+    is_mc: true
+    mass: 1400
+Q33_M1600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-33_M-1600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/70000/132EAD20-90FE-9E45-A9A6-8A7E0B849032.root
+    : Events
+  metadata:
+    charge: 11
+    is_mc: true
+    mass: 1600
+Q33_M1800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-33_M-1800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/F17FD8F9-1540-034C-A614-F79E1C4010CC.root
+    : Events
+  metadata:
+    charge: 11
+    is_mc: true
+    mass: 1800
+Q33_M200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-33_M-200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/EA4FC454-CBD0-0D4C-94A7-55058336C8FF.root
+    : Events
+  metadata:
+    charge: 11
+    is_mc: true
+    mass: 200
+Q33_M2000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-33_M-2000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/56D810DB-DE10-504F-874D-7C7750DD1E08.root
+    : Events
+  metadata:
+    charge: 11
+    is_mc: true
+    mass: 2000
+Q33_M2400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-33_M-2400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/86B954FD-1E92-3C4D-91B6-9C2E616E0DAA.root
+    : Events
+  metadata:
+    charge: 11
+    is_mc: true
+    mass: 2400
+Q33_M2800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-33_M-2800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/3AE28550-8567-8342-8B4F-5992446D87FD.root
+    : Events
+  metadata:
+    charge: 11
+    is_mc: true
+    mass: 2800
+Q33_M300:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-33_M-300_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/9E1FBF35-6DD5-704A-87C9-D3D2FB0F8C4D.root
+    : Events
+  metadata:
+    charge: 11
+    is_mc: true
+    mass: 300
+Q33_M400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-33_M-400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/30B70EAF-09E1-4E43-B3AD-F4C8B656C66A.root
+    : Events
+  metadata:
+    charge: 11
+    is_mc: true
+    mass: 400
+Q33_M500:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-33_M-500_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/21DB1D17-7C1C-CC43-B038-8B34672354DE.root
+    : Events
+  metadata:
+    charge: 11
+    is_mc: true
+    mass: 500
+Q33_M600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-33_M-600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/5111BC03-707F-7A46-B1D2-419BE7790983.root
+    : Events
+  metadata:
+    charge: 11
+    is_mc: true
+    mass: 600
+Q33_M700:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-33_M-700_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/C84980CC-FA31-2549-B71D-156C1662D7D1.root
+    : Events
+  metadata:
+    charge: 11
+    is_mc: true
+    mass: 700
+Q33_M800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-33_M-800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/C2E40775-BD0F-F245-9980-4795777B8D0C.root
+    : Events
+  metadata:
+    charge: 11
+    is_mc: true
+    mass: 800
+Q33_M900:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-33_M-900_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/EEDA35C8-FC61-C84C-9E24-958BF0D3C478.root
+    : Events
+  metadata:
+    charge: 11
+    is_mc: true
+    mass: 900
+Q36_M100:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-36_M-100_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/972AD47B-F11D-2442-8A21-5EB64DE73168.root
+    : Events
+  metadata:
+    charge: 12
+    is_mc: true
+    mass: 100
+Q36_M1000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-36_M-1000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/910A95CB-0E42-F443-89CE-496564FAECC6.root
+    : Events
+  metadata:
+    charge: 12
+    is_mc: true
+    mass: 1000
+Q36_M1200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-36_M-1200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/033CAB0D-2A6B-9C44-A4B8-298602FDCB60.root
+    : Events
+  metadata:
+    charge: 12
+    is_mc: true
+    mass: 1200
+Q36_M1400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-36_M-1400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/0CF0156F-AD04-0D4D-9C95-E8C2542D3AEE.root
+    : Events
+  metadata:
+    charge: 12
+    is_mc: true
+    mass: 1400
+Q36_M1600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-36_M-1600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/51728EE9-2D90-364B-B4AE-5D695BF40AE7.root
+    : Events
+  metadata:
+    charge: 12
+    is_mc: true
+    mass: 1600
+Q36_M1800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-36_M-1800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/8DAFEFF6-FB46-C84E-8EFB-396510EE8499.root
+    : Events
+  metadata:
+    charge: 12
+    is_mc: true
+    mass: 1800
+Q36_M200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-36_M-200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/A4917724-2D66-9E43-A36D-E65A547BA710.root
+    : Events
+  metadata:
+    charge: 12
+    is_mc: true
+    mass: 200
+Q36_M2000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-36_M-2000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/1569BFC5-63BF-E34A-BBAD-E9843DB71BEA.root
+    : Events
+  metadata:
+    charge: 12
+    is_mc: true
+    mass: 2000
+Q36_M2400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-36_M-2400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2820000/3A33AEAD-01EA-B540-AF43-FB94469D79FF.root
+    : Events
+  metadata:
+    charge: 12
+    is_mc: true
+    mass: 2400
+Q36_M2800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-36_M-2800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/841D7FE5-BF34-364E-9102-373A1BA52597.root
+    : Events
+  metadata:
+    charge: 12
+    is_mc: true
+    mass: 2800
+Q36_M300:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-36_M-300_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/09596EC0-838E-754A-A35F-EA00E06CA1C1.root
+    : Events
+  metadata:
+    charge: 12
+    is_mc: true
+    mass: 300
+Q36_M400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-36_M-400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/4A58A086-C5B1-E346-BA21-4CAB9738BA6C.root
+    : Events
+  metadata:
+    charge: 12
+    is_mc: true
+    mass: 400
+Q36_M500:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-36_M-500_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/6FD256FF-40C3-5542-BDEB-59E852E6592E.root
+    : Events
+  metadata:
+    charge: 12
+    is_mc: true
+    mass: 500
+Q36_M600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-36_M-600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/46288B43-B042-1847-876B-16674914680B.root
+    : Events
+  metadata:
+    charge: 12
+    is_mc: true
+    mass: 600
+Q36_M700:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-36_M-700_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/34E28645-634C-3D43-8CFA-A361DF87A3FA.root
+    : Events
+  metadata:
+    charge: 12
+    is_mc: true
+    mass: 700
+Q36_M800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-36_M-800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/FCE1B2FC-59A0-E540-8F8D-4D5DE4155F21.root
+    : Events
+  metadata:
+    charge: 12
+    is_mc: true
+    mass: 800
+Q36_M900:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-36_M-900_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/5F97A3E8-3FBA-EE42-92B7-7FCBBEC73C1E.root
+    : Events
+  metadata:
+    charge: 12
+    is_mc: true
+    mass: 900
+Q39_M100:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-39_M-100_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/19173CFF-7896-094D-BD1A-90A8D137B4E9.root
+    : Events
+  metadata:
+    charge: 13
+    is_mc: true
+    mass: 100
+Q39_M1000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-39_M-1000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/1AF4057C-442C-004A-89EA-00A2B6CCB884.root
+    : Events
+  metadata:
+    charge: 13
+    is_mc: true
+    mass: 1000
+Q39_M1200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-39_M-1200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/1D025A54-30F9-F847-B1E2-6736968462D3.root
+    : Events
+  metadata:
+    charge: 13
+    is_mc: true
+    mass: 1200
+Q39_M1400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-39_M-1400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/E1FD2AA9-21F9-9948-AB72-F5CBDEDD0FC1.root
+    : Events
+  metadata:
+    charge: 13
+    is_mc: true
+    mass: 1400
+Q39_M1600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-39_M-1600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/11983A22-D094-C940-BB2E-3E44043F6748.root
+    : Events
+  metadata:
+    charge: 13
+    is_mc: true
+    mass: 1600
+Q39_M1800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-39_M-1800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/683A3E7C-FE25-6241-AC42-17DE43D2A13B.root
+    : Events
+  metadata:
+    charge: 13
+    is_mc: true
+    mass: 1800
+Q39_M200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-39_M-200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/518ABB55-66E4-A743-953B-285B33AC07F4.root
+    : Events
+  metadata:
+    charge: 13
+    is_mc: true
+    mass: 200
+Q39_M2000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-39_M-2000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/FFE406EB-B8DC-2D4C-96EF-00A76A960C03.root
+    : Events
+  metadata:
+    charge: 13
+    is_mc: true
+    mass: 2000
+Q39_M2400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-39_M-2400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/7DB82339-FD61-0642-89D5-DDFB80B40FEA.root
+    : Events
+  metadata:
+    charge: 13
+    is_mc: true
+    mass: 2400
+Q39_M2800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-39_M-2800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/E219BCD0-C480-2A44-8BE5-8A63EA731DEE.root
+    : Events
+  metadata:
+    charge: 13
+    is_mc: true
+    mass: 2800
+Q39_M300:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-39_M-300_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/B7E24CB4-16C0-2845-BCFF-580185298615.root
+    : Events
+  metadata:
+    charge: 13
+    is_mc: true
+    mass: 300
+Q39_M400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-39_M-400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/88B0BB8B-ACA0-B542-AB60-8B4D39C20C44.root
+    : Events
+  metadata:
+    charge: 13
+    is_mc: true
+    mass: 400
+Q39_M500:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-39_M-500_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/8D330DF5-414D-BC4B-99ED-5AE35B0061D8.root
+    : Events
+  metadata:
+    charge: 13
+    is_mc: true
+    mass: 500
+Q39_M600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-39_M-600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/8669A737-6EF8-FE46-BA70-C02810EC2C5F.root
+    : Events
+  metadata:
+    charge: 13
+    is_mc: true
+    mass: 600
+Q39_M700:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-39_M-700_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/3D571929-3D9A-A448-83A5-5E274F1C83F5.root
+    : Events
+  metadata:
+    charge: 13
+    is_mc: true
+    mass: 700
+Q39_M800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-39_M-800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/1E6264B6-293A-BF4F-9CC7-FE2CF32DA3DF.root
+    : Events
+  metadata:
+    charge: 13
+    is_mc: true
+    mass: 800
+Q39_M900:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-39_M-900_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/D2F83D90-CA85-894F-AFFC-C6D6236EAA4F.root
+    : Events
+  metadata:
+    charge: 13
+    is_mc: true
+    mass: 900
+Q3_M100:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-3_M-100_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/453C8611-0CF9-974B-A1BB-65039167ABF3.root
+    : Events
+  metadata:
+    charge: 1
+    is_mc: true
+    mass: 100
+Q3_M1000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-3_M-1000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/35B55857-3940-964F-82D2-54638D8C00DA.root
+    : Events
+  metadata:
+    charge: 1
+    is_mc: true
+    mass: 1000
+Q3_M1200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-3_M-1200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/C65A11E2-F84E-C642-81E8-A4CD02CF7E83.root
+    : Events
+  metadata:
+    charge: 1
+    is_mc: true
+    mass: 1200
+Q3_M1400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-3_M-1400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/41B054C2-7188-F947-BBB5-464483B5F330.root
+    : Events
+  metadata:
+    charge: 1
+    is_mc: true
+    mass: 1400
+Q3_M1600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-3_M-1600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/B3AC09F3-2F28-F748-ACA0-582FBBB456FF.root
+    : Events
+  metadata:
+    charge: 1
+    is_mc: true
+    mass: 1600
+Q3_M1800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-3_M-1800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/2B854765-E089-254C-8120-7498160228C0.root
+    : Events
+  metadata:
+    charge: 1
+    is_mc: true
+    mass: 1800
+Q3_M200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-3_M-200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/85BDF1E0-A1BE-ED45-B6F3-38B98F8A2E1D.root
+    : Events
+  metadata:
+    charge: 1
+    is_mc: true
+    mass: 200
+Q3_M2000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-3_M-2000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/E9BC6A46-99F1-974C-BC5E-35C3FEE1475A.root
+    : Events
+  metadata:
+    charge: 1
+    is_mc: true
+    mass: 2000
+Q3_M2400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-3_M-2400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/158E19C7-9125-EA45-A88C-3B8EDFFF5B97.root
+    : Events
+  metadata:
+    charge: 1
+    is_mc: true
+    mass: 2400
+Q3_M2800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-3_M-2800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/753F6690-1D01-BC42-8801-9FD05AA251EC.root
+    : Events
+  metadata:
+    charge: 1
+    is_mc: true
+    mass: 2800
+Q3_M300:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-3_M-300_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/6D565697-F27A-4345-ABFB-B469A2976F36.root
+    : Events
+  metadata:
+    charge: 1
+    is_mc: true
+    mass: 300
+Q3_M400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-3_M-400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/81B32FDE-B8C0-B24A-AFA1-F9ADC5F66D5F.root
+    : Events
+  metadata:
+    charge: 1
+    is_mc: true
+    mass: 400
+Q3_M500:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-3_M-500_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/063599DC-A336-8A44-B00A-57ADCFA9D2B6.root
+    : Events
+  metadata:
+    charge: 1
+    is_mc: true
+    mass: 500
+Q3_M600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-3_M-600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/05E25998-D07D-354A-9734-77935D8B9F4F.root
+    : Events
+  metadata:
+    charge: 1
+    is_mc: true
+    mass: 600
+Q3_M700:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-3_M-700_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/17B32D87-2DD4-914C-8DCD-5B1D8EBBF8EA.root
+    : Events
+  metadata:
+    charge: 1
+    is_mc: true
+    mass: 700
+Q3_M800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-3_M-800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/CA3DCE38-91B2-2A4C-ACB3-9B05761DD778.root
+    : Events
+  metadata:
+    charge: 1
+    is_mc: true
+    mass: 800
+Q3_M900:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-3_M-900_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/50629D33-E544-ED44-989E-9EB48D168F6E.root
+    : Events
+  metadata:
+    charge: 1
+    is_mc: true
+    mass: 900
+Q42_M100:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-42_M-100_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/DFCAC740-6148-BC41-A360-C4CCC82E997C.root
+    : Events
+  metadata:
+    charge: 14
+    is_mc: true
+    mass: 100
+Q42_M1000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-42_M-1000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/0495E7D7-7E05-E448-9216-0210D43D363A.root
+    : Events
+  metadata:
+    charge: 14
+    is_mc: true
+    mass: 1000
+Q42_M1400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-42_M-1400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/9CE3C730-6B3D-504B-A491-37FAB3872F18.root
+    : Events
+  metadata:
+    charge: 14
+    is_mc: true
+    mass: 1400
+Q42_M1600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-42_M-1600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/8B76EE20-114F-D341-A965-8001596ED0F2.root
+    : Events
+  metadata:
+    charge: 14
+    is_mc: true
+    mass: 1600
+Q42_M1800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-42_M-1800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/E68F4332-B161-F74C-AAC5-103CFCA6DCE5.root
+    : Events
+  metadata:
+    charge: 14
+    is_mc: true
+    mass: 1800
+Q42_M200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-42_M-200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/52FDA328-3EDD-1143-AF88-4FC5DE7DE6F7.root
+    : Events
+  metadata:
+    charge: 14
+    is_mc: true
+    mass: 200
+Q42_M2000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-42_M-2000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/048A3D01-9B02-464A-BCF8-3B8312B6711A.root
+    : Events
+  metadata:
+    charge: 14
+    is_mc: true
+    mass: 2000
+Q42_M2400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-42_M-2400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/167DFD1E-A5F3-0E40-BA0D-D80D1C8590B9.root
+    : Events
+  metadata:
+    charge: 14
+    is_mc: true
+    mass: 2400
+Q42_M2800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-42_M-2800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/D963482B-A1FF-AC4D-ADCF-DC49E58F1FEF.root
+    : Events
+  metadata:
+    charge: 14
+    is_mc: true
+    mass: 2800
+Q42_M300:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-42_M-300_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/0C8A9B14-F688-2044-889B-E0E3C259A2F9.root
+    : Events
+  metadata:
+    charge: 14
+    is_mc: true
+    mass: 300
+Q42_M400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-42_M-400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/47CA5E30-D516-AD41-A49E-9021F17B7749.root
+    : Events
+  metadata:
+    charge: 14
+    is_mc: true
+    mass: 400
+Q42_M500:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-42_M-500_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/14BE31A1-CA39-B747-94FA-7D5D39B25287.root
+    : Events
+  metadata:
+    charge: 14
+    is_mc: true
+    mass: 500
+Q42_M600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-42_M-600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/A6341305-C3D5-DD4B-BC02-840BB41C8CE5.root
+    : Events
+  metadata:
+    charge: 14
+    is_mc: true
+    mass: 600
+Q42_M700:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-42_M-700_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/EAFD2131-CCD4-9E4A-B35B-5CDCA5144496.root
+    : Events
+  metadata:
+    charge: 14
+    is_mc: true
+    mass: 700
+Q42_M800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-42_M-800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/00006F0C-C9C7-324A-895C-5D095F22E2EB.root
+    : Events
+  metadata:
+    charge: 14
+    is_mc: true
+    mass: 800
+Q42_M900:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-42_M-900_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/E5384C42-545B-2B45-9D9F-AF53EA3A8DCE.root
+    : Events
+  metadata:
+    charge: 14
+    is_mc: true
+    mass: 900
+Q45_M100:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-45_M-100_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/71F48365-B5C9-324E-9EBD-D558C0343C05.root
+    : Events
+  metadata:
+    charge: 15
+    is_mc: true
+    mass: 100
+Q45_M1000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-45_M-1000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/CB0436F8-F442-8541-8165-D510A7929EB3.root
+    : Events
+  metadata:
+    charge: 15
+    is_mc: true
+    mass: 1000
+Q45_M1200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-45_M-1200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/D81F300A-0EBF-6840-B7BC-2D612742FC2D.root
+    : Events
+  metadata:
+    charge: 15
+    is_mc: true
+    mass: 1200
+Q45_M1400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-45_M-1400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/7D18E4FD-BBD4-CC49-A673-5C0E5D7EBC69.root
+    : Events
+  metadata:
+    charge: 15
+    is_mc: true
+    mass: 1400
+Q45_M1600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-45_M-1600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/CC1D49EF-DE68-FD48-ADFA-AAE7E851DB4D.root
+    : Events
+  metadata:
+    charge: 15
+    is_mc: true
+    mass: 1600
+Q45_M1800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-45_M-1800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/BD986CAE-FBD6-8244-B00B-CC999EE52753.root
+    : Events
+  metadata:
+    charge: 15
+    is_mc: true
+    mass: 1800
+Q45_M200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-45_M-200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/9BC36D6A-73D5-8B42-9F5C-B703E1FD3183.root
+    : Events
+  metadata:
+    charge: 15
+    is_mc: true
+    mass: 200
+Q45_M2000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-45_M-2000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/E30741A2-EA22-1A49-A486-9D554586EB9F.root
+    : Events
+  metadata:
+    charge: 15
+    is_mc: true
+    mass: 2000
+Q45_M2400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-45_M-2400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/D37A7DEE-43D0-5240-96CF-FBEC56F6A4CF.root
+    : Events
+  metadata:
+    charge: 15
+    is_mc: true
+    mass: 2400
+Q45_M2800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-45_M-2800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/8E991284-2438-B246-B2A0-D9039433B391.root
+    : Events
+  metadata:
+    charge: 15
+    is_mc: true
+    mass: 2800
+Q45_M300:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-45_M-300_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/32415AA9-8D02-2047-8DDA-A4C6BC3343D3.root
+    : Events
+  metadata:
+    charge: 15
+    is_mc: true
+    mass: 300
+Q45_M400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-45_M-400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/0B2462B6-1B67-3D4F-8303-F88535902BFF.root
+    : Events
+  metadata:
+    charge: 15
+    is_mc: true
+    mass: 400
+Q45_M500:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-45_M-500_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/207270B9-E730-3D4D-9570-858135DE8512.root
+    : Events
+  metadata:
+    charge: 15
+    is_mc: true
+    mass: 500
+Q45_M600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-45_M-600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/FC8AB879-A99F-5D44-BE28-0ED7753B4FA2.root
+    : Events
+  metadata:
+    charge: 15
+    is_mc: true
+    mass: 600
+Q45_M700:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-45_M-700_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/4274C3F4-7AAF-0047-BB6C-B05657ECD57D.root
+    : Events
+  metadata:
+    charge: 15
+    is_mc: true
+    mass: 700
+Q45_M800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-45_M-800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/3C256457-3EAF-994F-8E1C-ED8BF0A3AF26.root
+    : Events
+  metadata:
+    charge: 15
+    is_mc: true
+    mass: 800
+Q45_M900:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-45_M-900_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/70000/FF36BBE1-5BAA-CA4A-8CFF-82ABBB366F0A.root
+    : Events
+  metadata:
+    charge: 15
+    is_mc: true
+    mass: 900
+Q48_M100:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-48_M-100_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/6442F011-58C0-244B-845C-AB36D693E3D1.root
+    : Events
+  metadata:
+    charge: 16
+    is_mc: true
+    mass: 100
+Q48_M1000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-48_M-1000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/D02F68CF-9DC9-9E4E-B6B1-6A1BB0822171.root
+    : Events
+  metadata:
+    charge: 16
+    is_mc: true
+    mass: 1000
+Q48_M1200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-48_M-1200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/BDBA76A9-5EC5-074E-9E67-31EDBF4DBDA5.root
+    : Events
+  metadata:
+    charge: 16
+    is_mc: true
+    mass: 1200
+Q48_M1400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-48_M-1400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/AABA1B76-E7B4-2C42-B60D-3C34DDA4EED3.root
+    : Events
+  metadata:
+    charge: 16
+    is_mc: true
+    mass: 1400
+Q48_M1600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-48_M-1600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/3AD4A3FE-3FF7-FC42-A805-C7D5481C1252.root
+    : Events
+  metadata:
+    charge: 16
+    is_mc: true
+    mass: 1600
+Q48_M1800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-48_M-1800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/7ECE0FFB-AD72-014C-A8D8-8074146FC851.root
+    : Events
+  metadata:
+    charge: 16
+    is_mc: true
+    mass: 1800
+Q48_M200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-48_M-200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/0027CE31-6C3A-FC47-88E1-6224AB595375.root
+    : Events
+  metadata:
+    charge: 16
+    is_mc: true
+    mass: 200
+Q48_M2000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-48_M-2000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/51A54EBA-9DDB-F74F-9A4E-B112157EED5B.root
+    : Events
+  metadata:
+    charge: 16
+    is_mc: true
+    mass: 2000
+Q48_M2400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-48_M-2400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/732CB2D2-80DC-DB44-99EC-42D553341FE0.root
+    : Events
+  metadata:
+    charge: 16
+    is_mc: true
+    mass: 2400
+Q48_M2800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-48_M-2800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/CB728D8A-B4B6-DD4B-B893-2F5E55330137.root
+    : Events
+  metadata:
+    charge: 16
+    is_mc: true
+    mass: 2800
+Q48_M300:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-48_M-300_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/CE6FE4AE-D83A-2643-9BEF-53FD03B0A440.root
+    : Events
+  metadata:
+    charge: 16
+    is_mc: true
+    mass: 300
+Q48_M400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-48_M-400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/24B1C917-5BBD-C441-9702-4E6EC3501BF5.root
+    : Events
+  metadata:
+    charge: 16
+    is_mc: true
+    mass: 400
+Q48_M500:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-48_M-500_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/0A76DC58-3444-0345-8EB5-B846998AA00E.root
+    : Events
+  metadata:
+    charge: 16
+    is_mc: true
+    mass: 500
+Q48_M600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-48_M-600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/CFFCD847-B6D5-414C-9299-401DF74FD075.root
+    : Events
+  metadata:
+    charge: 16
+    is_mc: true
+    mass: 600
+Q48_M700:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-48_M-700_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/5B9B05D8-B0D2-B64A-8123-1B5EEC5CB767.root
+    : Events
+  metadata:
+    charge: 16
+    is_mc: true
+    mass: 700
+Q48_M800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-48_M-800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/A42E3CE4-D956-9D45-B6E9-C5235CE0C26E.root
+    : Events
+  metadata:
+    charge: 16
+    is_mc: true
+    mass: 800
+Q48_M900:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-48_M-900_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/DFCD8E74-3B97-5B48-954B-FFE017566DBC.root
+    : Events
+  metadata:
+    charge: 16
+    is_mc: true
+    mass: 900
+Q60_M100:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-60_M-100_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/0BE13F3B-98C6-CA4F-B42E-B9BFB9D9FB5A.root
+    : Events
+  metadata:
+    charge: 20
+    is_mc: true
+    mass: 100
+Q60_M1000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-60_M-1000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/CBFC7237-22A4-0444-A3E1-85C608E00235.root
+    : Events
+  metadata:
+    charge: 20
+    is_mc: true
+    mass: 1000
+Q60_M1200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-60_M-1200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/B6DB75BB-7925-F840-8279-E4675FC43D23.root
+    : Events
+  metadata:
+    charge: 20
+    is_mc: true
+    mass: 1200
+Q60_M1400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-60_M-1400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/1A7D4996-E81A-A84F-9DB6-7D6985793C77.root
+    : Events
+  metadata:
+    charge: 20
+    is_mc: true
+    mass: 1400
+Q60_M1600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-60_M-1600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/DA83786B-FCC9-F24E-AF64-D9B4A426795F.root
+    : Events
+  metadata:
+    charge: 20
+    is_mc: true
+    mass: 1600
+Q60_M1800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-60_M-1800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/1120C6B2-C592-1D4B-9D85-37D51C8A830B.root
+    : Events
+  metadata:
+    charge: 20
+    is_mc: true
+    mass: 1800
+Q60_M200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-60_M-200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/B07582EC-0D62-3E41-8485-169A390260E0.root
+    : Events
+  metadata:
+    charge: 20
+    is_mc: true
+    mass: 200
+Q60_M2000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-60_M-2000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/06D77BB1-A115-7F48-A4AA-46E7691885CA.root
+    : Events
+  metadata:
+    charge: 20
+    is_mc: true
+    mass: 2000
+Q60_M2400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-60_M-2400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/70000/3637787D-6C46-1649-AAA5-492A1AE1A4B6.root
+    : Events
+  metadata:
+    charge: 20
+    is_mc: true
+    mass: 2400
+Q60_M2800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-60_M-2800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/2CFB8EA9-8E99-704D-AC24-1F4D618A085F.root
+    : Events
+  metadata:
+    charge: 20
+    is_mc: true
+    mass: 2800
+Q60_M300:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-60_M-300_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/56F8F547-2759-A64B-BF1E-08ECCE490CC3.root
+    : Events
+  metadata:
+    charge: 20
+    is_mc: true
+    mass: 300
+Q60_M400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-60_M-400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/4C8EAC57-4AF1-774D-8D88-B4F30904A251.root
+    : Events
+  metadata:
+    charge: 20
+    is_mc: true
+    mass: 400
+Q60_M500:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-60_M-500_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/0BA6F61B-17F8-B447-9F45-25B006086AAB.root
+    : Events
+  metadata:
+    charge: 20
+    is_mc: true
+    mass: 500
+Q60_M600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-60_M-600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/6CB4D542-AD00-694E-BFA3-BC9E11250C91.root
+    : Events
+  metadata:
+    charge: 20
+    is_mc: true
+    mass: 600
+Q60_M700:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-60_M-700_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/BCC78908-C901-504E-A0A7-FD33979075EA.root
+    : Events
+  metadata:
+    charge: 20
+    is_mc: true
+    mass: 700
+Q60_M800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-60_M-800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/78526BC8-1169-274A-A530-7541CD44036F.root
+    : Events
+  metadata:
+    charge: 20
+    is_mc: true
+    mass: 800
+Q60_M900:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-60_M-900_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/B5568AA5-CECA-F849-AD96-08727489CB7D.root
+    : Events
+  metadata:
+    charge: 20
+    is_mc: true
+    mass: 900
+Q6_M100:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-6_M-100_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/11BC8480-53DD-5048-AC07-836008FB0E85.root
+    : Events
+  metadata:
+    charge: 2
+    is_mc: true
+    mass: 100
+Q6_M1000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-6_M-1000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/B66F1EEC-A9BF-E046-BC06-40719EAED857.root
+    : Events
+  metadata:
+    charge: 2
+    is_mc: true
+    mass: 1000
+Q6_M1200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-6_M-1200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/70000/4AEF621F-5A05-0B40-8CC9-18F95BAC9E22.root
+    : Events
+  metadata:
+    charge: 2
+    is_mc: true
+    mass: 1200
+Q6_M1400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-6_M-1400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/CD799A52-27B7-BC45-B2B2-050B0840FB6C.root
+    : Events
+  metadata:
+    charge: 2
+    is_mc: true
+    mass: 1400
+Q6_M1600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-6_M-1600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/EBC602CD-0D4E-6745-97DE-98C04185E693.root
+    : Events
+  metadata:
+    charge: 2
+    is_mc: true
+    mass: 1600
+Q6_M1800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-6_M-1800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/2E8B4FBF-06B0-4040-A5D2-AB8ABA05EF06.root
+    : Events
+  metadata:
+    charge: 2
+    is_mc: true
+    mass: 1800
+Q6_M200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-6_M-200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/F87335B9-6C5C-0743-8C09-12A8B3C9CCC9.root
+    : Events
+  metadata:
+    charge: 2
+    is_mc: true
+    mass: 200
+Q6_M2000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-6_M-2000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/9D7BA993-C192-6044-89E3-35E5C75C13A4.root
+    : Events
+  metadata:
+    charge: 2
+    is_mc: true
+    mass: 2000
+Q6_M2400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-6_M-2400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/84E7F357-28A3-CD44-A78B-7C7CAFEB077E.root
+    : Events
+  metadata:
+    charge: 2
+    is_mc: true
+    mass: 2400
+Q6_M2800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-6_M-2800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/1E2BDA7E-4501-3842-BAB0-521D6FB1B390.root
+    : Events
+  metadata:
+    charge: 2
+    is_mc: true
+    mass: 2800
+Q6_M300:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-6_M-300_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/9265B35D-BBDA-E54B-AC75-347FEA9FFC04.root
+    : Events
+  metadata:
+    charge: 2
+    is_mc: true
+    mass: 300
+Q6_M400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-6_M-400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/D3C5F71D-1941-C249-A696-7D3C0C3C7D7B.root
+    : Events
+  metadata:
+    charge: 2
+    is_mc: true
+    mass: 400
+Q6_M500:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-6_M-500_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/DA29FCFC-CDDE-6141-B2CD-33BCEDE913E3.root
+    : Events
+  metadata:
+    charge: 2
+    is_mc: true
+    mass: 500
+Q6_M600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-6_M-600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/CCF9E544-0C2B-CA42-AAC7-5D18EA42E4E2.root
+    : Events
+  metadata:
+    charge: 2
+    is_mc: true
+    mass: 600
+Q6_M700:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-6_M-700_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/6D049A9C-B60C-DB40-9170-1D1E6005C95F.root
+    : Events
+  metadata:
+    charge: 2
+    is_mc: true
+    mass: 700
+Q6_M800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-6_M-800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/A0C93388-E6AF-7A41-B5EE-86DEF3868A3F.root
+    : Events
+  metadata:
+    charge: 2
+    is_mc: true
+    mass: 800
+Q6_M900:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-6_M-900_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/CCBE5536-D701-584E-8A60-D176218A77C0.root
+    : Events
+  metadata:
+    charge: 2
+    is_mc: true
+    mass: 900
+Q72_M100:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-72_M-100_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/506113D0-38DB-8841-8935-6F726598F10B.root
+    : Events
+  metadata:
+    charge: 24
+    is_mc: true
+    mass: 100
+Q72_M1000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-72_M-1000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/ACB3D47E-BBF6-5C42-89BA-DC2A95BD96EA.root
+    : Events
+  metadata:
+    charge: 24
+    is_mc: true
+    mass: 1000
+Q72_M1200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-72_M-1200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/6AA0681E-FF20-6F4B-A70D-FFB0261FA1AB.root
+    : Events
+  metadata:
+    charge: 24
+    is_mc: true
+    mass: 1200
+Q72_M1400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-72_M-1400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/63AC6D8B-18D7-DA40-B08E-BA9BCD12EADD.root
+    : Events
+  metadata:
+    charge: 24
+    is_mc: true
+    mass: 1400
+Q72_M1600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-72_M-1600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/78752CA6-2111-2843-9937-F668011DF4BA.root
+    : Events
+  metadata:
+    charge: 24
+    is_mc: true
+    mass: 1600
+Q72_M1800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-72_M-1800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/887B5C99-0BA1-4846-9C83-325F5E9938B6.root
+    : Events
+  metadata:
+    charge: 24
+    is_mc: true
+    mass: 1800
+Q72_M200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-72_M-200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/E79EB29D-018E-F942-852B-F3ECADA91E83.root
+    : Events
+  metadata:
+    charge: 24
+    is_mc: true
+    mass: 200
+Q72_M2000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-72_M-2000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/1EB5D7B5-AFDD-624F-98BC-A00D5EA26277.root
+    : Events
+  metadata:
+    charge: 24
+    is_mc: true
+    mass: 2000
+Q72_M2400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-72_M-2400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/171AA195-BEDE-8C4E-8725-64ED78414F38.root
+    : Events
+  metadata:
+    charge: 24
+    is_mc: true
+    mass: 2400
+Q72_M2800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-72_M-2800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/A41611ED-DE1A-B646-8650-6101D9EE608C.root
+    : Events
+  metadata:
+    charge: 24
+    is_mc: true
+    mass: 2800
+Q72_M300:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-72_M-300_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/729E9983-1B13-FC44-BA7A-264EFA2DA914.root
+    : Events
+  metadata:
+    charge: 24
+    is_mc: true
+    mass: 300
+Q72_M400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-72_M-400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/2E22C655-72A5-774E-A87C-B432440294B0.root
+    : Events
+  metadata:
+    charge: 24
+    is_mc: true
+    mass: 400
+Q72_M500:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-72_M-500_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/FE0F6886-E243-4E47-A704-D5676EDE66ED.root
+    : Events
+  metadata:
+    charge: 24
+    is_mc: true
+    mass: 500
+Q72_M600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-72_M-600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/3009161B-47A5-5B46-8A25-B2022551BDB3.root
+    : Events
+  metadata:
+    charge: 24
+    is_mc: true
+    mass: 600
+Q72_M700:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-72_M-700_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/69DB8C92-2D3A-434C-BEEB-C6B5D9E87481.root
+    : Events
+  metadata:
+    charge: 24
+    is_mc: true
+    mass: 700
+Q72_M800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-72_M-800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/783EC6D9-70E2-5947-A357-BEBD2E38FC4E.root
+    : Events
+  metadata:
+    charge: 24
+    is_mc: true
+    mass: 800
+Q72_M900:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-72_M-900_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/1AD6CDE7-B2F8-CD45-A153-E8D89682E4DC.root
+    : Events
+  metadata:
+    charge: 24
+    is_mc: true
+    mass: 900
+Q90_M100:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-90_M-100_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/473F9328-98CE-6D4A-8954-4EC0AFC3EC7B.root
+    : Events
+  metadata:
+    charge: 30
+    is_mc: true
+    mass: 100
+Q90_M1000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-90_M-1000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/934E115D-6A9F-AB44-B03C-8AE27FC51DF5.root
+    : Events
+  metadata:
+    charge: 30
+    is_mc: true
+    mass: 1000
+Q90_M1200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-90_M-1200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/7A3C5360-E4A4-5641-85E5-A7CDF4827181.root
+    : Events
+  metadata:
+    charge: 30
+    is_mc: true
+    mass: 1200
+Q90_M1400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-90_M-1400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/4B78B16F-BC3A-5D4F-82C3-EAEA22AAF1C8.root
+    : Events
+  metadata:
+    charge: 30
+    is_mc: true
+    mass: 1400
+Q90_M1600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-90_M-1600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/41927E7F-E5F7-6947-BBA3-9DB9CCE342E1.root
+    : Events
+  metadata:
+    charge: 30
+    is_mc: true
+    mass: 1600
+Q90_M1800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-90_M-1800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/F37EB568-9FB1-E246-B506-EE27440A51FB.root
+    : Events
+  metadata:
+    charge: 30
+    is_mc: true
+    mass: 1800
+Q90_M200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-90_M-200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/B7027E22-1F52-4347-93FF-C07A6DC66C48.root
+    : Events
+  metadata:
+    charge: 30
+    is_mc: true
+    mass: 200
+Q90_M2000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-90_M-2000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/7D451165-E8A5-C748-B21C-2002269B8DB1.root
+    : Events
+  metadata:
+    charge: 30
+    is_mc: true
+    mass: 2000
+Q90_M2400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-90_M-2400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/59481FAC-CE74-8C44-88F3-CCA3EBD5EFD7.root
+    : Events
+  metadata:
+    charge: 30
+    is_mc: true
+    mass: 2400
+Q90_M2800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-90_M-2800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/92B98FB9-5174-6B40-BF85-A764ABA12969.root
+    : Events
+  metadata:
+    charge: 30
+    is_mc: true
+    mass: 2800
+Q90_M300:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-90_M-300_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/D877C78A-50A8-0044-B920-0C73EAB01F03.root
+    : Events
+  metadata:
+    charge: 30
+    is_mc: true
+    mass: 300
+Q90_M400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-90_M-400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/73225191-B205-584D-8ED2-7167CA781C0C.root
+    : Events
+  metadata:
+    charge: 30
+    is_mc: true
+    mass: 400
+Q90_M500:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-90_M-500_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/65D06F85-EB1A-6B47-85F5-2A974B50757F.root
+    : Events
+  metadata:
+    charge: 30
+    is_mc: true
+    mass: 500
+Q90_M600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-90_M-600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/D378399A-D6D7-824D-B29A-81F26A949E10.root
+    : Events
+  metadata:
+    charge: 30
+    is_mc: true
+    mass: 600
+Q90_M700:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-90_M-700_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/79A9469A-F055-D044-8C58-27FFA18ACC6F.root
+    : Events
+  metadata:
+    charge: 30
+    is_mc: true
+    mass: 700
+Q90_M800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-90_M-800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/92AC74C9-AD05-0B41-8642-6A7D81162E3E.root
+    : Events
+  metadata:
+    charge: 30
+    is_mc: true
+    mass: 800
+Q90_M900:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-90_M-900_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/7AE20CAB-DF4F-E344-A307-C2FE54CB3FDD.root
+    : Events
+  metadata:
+    charge: 30
+    is_mc: true
+    mass: 900
+Q9_M100:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-9_M-100_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/45DD1DCA-8F31-CD48-88BC-561B7D8D170C.root
+    : Events
+  metadata:
+    charge: 3
+    is_mc: true
+    mass: 100
+Q9_M1000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-9_M-1000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/2E3A161A-FF1B-E049-81B4-0F4040A58A5D.root
+    : Events
+  metadata:
+    charge: 3
+    is_mc: true
+    mass: 1000
+Q9_M1200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-9_M-1200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/641D7ED4-5B16-6E4A-BE10-B73D50366DDF.root
+    : Events
+  metadata:
+    charge: 3
+    is_mc: true
+    mass: 1200
+Q9_M1400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-9_M-1400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/4C617333-7357-624A-8818-E5B25B4745EF.root
+    : Events
+  metadata:
+    charge: 3
+    is_mc: true
+    mass: 1400
+Q9_M1600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-9_M-1600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/25D016CB-62F4-0345-BE3B-BCD90BE703E8.root
+    : Events
+  metadata:
+    charge: 3
+    is_mc: true
+    mass: 1600
+Q9_M1800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-9_M-1800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/0D4743E5-E42B-4947-A45C-25265C289475.root
+    : Events
+  metadata:
+    charge: 3
+    is_mc: true
+    mass: 1800
+Q9_M200:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-9_M-200_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/80000/71469CA1-7D57-1343-A37F-ACAF5D012B6D.root
+    : Events
+  metadata:
+    charge: 3
+    is_mc: true
+    mass: 200
+Q9_M2000:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-9_M-2000_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/161AB458-96FC-974A-8163-F968595C2430.root
+    : Events
+  metadata:
+    charge: 3
+    is_mc: true
+    mass: 2000
+Q9_M2400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-9_M-2400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/BF4CCD86-31B8-5F4B-AF42-A46BF859C78C.root
+    : Events
+  metadata:
+    charge: 3
+    is_mc: true
+    mass: 2400
+Q9_M2800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-9_M-2800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/B763A1C3-16DA-B244-AE7B-D8FC4A07C7FF.root
+    : Events
+  metadata:
+    charge: 3
+    is_mc: true
+    mass: 2800
+Q9_M300:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-9_M-300_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/0BDCD709-02DE-2E4F-BA0D-AE49B2345B12.root
+    : Events
+  metadata:
+    charge: 3
+    is_mc: true
+    mass: 300
+Q9_M400:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-9_M-400_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/AA4B9AE2-44A2-BE46-8718-5E6CF21676BA.root
+    : Events
+  metadata:
+    charge: 3
+    is_mc: true
+    mass: 400
+Q9_M500:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-9_M-500_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/4B6A04B2-5BF3-8D4F-8297-8448C0E728D6.root
+    : Events
+  metadata:
+    charge: 3
+    is_mc: true
+    mass: 500
+Q9_M600:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-9_M-600_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/5E4A7142-16D8-3944-BB78-482C69A62FA7.root
+    : Events
+  metadata:
+    charge: 3
+    is_mc: true
+    mass: 600
+Q9_M700:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-9_M-700_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/545A5616-9B0D-0C4F-BDDF-41CB898FA952.root
+    : Events
+  metadata:
+    charge: 3
+    is_mc: true
+    mass: 700
+Q9_M800:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-9_M-800_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/44A90AFB-DDF5-A544-8212-0D5A5691BC8E.root
+    : Events
+  metadata:
+    charge: 3
+    is_mc: true
+    mass: 800
+Q9_M900:
+  files:
+    ? root://cms-xrd-global.cern.ch///store/mc/RunIISummer20UL18RECO/HSCPmchamp_Q-9_M-900_TuneCP2_13TeV_pythia8/AODSIM/106X_upgrade2018_realistic_v11_L1v1-v2/2530000/5F0BE89D-7E1B-5046-8677-988F0943A0C4.root
+    : Events
+  metadata:
+    charge: 3
+    is_mc: true
+    mass: 900
