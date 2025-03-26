@@ -28,9 +28,12 @@
 #include "FWCore/Framework/interface/MakerMacros.h"
 
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
- #include "FWCore/Utilities/interface/InputTag.h"
- #include "DataFormats/TrackReco/interface/Track.h"
- #include "DataFormats/TrackReco/interface/TrackFwd.h"
+#include "FWCore/Utilities/interface/InputTag.h"
+#include "DataFormats/TrackReco/interface/Track.h"
+#include "DataFormats/TrackReco/interface/TrackBase.h"
+#include "DataFormats/VertexReco/interface/Vertex.h"
+#include "DataFormats/VertexReco/interface/VertexFwd.h"
+#include "DataFormats/TrackReco/interface/TrackFwd.h"
 #include "DataFormats/TrackReco/interface/DeDxHitInfo.h"
 
 #include "DataFormats/EcalRecHit/interface/EcalRecHit.h"
@@ -64,7 +67,28 @@
 ClassImp(GenPart);
 ClassImp(Tracks);
 ClassImp(RecHits_Ecal);
+ClassImp(TrackAssoc);
 
+namespace cutFlow_enum {
+    enum Type
+    {
+        allTracks = 0,
+        technical,
+        pt,
+        eta,
+        fracValidHits,
+        numDedxHits,
+        highPurity,
+        chi2,
+        dz,
+        dxy,
+        Ih,
+        energy,
+        time,
+        count
+    };
+}
+    
 //
 // constructors and destructor
 //
@@ -72,6 +96,7 @@ GenTrackEcalAnalyzer::GenTrackEcalAnalyzer(const edm::ParameterSet& iConfig)
  : 	genParticlesToken_(consumes<reco::GenParticleCollection>(iConfig.getParameter<edm::InputTag>("genParticles"))),
 	tracksToken_(consumes<reco::TrackCollection>(iConfig.getParameter<edm::InputTag>("tracks"))),
     ecalRecHitsToken_(consumes<EcalRecHitCollection>(iConfig.getParameter<edm::InputTag>("ecalRecHits"))),
+    vertexToken_(consumes<reco::VertexCollection>(iConfig.getParameter<edm::InputTag>("offlinePV"))),
     pdgId_(iConfig.getParameter<int>("pdgId")),
     deltaRCutoff_tracks(iConfig.getParameter<double>("deltaRCutoff_tracks")),
     deltaRCutoff_EB(iConfig.getParameter<double>("deltaRCutoff_EB")),
@@ -81,21 +106,54 @@ GenTrackEcalAnalyzer::GenTrackEcalAnalyzer(const edm::ParameterSet& iConfig)
 {
     
     // Initialize TrackDetectorAssociator and parameters
-    //edm::ParameterSet trackAssociatorParams = iConfig.getParameter<edm::ParameterSet>("TrackAssociatorParameters");
-    //trackAssociator_.useDefaultPropagator();
-    // Store the consumes collector in a variable
+    edm::ParameterSet trackAssociatorParams = iConfig.getParameter<edm::ParameterSet>("TrackAssociatorParameters");
     edm::ConsumesCollector cc = consumesCollector();
-    trackAssociatorParams_.loadParameters(iConfig.getParameter<edm::ParameterSet>("TrackAssociatorParameters"), cc);
-    //trackAssociatorParams_.loadParameters(trackAssociatorParams, consumesCollector());
+    trackAssociatorParams_.loadParameters(trackAssociatorParams, cc);
+    trackAssociator_.useDefaultPropagator();
 
 	outputFile_ = new TFile(outputFileName_.c_str(), "RECREATE");
-    
+    //outputFile_->cd();
+
     tree_ = new TTree("Ntuple", "Ntuple");
     tree_->Branch("Run", &run_, "Run/I");
     tree_->Branch("Event", &event_, "Event/I");
     tree_->Branch("GenPart.", &cls_genpart);
     tree_->Branch("Tracks.", &cls_tracks);
     tree_->Branch("EcalRecHits.", &cls_rechitsEcal);
+    tree_->Branch("TrackAssoc.", &cls_trackAssoc);
+
+    CutFlow = new TH1I(
+                "CutFlow",
+                ";;Tracks / category",
+                cutFlow_enum::count, -0.5, cutFlow_enum::count-0.5);
+
+    CutFlow->SetMinimum(0);
+    
+    CutFlow->GetXaxis()->SetBinLabel( cutFlow_enum::allTracks+1    , "All tracks");
+    CutFlow->GetXaxis()->SetBinLabel( cutFlow_enum::technical+1    , "Technical");
+    //CutFlow->GetXaxis()->SetBinLabel(3, "Trigger");
+    CutFlow->GetXaxis()->SetBinLabel( cutFlow_enum::pt+1           , "p_{T}");
+    CutFlow->GetXaxis()->SetBinLabel( cutFlow_enum::eta+1          , "#eta");
+    //CutFlow->GetXaxis()->SetBinLabel(6, "N_{no-L1 pixel hits}");
+    CutFlow->GetXaxis()->SetBinLabel( cutFlow_enum::fracValidHits+1, "f_{valid/all hits}");
+    CutFlow->GetXaxis()->SetBinLabel( cutFlow_enum::numDedxHits+1  , "N_{dEdx hits}");
+    CutFlow->GetXaxis()->SetBinLabel( cutFlow_enum::highPurity+1   , "HighPurity");
+    CutFlow->GetXaxis()->SetBinLabel( cutFlow_enum::chi2+1         , "#chi^{2} / N_{dof}");
+    CutFlow->GetXaxis()->SetBinLabel( cutFlow_enum::dz+1           , "d_{z}");
+    CutFlow->GetXaxis()->SetBinLabel( cutFlow_enum::dxy+1          , "d_{xy}");
+    CutFlow->GetXaxis()->SetBinLabel( cutFlow_enum::Ih+1           , "Ih");
+    CutFlow->GetXaxis()->SetBinLabel( cutFlow_enum::energy+1       , "Energy");
+    CutFlow->GetXaxis()->SetBinLabel( cutFlow_enum::time+1         , "Time");
+    //CutFlow->GetXaxis()->SetBinLabel(13, "MiniRelIsoAll");
+    //CutFlow->GetXaxis()->SetBinLabel(14, "MiniRelTkIso");
+    //CutFlow->GetXaxis()->SetBinLabel(15, "E/p");
+    //CutFlow->GetXaxis()->SetBinLabel(16, "#sigma_{p_{T}} / p_{T}^{2}");
+    //CutFlow->GetXaxis()->SetBinLabel(17, "F_{i}");
+    //CutFlow->GetXaxis()->SetBinLabel(18, "SR0");
+    //CutFlow->GetXaxis()->SetBinLabel(19, "SR1");
+    //CutFlow->GetXaxis()->SetBinLabel(20, "SR2");
+    //CutFlow->GetXaxis()->SetBinLabel(21, "SR2 with SFs");
+
 }
 
 
@@ -104,6 +162,7 @@ GenTrackEcalAnalyzer::~GenTrackEcalAnalyzer()
 
     outputFile_->cd();
     tree_->Write();
+    CutFlow->Write();
     outputFile_->Close();
 }
 
@@ -127,6 +186,10 @@ GenTrackEcalAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
     edm::Handle<reco::TrackCollection> tracks;
     iEvent.getByToken(tracksToken_, tracks);
 
+    // Get Vertices
+    edm::Handle<reco::VertexCollection> vertices;
+    iEvent.getByToken(vertexToken_, vertices);
+    
     // Get dedx collection
 	edm::Handle<reco::DeDxHitInfoAss> dedxCollH = iEvent.getHandle(dedxToken_);
 	//std::cout<<"dedxCollH size: "<<dedxCollH->size()<<"\n";
@@ -160,194 +223,354 @@ GenTrackEcalAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
 
         cls_tracks->reset();
         cls_rechitsEcal->reset();
+        cls_trackAssoc->reset();
         
         int pos = -1;
 
         for (const auto& track : *tracks) {
-            // Use TrackDetectorAssociator to propagate the track to ECAL
-            //TrackDetMatchInfo info = trackAssociator_.associate(iEvent, iSetup, 
-            //                        reco::TrackRef(&tracks, &track - &tracks->front()), 
-            //                        trackAssociatorParams_);
-
-            // Get the position at the ECAL surface
-            //GlobalPoint ecalPosition = info.positionAtEcal;
-
             pos++;
+            
             // Calculate dR between the genParticle and the track projected to ECAL
-            double deltaR = reco::deltaR(cls_genpart->eta, cls_genpart->phi, track.eta(), track.phi());
-            if (deltaR < deltaRCutoff_tracks && track.pt()>5) {
+            double deltaR_trackGen = reco::deltaR(cls_genpart->eta, cls_genpart->phi, track.eta(), track.phi());
+            if (deltaR_trackGen > deltaRCutoff_tracks || track.pt()<5) continue;
                 
-                cls_tracks->pt.push_back(track.pt());
-                cls_tracks->beta.push_back(track.beta());
-                cls_tracks->eta.push_back(track.eta());
-                cls_tracks->phi.push_back(track.phi());
-                
-                cls_tracks->deltaR.push_back(deltaR);
-                
-                cls_tracks->qoverp.push_back(track.qoverp());
-                cls_tracks->lambda.push_back(track.lambda());
-                cls_tracks->dxy.push_back(track.dxy());
-                cls_tracks->dsz.push_back(track.dsz());
-                cls_tracks->charge.push_back(track.charge());
-                cls_tracks->chisq.push_back(track.chi2());
-                cls_tracks->ndof.push_back(track.ndof());
-                
-                cls_tracks->validHitsNum.push_back(track.numberOfValidHits());
-                cls_tracks->validHitsFrac.push_back(track.validFraction());
-                
-                cls_tracks->trackQual.push_back(track.qualityMask());
-                cls_tracks->trackAlgo.push_back(track.algo());
+            reco::Vertex bestVertex;
+            double maxSumPt2 = -1.0;
 
-                // Dedx hit info access
-                const reco::TrackRef trackRef = reco::TrackRef(tracks, pos);
-                reco::DeDxHitInfoRef dedxHitsRef = dedxCollH->get(trackRef.key());
-                if (dedxHitsRef.isNull()) {
-                    cls_tracks->hasDedxRef.push_back(0);
-                    
-                    cls_tracks->dedx.push_back(-1);
-                    cls_tracks->numOfSatStrips.push_back(-1);
-                    cls_tracks->numOfStrips.push_back(-1);
+            for (const auto& vertex : *vertices) {
+                if (vertex.isFake() || !vertex.isValid()) continue;
+                
+                double sumPt2 = 0.0;
+                for (reco::Vertex::trackRef_iterator it = vertex.tracks_begin(); it != vertex.tracks_end(); it++){
+                    double pt = (**it).pt();
+                    if ((**it).ptError() > pt) continue;
+                    sumPt2 += pt * pt;
                 }
-                else {
-                    cls_tracks->hasDedxRef.push_back(1);
-		            const reco::DeDxHitInfo* dedxHits = &(*dedxHitsRef);
-                    
-                    // for dedx measurements without cluster cleaning
-                    string year = "";
-                    float dedxSF[] = {1.0, 1.0325};
-                    TH3* templateHisto = nullptr;
-                    bool usePixel = false;
-                    bool useStrip = true;
-                    bool useClusterCleaning = false;
+                
+                if (sumPt2 > maxSumPt2) {
+                    maxSumPt2 = sumPt2;
+                    bestVertex = vertex;
+                }
+            }
+            
+            cls_tracks->pt.push_back(track.pt());
+            cls_tracks->beta.push_back(track.beta());
+            cls_tracks->eta.push_back(track.eta());
+            cls_tracks->phi.push_back(track.phi());
+            
+            cls_tracks->deltaR.push_back(deltaR_trackGen);
+            
+            cls_tracks->qoverp.push_back(track.qoverp());
+            cls_tracks->lambda.push_back(track.lambda());
+            cls_tracks->dxy.push_back(track.dxy(bestVertex.position()));
+            cls_tracks->dz.push_back(track.dz(bestVertex.position()));
+            cls_tracks->charge.push_back(track.charge());
+            cls_tracks->chisq.push_back(track.chi2());
+            cls_tracks->ndof.push_back(track.ndof());
+            
+            cls_tracks->validHitsNum.push_back(track.numberOfValidHits());
+            cls_tracks->validHitsFrac.push_back(track.validFraction());
+            
+            cls_tracks->trackQual.push_back(track.qualityMask());
+            cls_tracks->trackAlgo.push_back(track.algo());
 
-                    reco::DeDxData temp = computedEdx(run_, year, dedxHits, dedxSF, templateHisto, usePixel, 
-                                        useStrip, useClusterCleaning);
-                    
-                    cls_tracks->dedx.push_back(temp.dEdx());
-                    cls_tracks->numOfSatStrips.push_back(temp.numberOfSaturatedMeasurements());
-                    cls_tracks->numOfStrips.push_back(temp.numberOfMeasurements());
-                }
+            // Dedx hit info access
+            const reco::TrackRef trackRef = reco::TrackRef(tracks, pos);
+            reco::DeDxHitInfoRef dedxHitsRef = dedxCollH->get(trackRef.key());
+            if (dedxHitsRef.isNull()) {
+                cls_tracks->hasDedxRef.push_back(0);
                 
-                //Extrapolating track info 
-                //float pTavg = track.momentum().R();
-                float pTavg = track.pt();
-                float R_ecal = 1.290;
-                float outer_phi_d = -1000;
-                float charge = track.charge();
-                //outer_phi_d = asin( ( -track.charge() * (R_ecal / pTavg) * 3.8 * 1.6 ) / (2 * 100 * 5.36) );
-                if (charge == 1){
-                    outer_phi_d = asin( (- (R_ecal) / pTavg) * 3.8 * 1.6 / (2 * 100 * 5.36));
-                }
-                else{
-                    if(track.charge() == -1){
-                        outer_phi_d = asin( ((R_ecal) / pTavg) * 3.8 * 1.6 / (2 * 100 * 5.36));
-                    }
-                }
-                //float deltaPhi = GetPhiDiff(track.outerPhi(), EEPhi);
-                outer_phi_d += track.phi();
+                cls_tracks->dedx.push_back(-1);
+                cls_tracks->numOfSatStrips.push_back(-1);
+                cls_tracks->numOfStrips.push_back(-1);
+            }
+            else {
+                cls_tracks->hasDedxRef.push_back(1);
+                const reco::DeDxHitInfo* dedxHits = &(*dedxHitsRef);
+                
+                // for dedx measurements without cluster cleaning
+                string year = "";
+                float dedxSF[] = {1.0, 1.0325};
+                TH3* templateHisto = nullptr;
+                bool usePixel = false;
+                bool useStrip = true;
+                bool useClusterCleaning = false;
 
-                // Find and save ECAL info
+                reco::DeDxData temp = computedEdx(run_, year, dedxHits, dedxSF, templateHisto, usePixel, 
+                                    useStrip, useClusterCleaning);
                 
-                std::vector<float> energy, energyErr, time, timeErr, deltaR;
-                std::vector<bool> timeErrValid;
-                std::vector<uint32_t> rechitFlag;
-                std::vector<int> iEta, iPhi;
+                cls_tracks->dedx.push_back(temp.dEdx());
+                cls_tracks->numOfSatStrips.push_back(temp.numberOfSaturatedMeasurements());
+                cls_tracks->numOfStrips.push_back(temp.numberOfMeasurements());
+            }   // End of if Else - dedxHitsRef check
+            
+            //Extrapolating track info 
+            //float pTavg = track.momentum().R();
+            float pTavg = track.pt();
+            float R_ecal = 1.290;
+            float outer_phi_d = -1000;
+            float charge = track.charge();
+            //outer_phi_d = asin( ( -track.charge() * (R_ecal / pTavg) * 3.8 * 1.6 ) / (2 * 100 * 5.36) );
+            if (charge == 1){
+                outer_phi_d = asin( (- (R_ecal) / pTavg) * 3.8 * 1.6 / (2 * 100 * 5.36));
+            }
+            else{
+                if(track.charge() == -1){
+                    outer_phi_d = asin( ((R_ecal) / pTavg) * 3.8 * 1.6 / (2 * 100 * 5.36));
+                }
+            }
+            //float deltaPhi = GetPhiDiff(track.outerPhi(), EEPhi);
+            outer_phi_d += track.phi();
+
+            // Find and save ECAL info
+            
+            std::vector<float> energy, energyErr, time, timeErr, deltaR;
+            std::vector<bool> timeErrValid;
+            std::vector<uint32_t> rechitFlag;
+            std::vector<int> iEta, iPhi;
+            
+            EBRecHitCollection::const_iterator EBRecItr;
+            for (EBRecItr = EBRecHits->begin(); EBRecItr != EBRecHits->end(); EBRecItr++)
+            {
+                EcalRecHit hit = *EBRecItr;
+                EBDetId det = hit.id();
+                float EBEta = barrelGeometry->getGeometry(det)->getPosition().eta();
+                float EBPhi = barrelGeometry->getGeometry(det)->getPosition().phi();
                 
-                EBRecHitCollection::const_iterator EBRecItr;
+                float deltaEta = track.eta() - EBEta;
+                float deltaPhi = reco::deltaPhi(EBPhi, outer_phi_d);
+                
+                float dR = sqrt( pow(deltaEta, 2.0) + pow(deltaPhi, 2.0) );
+
+                // Adding a cut to delta R (and ecal rechit energy?)
+                if (dR < deltaRCutoff_EB && hit.energy() > 0) {
+                   energy.push_back(hit.energy());
+                   energyErr.push_back(hit.energyError());
+                   time.push_back(hit.time());
+                   timeErr.push_back(hit.timeError());
+                   timeErrValid.push_back(hit.isTimeErrorValid());
+                   deltaR.push_back(dR);
+                   iEta.push_back(det.ieta());
+                   iPhi.push_back(det.iphi());
+                   rechitFlag.push_back(hit.flagsBits());
+                }
+            }   // END of loop over EB RecHit collection
+
+            cls_rechitsEcal->energy.push_back(energy);
+            cls_rechitsEcal->energyErr.push_back(energyErr);
+            cls_rechitsEcal->time.push_back(time);
+            cls_rechitsEcal->timeErr.push_back(timeErr);
+            cls_rechitsEcal->timeErrValid.push_back(timeErrValid);
+            cls_rechitsEcal->deltaR.push_back(deltaR);
+            cls_rechitsEcal->iEta.push_back(iEta);
+            cls_rechitsEcal->iPhi.push_back(iPhi);
+            cls_rechitsEcal->rechitFlag.push_back(rechitFlag);
+            
+            // Looking at Ecal rechit near projected track location
+            // Use TrackDetectorAssociator to propagate the track to ECAL
+            
+            TrackDetMatchInfo info = trackAssociator_.associate(
+                                        iEvent, 
+                                        iSetup, 
+                                        trackAssociator_.getFreeTrajectoryState(iSetup, track),
+                                        trackAssociatorParams_);
+
+            float tempE = 0;
+            for (auto e : energy) tempE += e;
+           
+            if (abs(track.eta()) > 1.479 ){
+                std::cout<<"Track not in barrel\n";
+            }
+            else{
+                if (info.ecalRecHits.size()<1) continue;
+                
+                cls_trackAssoc->ecalXEnergy.push_back(info.ecalCrossedEnergy());
+                cls_trackAssoc->ecal3x3Energy.push_back(
+                    info.nXnEnergy(TrackDetMatchInfo::EcalRecHits, 1)
+                    );
+                cls_trackAssoc->ecal5x5Energy.push_back(
+                    info.nXnEnergy(TrackDetMatchInfo::EcalRecHits, 2)
+                    );
+                
+                DetId maxDep = info.findMaxDeposition(TrackDetMatchInfo::EcalRecHits);
+
                 for (EBRecItr = EBRecHits->begin(); EBRecItr != EBRecHits->end(); EBRecItr++)
                 {
                     EcalRecHit hit = *EBRecItr;
                     EBDetId det = hit.id();
+
+                    if (det.rawId() != maxDep.rawId()) continue;
+                    
+                    cls_trackAssoc->ecalMaxE.push_back(hit.energy());
+                    cls_trackAssoc->ecalMaxETime.push_back(hit.time());
                     float EBEta = barrelGeometry->getGeometry(det)->getPosition().eta();
                     float EBPhi = barrelGeometry->getGeometry(det)->getPosition().phi();
-                    
-                    float deltaEta = track.eta() - EBEta;
-                    float deltaPhi = reco::deltaPhi(EBPhi, outer_phi_d);
-                    
-                    float dR = sqrt( pow(deltaEta, 2.0) + pow(deltaPhi, 2.0) );
+                    math::XYZPoint trackPos = info.trkGlobPosAtEcal;
+                    double deltaR = reco::deltaR(trackPos.eta(), trackPos.phi(), EBEta, EBPhi);
+                    cls_trackAssoc->ecalMaxEdR.push_back(deltaR);
+                    break;
+                }   // END for - EB rechits matching to maxE deposit
+            }   // END if - cut on track eta (limit to EB)
+        }   // END for - TrackCollection
 
-                    // Adding a cut to delta R (and ecal rechit energy?)
-                    if (dR < deltaRCutoff_EB && hit.energy() > 0) {
-                       energy.push_back(hit.energy());
-                       energyErr.push_back(hit.energyError());
-                       time.push_back(hit.time());
-                       timeErr.push_back(hit.timeError());
-                       timeErrValid.push_back(hit.isTimeErrorValid());
-                       deltaR.push_back(dR);
-                       iEta.push_back(det.ieta());
-                       iPhi.push_back(det.iphi());
-                       rechitFlag.push_back(hit.flagsBits());
-                    }
-                }
+        tree_->Fill();
+    }   // END for - GenParticles
 
-                cls_rechitsEcal->energy.push_back(energy);
-                cls_rechitsEcal->energyErr.push_back(energyErr);
-                cls_rechitsEcal->time.push_back(time);
-                cls_rechitsEcal->timeErr.push_back(timeErr);
-                cls_rechitsEcal->timeErrValid.push_back(timeErrValid);
-                cls_rechitsEcal->deltaR.push_back(deltaR);
-                cls_rechitsEcal->iEta.push_back(iEta);
-                cls_rechitsEcal->iPhi.push_back(iPhi);
-                cls_rechitsEcal->rechitFlag.push_back(rechitFlag);
-                
-                // UNDER DEVELOPMENT
-                /*
-                
-                // Looking at Ecal rechit near projected track location
-                // Use TrackDetectorAssociator to propagate the track to ECAL
-                
-                GlobalVector trackMomentum(track.momentum().x(),
-                                            track.momentum().y(),
-                                            track.momentum().z());
+    
+    // Candidate Selection criteria
+    int pos = -1;
+    for (const auto& track : *tracks) 
+    {
+        pos++;
 
-                GlobalPoint trackVertex(track.vertex().x(),
-                                        track.vertex().y(),
-                                        track.vertex().z()); 
-                
-                TrackDetMatchInfo info = trackAssociator_.associate(
-                                            iEvent, 
-                                            iSetup, 
-                                            trackMomentum,
-                                            trackVertex,
-                                            track.charge(),
-                                            trackAssociatorParams_);
+        // CandSel track cuts
+        float   cand_trk_pT_cut     =   5       ;
+        float   cand_trk_chi2_cut   =   20      ;
+        int     cand_trk_hits_cut   =   3       ;
+        
+        // CandSel ecal cuts
+        float   cand_ecal_maxE_cut       =   2   ;
+        float   cand_ecal_maxE_error_cut =   0.5 ;
+        float   cand_ecal_T_cut          =   1   ;
+        //float   ecal_5x5_cut    =   5;
 
-                //// Get the position at the ECAL surface
-                //GlobalPoint trackAtECAL = info.positionAtEcal;
-                //
-                //for (const auto& hit : *ecalRecHits) {
-                //    // Get position of ECAL RecHit in global coordinates
-                //    const GlobalPoint& recHitPos = caloGeometry->getPosition(hit.id());
+        // PreSel cuts
+        float   trk_eta_cut             =   1.479   ;
+        float   trk_pT_cut              =   5       ;
+        float   trk_chi2_cut            =   5       ;
+        float   trk_validFrac_cut       =   0.8     ;
+        unsigned int trk_dedxHits_cut   =   10      ;
+        float   trk_dz_cut              =   0.5     ;
+        float   trk_dxy_cut             =   0.5     ;
+        float   trk_dEdx_cut            =   3       ;
+        float   ecal_energy_cut         =   5       ;
+        float   ecal_time_cut           =   2       ;
 
-                //    // Calculate ΔR between RecHit and extrapolated track position
-                //    float deltaEta = recHitPos.eta() - trackAtECAL.eta();
-                //    float deltaPhi = reco::deltaPhi(recHitPos.phi(), trackAtECAL.phi());
-                //    float deltaR = std::sqrt(deltaEta * deltaEta + deltaPhi * deltaPhi);
+        // Cut on track pT and eta
+        if (track.pt() < cand_trk_pT_cut)                   continue;
+        if (track.found() < cand_trk_hits_cut)              continue;
+        if (track.chi2()/track.ndof() > cand_trk_chi2_cut)  continue;
+        
+        
+        TrackDetMatchInfo info = trackAssociator_.associate(
+                                    iEvent, 
+                                    iSetup, 
+                                    trackAssociator_.getFreeTrajectoryState(iSetup, track),
+                                    trackAssociatorParams_);
+  
+        // If no associated rechits - no candidate selection
+        if (info.ecalRecHits.size() == 0) continue;
 
-                //    // If within deltaRMax, store the hit
-                //    if (deltaR < deltaRMax) {
-                //        std::cout<<hit->energy()<<" ";
-                //    }
-                //}
-                //std::cout<<std::endl;
-               
-                for (std::vector<const EcalRecHit*>::const_iterator hit = info.crossedEcalRecHits.begin();
-                    hit != info.crossedEcalRecHits.end();
-                    hit++){
-                    
-                    std::cout<<(*hit)->energy()<<" "; 
-                }
-                std::cout<<std::endl;
-                */
-            }
+        DetId maxDep = info.findMaxDeposition(TrackDetMatchInfo::EcalRecHits);
+        float maxDep_E      = -999;
+        float maxDep_time   = -999; 
 
+        bool flag_ecalSelection = 0;
+        for (auto recHitItr : info.ecalRecHits){
+            EcalRecHit hit = *recHitItr;
+            EBDetId det = hit.id();
+
+            if (det.rawId() != maxDep.rawId()) continue;
+            
+            maxDep_E    = hit.energy();
+            maxDep_time = hit.time();
+
+            if ( (maxDep_E > cand_ecal_maxE_cut) && (hit.energyError() < cand_ecal_maxE_error_cut) && 
+                    (hit.isTimeErrorValid()) && (maxDep_time > cand_ecal_T_cut) ) 
+                flag_ecalSelection = 1;
+            break;
         }
 
-        //ecalRecHitEnergies_.push_back(ecalEnergies);
-        //deltaRwithTracks_.push_back(deltaRs);
-        tree_->Fill();
-    }
+        // In case ecal thgresholds aren't cleared
+        if (!flag_ecalSelection) continue;
 
+        // All tracks that made the basic Candidate selection requirement
+        CutFlow->Fill( cutFlow_enum::allTracks );
+       
+        const reco::TrackRef trackRef = reco::TrackRef(tracks, pos);
+        reco::DeDxHitInfoRef dedxHitsRef = dedxCollH->get(trackRef.key());
+        
+        // Technical Check
+        if (dedxHitsRef.isNull()) continue;
+        CutFlow->Fill( cutFlow_enum::technical );
+        
+        // pT cut
+        if (track.pt() < trk_pT_cut) continue;
+        CutFlow->Fill( cutFlow_enum::pt );
+        
+        // Eta cut
+        if (abs(track.eta()) > trk_eta_cut) continue;
+        CutFlow->Fill( cutFlow_enum::eta );
+
+        // Fraction valid hits cut
+        if (track.validFraction() < trk_validFrac_cut) continue;
+        CutFlow->Fill( cutFlow_enum::fracValidHits );
+
+        const reco::DeDxHitInfo* dedxHits = &(*dedxHitsRef);
+        
+        // N dedx hits cut
+        if (dedxHits->size() < trk_dedxHits_cut) continue;
+        CutFlow->Fill( cutFlow_enum::numDedxHits );
+
+        // track high purity cut
+        if ( !track.quality( reco::TrackBase::highPurity )) continue;
+        CutFlow->Fill( cutFlow_enum::highPurity );
+
+        // chi2/dof cut
+        if (track.chi2()/track.ndof() > trk_chi2_cut)  continue;
+        CutFlow->Fill( cutFlow_enum::chi2 );
+        
+        reco::Vertex bestVertex;
+        double maxSumPt2 = -1.0;
+
+        for (const auto& vertex : *vertices) {
+            if (vertex.isFake() || !vertex.isValid()) continue;
+            
+            double sumPt2 = 0.0;
+            for (reco::Vertex::trackRef_iterator it = vertex.tracks_begin(); it != vertex.tracks_end(); it++){
+                double pt = (**it).pt();
+                if ((**it).ptError() > pt) continue;
+                sumPt2 += pt * pt;
+            }
+            
+            if (sumPt2 > maxSumPt2) {
+                maxSumPt2 = sumPt2;
+                bestVertex = vertex;
+            }
+        }
+        
+        // dz cut
+        if (abs(track.dz(bestVertex.position())) > trk_dz_cut)  continue;
+        CutFlow->Fill( cutFlow_enum::dz );
+        
+        // dxy cut
+        if (abs(track.dxy(bestVertex.position())) > trk_dxy_cut)  continue;
+        CutFlow->Fill( cutFlow_enum::dxy );
+        
+        // for dedx measurements without cluster cleaning
+        string year = "";
+        float dedxSF[] = {1.0, 1.0325};
+        TH3* templateHisto = nullptr;
+        bool usePixel = false;
+        bool useStrip = true;
+        bool useClusterCleaning = false;
+
+        reco::DeDxData temp = computedEdx(run_, year, dedxHits, dedxSF, templateHisto, usePixel, 
+                            useStrip, useClusterCleaning);
+        
+        // Ih cut
+        if (temp.dEdx() < trk_dEdx_cut)  continue;
+        CutFlow->Fill( cutFlow_enum::Ih );
+
+        // Ecal energy cut
+        if (maxDep_E < ecal_energy_cut)  continue;
+        CutFlow->Fill( cutFlow_enum::energy );
+
+        // Ecal time cut
+        if (maxDep_time < ecal_time_cut)  continue;
+        CutFlow->Fill( cutFlow_enum::time );
+
+    }   // End for - TrackCollection (Cand selection)
 }
 
 

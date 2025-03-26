@@ -7,6 +7,7 @@
 #pragma link C++ class GenPart+;
 #pragma link C++ class Tracks+;
 #pragma link C++ class RecHits_Ecal+;
+#pragma link C++ class TrackAssoc+;
 #endif
 
 #endif

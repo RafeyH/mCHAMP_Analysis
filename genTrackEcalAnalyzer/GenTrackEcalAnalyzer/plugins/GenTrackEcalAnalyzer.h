@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "TTree.h"
+#include "TH1.h"
 #include "TH3.h"
 #include <TObject.h>
 #include <TMatrix.h>
@@ -19,6 +20,8 @@
 #include "DataFormats/TrackReco/interface/Track.h"
 #include "DataFormats/TrackReco/interface/TrackFwd.h"
 #include "DataFormats/EcalRecHit/interface/EcalRecHitCollections.h"
+#include "DataFormats/VertexReco/interface/Vertex.h"
+#include "DataFormats/VertexReco/interface/VertexFwd.h"
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "DataFormats/Math/interface/deltaR.h"
 #include "DataFormats/TrackReco/interface/DeDxHitInfo.h"
@@ -48,12 +51,12 @@ public:
 class Tracks : public TObject {
     
 public:
-    std::vector<float> pt, beta, eta, phi, deltaR, qoverp, lambda, dxy, dsz;
-    std::vector<float> chisq, ndof, validHitsFrac;
-    std::vector<bool> hasDedxRef;
-    std::vector<float> dedx;
-    std::vector<int> numOfStrips, numOfSatStrips, charge;
-    std::vector<uint8_t> trackQual, trackAlgo; 
+    std::vector<float>  pt, beta, eta, phi, deltaR, qoverp, lambda, dxy, dz;
+    std::vector<float>  chisq, ndof, validHitsFrac;
+    std::vector<bool>   hasDedxRef;
+    std::vector<float>  dedx;
+    std::vector<int>    numOfStrips, numOfSatStrips, charge;
+    std::vector<uint8_t>        trackQual, trackAlgo; 
     std::vector<unsigned short> validHitsNum;
 
     // Constructor
@@ -62,7 +65,7 @@ public:
     // reset function for each genpart
     void reset() {
         pt.clear(); beta.clear(); eta.clear(); phi.clear(); deltaR.clear();
-        qoverp.clear(); lambda.clear(); dxy.clear(); dsz.clear();
+        qoverp.clear(); lambda.clear(); dxy.clear(); dz.clear();
         charge.clear(); chisq.clear(); ndof.clear();
         trackQual.clear(); trackAlgo.clear();
         validHitsNum.clear(); validHitsFrac.clear();
@@ -74,15 +77,31 @@ public:
     ClassDef(Tracks, 1);
 };
 
+class TrackAssoc : public TObject {
+
+public: 
+    std::vector<float>  ecalXEnergy, ecal3x3Energy, ecal5x5Energy; 
+    std::vector<float>  ecalMaxE, ecalMaxEdR, ecalMaxETime;
+
+    TrackAssoc() {}
+
+    void reset() {
+        ecalXEnergy.clear(); ecal3x3Energy.clear(); ecal5x5Energy.clear();
+        ecalMaxE.clear(); ecalMaxEdR.clear(); ecalMaxETime.clear();
+    }
+
+    ClassDef(TrackAssoc, 1);
+};
+
 class RecHits_Ecal : public TObject {
 
 public:
 
-    std::vector<std::vector<float>> energy, energyErr, time, timeErr;
-    std::vector<std::vector<bool>> timeErrValid;
-    std::vector<std::vector<float>> deltaR;
-    std::vector<std::vector<uint32_t>> rechitFlag;
-    std::vector<std::vector<int>> iEta, iPhi;
+    std::vector<std::vector<float>>     energy, energyErr, time, timeErr;
+    std::vector<std::vector<bool>>      timeErrValid;
+    std::vector<std::vector<float>>     deltaR;
+    std::vector<std::vector<uint32_t>>  rechitFlag;
+    std::vector<std::vector<int>>       iEta, iPhi;
 
     // Constructor
     RecHits_Ecal() {}
@@ -107,30 +126,34 @@ private:
     void endJob() override;
 
     // Input Tags
-    edm::EDGetTokenT<reco::GenParticleCollection> genParticlesToken_;
-    edm::EDGetTokenT<reco::TrackCollection> tracksToken_;
-    edm::EDGetTokenT<EcalRecHitCollection> ecalRecHitsToken_;
+    edm::EDGetTokenT<reco::GenParticleCollection>   genParticlesToken_;
+    edm::EDGetTokenT<reco::TrackCollection>         tracksToken_;
+    edm::EDGetTokenT<EcalRecHitCollection>          ecalRecHitsToken_;
+    edm::EDGetTokenT<reco::VertexCollection>        vertexToken_;
     
     // Parameters
-    int pdgId_;
-    double deltaRCutoff_tracks;
-    double deltaRCutoff_EB;
+    int     pdgId_;
+    double  deltaRCutoff_tracks;
+    double  deltaRCutoff_EB;
 
-	edm::EDGetTokenT<reco::DeDxHitInfoAss> dedxToken_;
-	edm::EDGetTokenT<reco::DeDxDataCollection> Ih2Token_;
+	edm::EDGetTokenT<reco::DeDxHitInfoAss>      dedxToken_;
+	edm::EDGetTokenT<reco::DeDxDataCollection>  Ih2Token_;
 
     // TrackDetectorAssociator and parameters
-    TrackDetectorAssociator trackAssociator_;
-    TrackAssociatorParameters trackAssociatorParams_;
+    TrackDetectorAssociator     trackAssociator_;
+    TrackAssociatorParameters   trackAssociatorParams_;
 
     // TTree and variables
-    TFile* outputFile_;
+    TFile*      outputFile_;
     std::string outputFileName_;
-    TTree *tree_;
-    int run_, event_;
-    GenPart* cls_genpart = new GenPart;
-    Tracks* cls_tracks = new Tracks;
-    RecHits_Ecal* cls_rechitsEcal = new RecHits_Ecal;
+    TTree       *tree_;
+    int         run_, event_;
+    TH1I        *CutFlow;
+
+    GenPart*        cls_genpart     = new GenPart;
+    Tracks*         cls_tracks      = new Tracks;
+    RecHits_Ecal*   cls_rechitsEcal = new RecHits_Ecal;
+    TrackAssoc*     cls_trackAssoc  = new TrackAssoc;
 
     // Helper functions - NOT implemented
     //reco::TrackRef getBestMatchedTrack(const reco::GenParticle&, const reco::TrackCollection&);

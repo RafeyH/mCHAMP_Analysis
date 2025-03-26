@@ -36,6 +36,7 @@ process.source = cms.Source("PoolSource",
 
 # Set the maximum number of events to process
 process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(1000)) #-1
+#process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(20)) #-1
 
 # Load your analyzer from the package and set its parameters
 process.load("genTrackEcalAnalyzer.GenTrackEcalAnalyzer.genTrack_cfi")
@@ -43,6 +44,7 @@ process.GenTrackEcalAnalyzer = process.GenTrackEcalAnalyzer.clone(
     genParticles = cms.InputTag("genParticles"),
     tracks = cms.InputTag("generalTracks"),
     ecalRecHits = cms.InputTag("reducedEcalRecHitsEB"),
+    offlinePV = cms.InputTag("offlinePrimaryVertices"),
     pdgId = cms.int32(17),
     deltaRCutoff_tracks = cms.double(0.1),
     deltaRCutoff_EB = cms.double(0.1),
