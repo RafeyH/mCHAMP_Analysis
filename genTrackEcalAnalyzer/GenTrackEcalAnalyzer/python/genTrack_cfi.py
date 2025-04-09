@@ -11,16 +11,17 @@ GenTrackEcalAnalyzer = cms.EDAnalyzer('GenTrackEcalAnalyzer',
     
     # Import the default TrackAssociatorParameters and override necessary values
     TrackAssociatorParameters = TrackAssociatorParameterBlock.TrackAssociatorParameters.clone(
+        useHO   = cms.bool(False),
         useEcal = cms.bool(True),            # Use ECAL for track association
         useHcal = cms.bool(False),           # Don't use HCAL
         useMuon = cms.bool(False),           # Don't use muons
-        accountForTrajectoryChangeCalo = cms.bool(True),  # Account for track bending
-        dREcal = cms.double(0.1),            # Delta R cutoff for ECAL RecHits
-        dRHcal = cms.double(1.0),            # Larger for HCAL, but not used
-        EBRecHitCollectionLabel = cms.InputTag("ecalRecHit", "EcalRecHitsEB"),  # Barrel RecHits
-        EERecHitCollectionLabel = cms.InputTag("ecalRecHit", "EcalRecHitsEE"),  # Endcap RecHits
-        propagateAllDirections = cms.bool(True),  # Propagate track in all directions
-        dREcalPreselection = cms.double(0.05)  # Preselection cutoff for ECAL RecHits
+        #accountForTrajectoryChangeCalo = cms.bool(True),  # Account for track bending
+        dREcal = cms.double(0.2),            # Delta R cutoff for ECAL RecHits
+        #dRHcal = cms.double(1.0),            # Larger for HCAL, but not used
+        EBRecHitCollectionLabel = cms.InputTag("reducedEcalRecHitsEB"),  # Barrel RecHits
+        EERecHitCollectionLabel = cms.InputTag("reducedEcalRecHitsEE"),  # Endcap RecHits
+        #propagateAllDirections = cms.bool(True),  # Propagate track in all directions
+        #dREcalPreselection = cms.double(0.05)  # Preselection cutoff for ECAL RecHits
     )
 )
 
