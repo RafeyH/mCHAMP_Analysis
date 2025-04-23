@@ -42,6 +42,8 @@
 #include "DataFormats/HepMCCandidate/interface/GenParticle.h"
 #include "DataFormats/Math/interface/deltaR.h"
 
+#include "CommonTools/UtilAlgos/interface/TFileService.h"
+
 #include "TrackingTools/TrackAssociator/interface/TrackDetectorAssociator.h"
 #include "TrackingTools/TrackAssociator/interface/TrackAssociatorParameters.h"
 
@@ -62,38 +64,19 @@
 #include "GenTrackEcalAnalyzer.h"
 #include "CommonFunction.h"
 
-
 // Implement ROOT's dictionary for custom classes (for branches)
 ClassImp(GenPart);
 ClassImp(Tracks);
 ClassImp(RecHits_Ecal);
 ClassImp(TrackAssoc);
 
-namespace cutFlow_enum {
-    enum Type
-    {
-        allTracks = 0,
-        technical,
-        pt,
-        eta,
-        fracValidHits,
-        numDedxHits,
-        highPurity,
-        chi2,
-        dz,
-        dxy,
-        Ih,
-        energy,
-        time,
-        count
-    };
-}
     
 //
 // constructors and destructor
 //
 GenTrackEcalAnalyzer::GenTrackEcalAnalyzer(const edm::ParameterSet& iConfig)
- : 	genParticlesToken_(consumes<reco::GenParticleCollection>(iConfig.getParameter<edm::InputTag>("genParticles"))),
+ :  
+  	genParticlesToken_(consumes<reco::GenParticleCollection>(iConfig.getParameter<edm::InputTag>("genParticles"))),
 	tracksToken_(consumes<reco::TrackCollection>(iConfig.getParameter<edm::InputTag>("tracks"))),
     ecalRecHitsToken_(consumes<EcalRecHitCollection>(iConfig.getParameter<edm::InputTag>("ecalRecHits"))),
     vertexToken_(consumes<reco::VertexCollection>(iConfig.getParameter<edm::InputTag>("offlinePV"))),
@@ -102,68 +85,64 @@ GenTrackEcalAnalyzer::GenTrackEcalAnalyzer(const edm::ParameterSet& iConfig)
     deltaRCutoff_EB(iConfig.getParameter<double>("deltaRCutoff_EB")),
 	dedxToken_(consumes<reco::DeDxHitInfoAss>(iConfig.getParameter<edm::InputTag>("dedxHits"))),
 	Ih2Token_(consumes<reco::DeDxDataCollection>(iConfig.getParameter<edm::InputTag>("Ih2Collection"))),
-    outputFileName_(iConfig.getParameter<std::string>("outputFile"))
+    outputFileName_(iConfig.getParameter<std::string>("outputFile")),
+    saveNtuple_(iConfig.getParameter<bool>("saveNtuple"))
 {
     
     // Initialize TrackDetectorAssociator and parameters
-    edm::ParameterSet trackAssociatorParams = iConfig.getParameter<edm::ParameterSet>("TrackAssociatorParameters");
+    edm::ParameterSet trackAssociatorParams = iConfig.getParameter<edm::ParameterSet>(
+                                                            "TrackAssociatorParameters");
     edm::ConsumesCollector cc = consumesCollector();
     trackAssociatorParams_.loadParameters(trackAssociatorParams, cc);
     trackAssociator_.useDefaultPropagator();
 
-	outputFile_ = new TFile(outputFileName_.c_str(), "RECREATE");
-    //outputFile_->cd();
+    edm::Service<TFileService> fs;
+	
+    if (!fs.isAvailable()) {
+        throw cms::Exception("MissingService") << "TFileService is not available!";
+    }
+                    
 
-    tree_ = new TTree("Ntuple", "Ntuple");
-    tree_->Branch("Run", &run_, "Run/I");
-    tree_->Branch("Event", &event_, "Event/I");
-    tree_->Branch("GenPart.", &cls_genpart);
-    tree_->Branch("Tracks.", &cls_tracks);
-    tree_->Branch("EcalRecHits.", &cls_rechitsEcal);
-    tree_->Branch("TrackAssoc.", &cls_trackAssoc);
+    if (saveNtuple_){
+        tree_ = fs->make<TTree>("Ntuple", "Ntuple");
+        tree_->Branch("Run", &run_, "Run/I");
+        tree_->Branch("Event", &event_, "Event/I");
+        tree_->Branch("GenPart.", &cls_genpart);
+        tree_->Branch("Tracks.", &cls_tracks);
+        tree_->Branch("EcalRecHits.", &cls_rechitsEcal);
+        tree_->Branch("TrackAssoc.", &cls_trackAssoc);
+    }
 
-    CutFlow = new TH1I(
-                "CutFlow",
-                ";;Tracks / category",
-                cutFlow_enum::count, -0.5, cutFlow_enum::count-0.5);
+    histManager = std::make_unique<HistogramManager>(*fs);
 
-    CutFlow->SetMinimum(0);
+    // Saving cutFlow cuts and values 
+    // enum and structs defined in HistogramManager.h
+    // format {std::string name, double cut, cutFlow_enum::Type, bool one_sided?  }
+    trackCuts = {
+        { "pt",             15,     cutFlow_enum::pt,           true    },
+        //{ "sigPtOPt",       0.25,   cutFlow_enum::count,        false   },
+        { "eta",            1.4,    cutFlow_enum::eta,          false   },
+        { "validHitsFrac",  0.8,    cutFlow_enum::fracValidHits,true    },
+        { "dEdxHits",       10,     cutFlow_enum::numDedxHits,  true    },
+        { "highPurity",     1,      cutFlow_enum::highPurity,   true    },
+        { "Chi2Ondof",      5,      cutFlow_enum::chi2,         false   },
+        { "dz",             0.5,    cutFlow_enum::dz,           false   },
+        { "dxy",            0.5,    cutFlow_enum::dxy,          false   },
+        { "Ih",             3,      cutFlow_enum::Ih,           true    },
+        { "sigPtOPt2",      0.003,  cutFlow_enum::sigPtOPt2,    false   },
+    };
     
-    CutFlow->GetXaxis()->SetBinLabel( cutFlow_enum::allTracks+1    , "All tracks");
-    CutFlow->GetXaxis()->SetBinLabel( cutFlow_enum::technical+1    , "Technical");
-    //CutFlow->GetXaxis()->SetBinLabel(3, "Trigger");
-    CutFlow->GetXaxis()->SetBinLabel( cutFlow_enum::pt+1           , "p_{T}");
-    CutFlow->GetXaxis()->SetBinLabel( cutFlow_enum::eta+1          , "#eta");
-    //CutFlow->GetXaxis()->SetBinLabel(6, "N_{no-L1 pixel hits}");
-    CutFlow->GetXaxis()->SetBinLabel( cutFlow_enum::fracValidHits+1, "f_{valid/all hits}");
-    CutFlow->GetXaxis()->SetBinLabel( cutFlow_enum::numDedxHits+1  , "N_{dEdx hits}");
-    CutFlow->GetXaxis()->SetBinLabel( cutFlow_enum::highPurity+1   , "HighPurity");
-    CutFlow->GetXaxis()->SetBinLabel( cutFlow_enum::chi2+1         , "#chi^{2} / N_{dof}");
-    CutFlow->GetXaxis()->SetBinLabel( cutFlow_enum::dz+1           , "d_{z}");
-    CutFlow->GetXaxis()->SetBinLabel( cutFlow_enum::dxy+1          , "d_{xy}");
-    CutFlow->GetXaxis()->SetBinLabel( cutFlow_enum::Ih+1           , "Ih");
-    CutFlow->GetXaxis()->SetBinLabel( cutFlow_enum::energy+1       , "Energy");
-    CutFlow->GetXaxis()->SetBinLabel( cutFlow_enum::time+1         , "Time");
-    //CutFlow->GetXaxis()->SetBinLabel(13, "MiniRelIsoAll");
-    //CutFlow->GetXaxis()->SetBinLabel(14, "MiniRelTkIso");
-    //CutFlow->GetXaxis()->SetBinLabel(15, "E/p");
-    //CutFlow->GetXaxis()->SetBinLabel(16, "#sigma_{p_{T}} / p_{T}^{2}");
-    //CutFlow->GetXaxis()->SetBinLabel(17, "F_{i}");
-    //CutFlow->GetXaxis()->SetBinLabel(18, "SR0");
-    //CutFlow->GetXaxis()->SetBinLabel(19, "SR1");
-    //CutFlow->GetXaxis()->SetBinLabel(20, "SR2");
-    //CutFlow->GetXaxis()->SetBinLabel(21, "SR2 with SFs");
-
+    // format {std::string name, double timeCut, double energyCut, cutFlow_enum::Type }
+    signalCuts = {
+        {"SR",              2,          5,      cutFlow_enum::SR}
+    };
+    
 }
 
 
 GenTrackEcalAnalyzer::~GenTrackEcalAnalyzer()
 {
 
-    outputFile_->cd();
-    tree_->Write();
-    CutFlow->Write();
-    outputFile_->Close();
 }
 
 
@@ -207,7 +186,15 @@ GenTrackEcalAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
 	edm::ESHandle<CaloGeometry> geoHandle;
 	iSetup.get<CaloGeometryRecord>().get(geoHandle);
 	const CaloSubdetectorGeometry* barrelGeometry = geoHandle->getSubdetectorGeometry(DetId::Ecal, EcalBarrel);
-    
+   
+    // ##### ##### #   #       #   # ##### ##### ##### ##  #
+    // ##    ##    ##  #       ## ## ##  #   #   ##    ##  #
+    // ## ## ####  ### # ##### # # # #####   #   ##    #####
+    // ##  # ##    # ###       #   # ##  #   #   ##    ##  #
+    // ##  # ##    #  ##       #   # ##  #   #   ##    ##  #
+    // ##### ##### #   #       #   # ##  #   #   ##### ##  #
+
+    if (saveNtuple_){
     // Loop over genParticles and match to PDG id
     for (const auto& genParticle : *genParticles) {
         
@@ -254,6 +241,7 @@ GenTrackEcalAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
             }
             
             cls_tracks->pt.push_back(track.pt());
+            cls_tracks->ptError.push_back(track.ptError());
             cls_tracks->beta.push_back(track.beta());
             cls_tracks->eta.push_back(track.eta());
             cls_tracks->phi.push_back(track.phi());
@@ -415,43 +403,59 @@ GenTrackEcalAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
 
         tree_->Fill();
     }   // END for - GenParticles
-
+    }   // END if - saveNtuple
     
-    // Candidate Selection criteria
+    
+    // ##### ##### #   # ####  ##### ####  ##### ##### #####
+    // ##    ##  # ##  # ##  #   #   ##  # ##  #   #   ##
+    // ##    ##### ### # ##  #   #   ##  # #####   #   ####
+    // ##    ##  # # ### ##  #   #   ##  # ##  #   #   ##
+    // ##    ##  # #  ## ##  #   #   ##  # ##  #   #   ##
+    // ##### ##  # #   # ####  ##### ####  ##  #   #   #####
+
+    // ##### ##### ##    ##### ##### ##### ##### ##### #   #
+    // ##    ##    ##    ##    ##      #     #   ##  # ##  #
+    //  ##   ####  ##    ####  ##      #     #   ##  # ### #
+    //   ##  ##    ##    ##    ##      #     #   ##  # # ###
+    //    ## ##    ##    ##    ##      #     #   ##  # #  ##
+    // ##### ##### ##### ##### #####   #   ##### ##### #   #
+
+    histManager->fillHistograms("Overall", "CutFlow_event", cutFlow_enum::events+1 ); 
+    
+    int     Num_candidates_preSel   =   0   ;
+    int     Num_candidates_postSel  =   0   ;
+    // To keep track for event cutflow     
+    // doesn't matter if we store 11001 over 11000 as we can loop over 
+    // and fill 1 till first 0 and then just break
+    uint16_t largest_bitmask        =   0   ;
+    uint16_t largest_bitmask_SR     =   0   ;
+    // this part is to track allTracks and technical for event cutFlow
+    int firstTwo                    =   0   ;
+    // This is bitstring for when all conditions have passed
+    uint16_t allPass = (1<<trackCuts.size()) - 1 ;
+    
+    // CandSel track cuts
+    float   cand_trk_pT_cut     =   5       ;
+    float   cand_trk_chi2_cut   =   20      ;
+    int     cand_trk_hits_cut   =   3       ;
+    
+    // CandSel ecal cuts
+    float   cand_ecal_maxE_cut       =   2   ;
+    float   cand_ecal_maxE_error_cut =   0.5 ;
+    float   cand_ecal_T_cut          =   1   ;
+    //float   ecal_5x5_cut    =   5;
+
     int pos = -1;
-    for (const auto& track : *tracks) 
+    for (const auto& track : *tracks)
     {
         pos++;
-
-        // CandSel track cuts
-        float   cand_trk_pT_cut     =   5       ;
-        float   cand_trk_chi2_cut   =   20      ;
-        int     cand_trk_hits_cut   =   3       ;
-        
-        // CandSel ecal cuts
-        float   cand_ecal_maxE_cut       =   2   ;
-        float   cand_ecal_maxE_error_cut =   0.5 ;
-        float   cand_ecal_T_cut          =   1   ;
-        //float   ecal_5x5_cut    =   5;
-
-        // PreSel cuts
-        float   trk_eta_cut             =   1.479   ;
-        float   trk_pT_cut              =   5       ;
-        float   trk_chi2_cut            =   5       ;
-        float   trk_validFrac_cut       =   0.8     ;
-        unsigned int trk_dedxHits_cut   =   10      ;
-        float   trk_dz_cut              =   0.5     ;
-        float   trk_dxy_cut             =   0.5     ;
-        float   trk_dEdx_cut            =   3       ;
-        float   ecal_energy_cut         =   5       ;
-        float   ecal_time_cut           =   2       ;
-
         // Cut on track pT and eta
         if (track.pt() < cand_trk_pT_cut)                   continue;
         if (track.found() < cand_trk_hits_cut)              continue;
         if (track.chi2()/track.ndof() > cand_trk_chi2_cut)  continue;
         
-        
+        // To store values of variables to be used in no selection/n-1/preselection plots
+        std::map<std::string, double> SelectionValues;      
         TrackDetMatchInfo info = trackAssociator_.associate(
                                     iEvent, 
                                     iSetup, 
@@ -463,19 +467,23 @@ GenTrackEcalAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
 
         DetId maxDep = info.findMaxDeposition(TrackDetMatchInfo::EcalRecHits);
         float maxDep_E      = -999;
-        float maxDep_time   = -999; 
+        float maxDep_time   = -999;
+        EBDetId maxDep_E_detid; 
 
         bool flag_ecalSelection = 0;
-        for (auto recHitItr : info.ecalRecHits){
+        for (auto recHitItr : info.ecalRecHits)
+        {
             EcalRecHit hit = *recHitItr;
             EBDetId det = hit.id();
 
             if (det.rawId() != maxDep.rawId()) continue;
             
-            maxDep_E    = hit.energy();
-            maxDep_time = hit.time();
+            maxDep_E        = hit.energy();
+            maxDep_time     = hit.time();
+            maxDep_E_detid  = det;
 
-            if ( (maxDep_E > cand_ecal_maxE_cut) && (hit.energyError() < cand_ecal_maxE_error_cut) && 
+            if ( (maxDep_E > cand_ecal_maxE_cut) && 
+                    (hit.energyError() < cand_ecal_maxE_error_cut) && 
                     (hit.isTimeErrorValid()) && (maxDep_time > cand_ecal_T_cut) ) 
                 flag_ecalSelection = 1;
             break;
@@ -483,69 +491,71 @@ GenTrackEcalAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
 
         // In case ecal thgresholds aren't cleared
         if (!flag_ecalSelection) continue;
+        
+        float t_pt      = track.pt();
+        float t_pt_err  = track.ptError();
+        
+        histManager->fillHistograms("Overall", "CutFlow_candidate", 
+                                                        cutFlow_enum::allTracks ); 
+        
+        // 3x3 energy around max E xtal
+        histManager->fillHistograms("Vars_Candidate_b4PS", "Ecal_maxE", maxDep_E);
+        
+        histManager->fillHistograms("Vars_Candidate_b4PS", "Ecal_maxE_3x3",
+                    info.nXnEnergy(maxDep_E_detid, TrackDetMatchInfo::EcalRecHits, 1));
+        
+        // Time for max E xtal
+        histManager->fillHistograms("Vars_Candidate_b4PS", "Ecal_maxE_time", maxDep_time);
+        
+        // Delta R b/w Max E and track pos at ECAL 
+        float EBEta = barrelGeometry->getGeometry(maxDep_E_detid)->getPosition().eta();
+        float EBPhi = barrelGeometry->getGeometry(maxDep_E_detid)->getPosition().phi();
+        math::XYZPoint trackPos = info.trkGlobPosAtEcal;
+        double deltaR = reco::deltaR(trackPos.eta(), trackPos.phi(), EBEta, EBPhi);
 
-        // All tracks that made the basic Candidate selection requirement
-        CutFlow->Fill( cutFlow_enum::allTracks );
-       
+        histManager->fillHistograms("Vars_Candidate_b4PS", "Ecal_maxE_dR", deltaR);
+
+        histManager->fillHistograms("Vars_Candidate_b4PS", "sigPt_V_pT_high",
+                                                    t_pt, t_pt_err);
+        histManager->fillHistograms("Vars_Candidate_b4PS", "sigPt_V_pT",
+                                                    t_pt, t_pt_err);
+        histManager->fillHistograms("Vars_Candidate_b4PS", "sigPt_V_pT_low",
+                                                    t_pt, t_pt_err);
+        
+        Num_candidates_preSel++; // Counting all tracks passing basic selection
+        if (firstTwo == 0) firstTwo=1;
+
         const reco::TrackRef trackRef = reco::TrackRef(tracks, pos);
         reco::DeDxHitInfoRef dedxHitsRef = dedxCollH->get(trackRef.key());
-        
-        // Technical Check
         if (dedxHitsRef.isNull()) continue;
-        CutFlow->Fill( cutFlow_enum::technical );
-        
-        // pT cut
-        if (track.pt() < trk_pT_cut) continue;
-        CutFlow->Fill( cutFlow_enum::pt );
-        
-        // Eta cut
-        if (abs(track.eta()) > trk_eta_cut) continue;
-        CutFlow->Fill( cutFlow_enum::eta );
-
-        // Fraction valid hits cut
-        if (track.validFraction() < trk_validFrac_cut) continue;
-        CutFlow->Fill( cutFlow_enum::fracValidHits );
+        histManager->fillHistograms("Overall", "CutFlow_candidate", 
+                                                        cutFlow_enum::technical ); 
+        if (firstTwo == 1) firstTwo=2;
 
         const reco::DeDxHitInfo* dedxHits = &(*dedxHitsRef);
         
-        // N dedx hits cut
-        if (dedxHits->size() < trk_dedxHits_cut) continue;
-        CutFlow->Fill( cutFlow_enum::numDedxHits );
-
-        // track high purity cut
-        if ( !track.quality( reco::TrackBase::highPurity )) continue;
-        CutFlow->Fill( cutFlow_enum::highPurity );
-
-        // chi2/dof cut
-        if (track.chi2()/track.ndof() > trk_chi2_cut)  continue;
-        CutFlow->Fill( cutFlow_enum::chi2 );
-        
+        // Find max sum pt^2 vertex
         reco::Vertex bestVertex;
         double maxSumPt2 = -1.0;
-
-        for (const auto& vertex : *vertices) {
+        for (const auto& vertex : *vertices) 
+        {
             if (vertex.isFake() || !vertex.isValid()) continue;
             
             double sumPt2 = 0.0;
-            for (reco::Vertex::trackRef_iterator it = vertex.tracks_begin(); it != vertex.tracks_end(); it++){
+            for (reco::Vertex::trackRef_iterator it = vertex.tracks_begin(); 
+                it != vertex.tracks_end(); it++)
+            {
                 double pt = (**it).pt();
                 if ((**it).ptError() > pt) continue;
                 sumPt2 += pt * pt;
             }
             
-            if (sumPt2 > maxSumPt2) {
+            if (sumPt2 > maxSumPt2) 
+            {
                 maxSumPt2 = sumPt2;
                 bestVertex = vertex;
             }
         }
-        
-        // dz cut
-        if (abs(track.dz(bestVertex.position())) > trk_dz_cut)  continue;
-        CutFlow->Fill( cutFlow_enum::dz );
-        
-        // dxy cut
-        if (abs(track.dxy(bestVertex.position())) > trk_dxy_cut)  continue;
-        CutFlow->Fill( cutFlow_enum::dxy );
         
         // for dedx measurements without cluster cleaning
         string year = "";
@@ -555,22 +565,157 @@ GenTrackEcalAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& i
         bool useStrip = true;
         bool useClusterCleaning = false;
 
-        reco::DeDxData temp = computedEdx(run_, year, dedxHits, dedxSF, templateHisto, usePixel, 
-                            useStrip, useClusterCleaning);
+        reco::DeDxData temp = computedEdx(run_, year, dedxHits, dedxSF, templateHisto, 
+                            usePixel, useStrip, useClusterCleaning);
         
-        // Ih cut
-        if (temp.dEdx() < trk_dEdx_cut)  continue;
-        CutFlow->Fill( cutFlow_enum::Ih );
+        SelectionValues["pt"]               = t_pt;
+        SelectionValues["sigPtOPt"]         = t_pt_err / t_pt;
+        SelectionValues["sigPtOPt2"]        = t_pt_err / (t_pt * t_pt);
+        SelectionValues["validHitsFrac"]    = track.validFraction();
+        SelectionValues["eta"]              = track.eta();
+        SelectionValues["dxy"]              = track.dxy(bestVertex.position());
+        SelectionValues["dz"]               = track.dz(bestVertex.position());
+        SelectionValues["dEdxHits"]         = dedxHits->size();
+        SelectionValues["highPurity"]       = track.quality( reco::TrackBase::highPurity );
+        SelectionValues["Chi2Ondof"]        = track.chi2()/track.ndof();
+        SelectionValues["Ih"]               = temp.dEdx();
+        
+        // To store selection and fill no-preselection
+        uint16_t selectionBitmask = 0;        
+        uint16_t signalBitmask = 0;        
+        
+        for (size_t i =0; i<trackCuts.size(); i++)
+        {
+            const std::string& varName = trackCuts[i].name;
+            
+            if (varName == "SR"){
+                if (maxDep_E>5 && maxDep_time>2) selectionBitmask |= (1<<i);
+                continue; // better than break with multiple SRs
+            }
 
-        // Ecal energy cut
-        if (maxDep_E < ecal_energy_cut)  continue;
-        CutFlow->Fill( cutFlow_enum::energy );
+            float value = SelectionValues[varName]; 
+            float cutValue = trackCuts[i].cutValue;          
 
-        // Ecal time cut
-        if (maxDep_time < ecal_time_cut)  continue;
-        CutFlow->Fill( cutFlow_enum::time );
+            if (trackCuts[i].isMinCut){
+                if (value >= cutValue) selectionBitmask |= (1<<i); //  setting ith bit to 1
+            }
+            else
+            {
+                if (abs(value) <= cutValue) selectionBitmask |= (1<<i); // setting ith bit 1
+            }
+            
+            histManager->fillHistograms("Preselection_No", varName, value); 
+        }
 
-    }   // End for - TrackCollection (Cand selection)
+        for (size_t i = 0; i<signalCuts.size(); i++)
+        {
+            float timeCut = signalCuts[i].time_cut;          
+            float energyCut = signalCuts[i].energy_cut;          
+            
+            if ( (maxDep_E > energyCut) && (maxDep_time > timeCut)) 
+                signalBitmask |= (1<<i);
+        }
+
+        if (selectionBitmask > largest_bitmask) largest_bitmask = selectionBitmask;
+        // If all bits are turned on, fill presel AND N-1
+        if (selectionBitmask == allPass)
+        {
+            Num_candidates_postSel++; // Counting all tracks passing all pre selection
+            for (size_t i =0; i<trackCuts.size(); i++)
+            {
+                const std::string& varName = trackCuts[i].name;
+                histManager->fillHistograms("Preselection", varName, 
+                                        SelectionValues[varName]);
+                histManager->fillHistograms("Preselection_Nm1", varName, 
+                                        SelectionValues[varName]);
+            }
+            
+            // 3x3 energy around max E xtal
+            histManager->fillHistograms("Vars_Candidate", "Ecal_maxE", maxDep_E);
+            
+            histManager->fillHistograms("Vars_Candidate", "Ecal_maxE_3x3",
+                        info.nXnEnergy(maxDep_E_detid, TrackDetMatchInfo::EcalRecHits, 1));
+            
+            // Time for max E xtal
+            histManager->fillHistograms("Vars_Candidate", "Ecal_maxE_time", maxDep_time);
+            
+            // Delta R b/w Max E and track pos at ECAL 
+            histManager->fillHistograms("Vars_Candidate", "Ecal_maxE_dR", deltaR);
+
+            histManager->fillHistograms("Vars_Candidate", "sigPt_V_pT_high",
+                                                        t_pt, t_pt_err);
+            histManager->fillHistograms("Vars_Candidate", "sigPt_V_pT",
+                                                        t_pt, t_pt_err);
+            histManager->fillHistograms("Vars_Candidate", "sigPt_V_pT_low",
+                                                        t_pt, t_pt_err);
+        }
+        // For only N-1 selection
+        else 
+        {
+            for (size_t i =0; i<trackCuts.size(); i++)
+            {   // Or individual pass with ith bit 1
+                const std::string& varName = trackCuts[i].name;
+                if (allPass == ((1<<i) | selectionBitmask))
+                histManager->fillHistograms("Preselection_Nm1", varName, 
+                                        SelectionValues[varName]);
+            }
+        }
+
+        // Filling rest of the CutFlow
+        for (size_t i = 0; i<trackCuts.size(); i++)
+        {
+            if (trackCuts[i].enumVal == cutFlow_enum::count) continue;
+            if (selectionBitmask != ((1<<i) | selectionBitmask) ) break;
+            histManager->fillHistograms("Overall", "CutFlow_candidate", 
+                                                        trackCuts[i].enumVal); 
+        }
+        // Filling signal region cutflow only when all preselection passes
+        if (selectionBitmask != allPass) continue;
+        if (signalBitmask > largest_bitmask_SR) largest_bitmask_SR = signalBitmask;
+        for (size_t i = 0; i<signalCuts.size(); i++){
+            if (signalBitmask != ((1<<i) | signalBitmask)) continue;
+            histManager->fillHistograms("Overall", "CutFlow_candidate",
+                                                        signalCuts[i].enumVal);
+        }
+    } // END - for loop on tracks
+    
+    // Filling out event CutFlow
+    switch(firstTwo) {
+        case 0: 
+            break;
+        case 1: 
+            histManager->fillHistograms("Overall", "CutFlow_event", 
+                                                            cutFlow_enum::allTracks+1 ); 
+            break;
+        case 2:
+            histManager->fillHistograms("Overall", "CutFlow_event", 
+                                                            cutFlow_enum::allTracks+1 ); 
+            histManager->fillHistograms("Overall", "CutFlow_event", 
+                                                            cutFlow_enum::technical+1 ); 
+            
+            for (size_t i =0; i<trackCuts.size(); i++)
+            { 
+                // Exits after hitting the first 0
+                if (largest_bitmask != ((1<<i) | largest_bitmask)) break;
+                histManager->fillHistograms("Overall", "CutFlow_event",
+                                                                trackCuts[i].enumVal+1 ); 
+            }
+
+            for (size_t i=0; i<signalCuts.size(); i++)
+            {
+                if (largest_bitmask_SR != ((1<<i) | largest_bitmask_SR)) continue;
+                histManager->fillHistograms("Overall", "CutFlow_event",
+                                                                signalCuts[i].enumVal+1);
+            }
+            
+            break;
+        default:
+            std::cout<<"ERROR: value of 'firstTwo' (0/1/2) set to: "<<firstTwo<<std::endl;
+    }
+
+    histManager->fillHistograms("Overall", "Num_of_cand_noSel", Num_candidates_preSel ); 
+    histManager->fillHistograms("Overall", "Num_of_cand_postSel", Num_candidates_postSel ); 
+
 }
 
 

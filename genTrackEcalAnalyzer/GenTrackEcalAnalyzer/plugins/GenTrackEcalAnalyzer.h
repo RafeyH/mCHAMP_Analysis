@@ -30,6 +30,10 @@
 #include "TrackingTools/TrackAssociator/interface/TrackDetectorAssociator.h"
 #include "TrackingTools/TrackAssociator/interface/TrackAssociatorParameters.h"
 
+#include "HistogramManager.h"
+
+// Setup for the TTrees
+// Add pragma in the Linkdef file if adding new classes for TTree
 
 class GenPart : public TObject {
     
@@ -52,7 +56,7 @@ class Tracks : public TObject {
     
 public:
     std::vector<float>  pt, beta, eta, phi, deltaR, qoverp, lambda, dxy, dz;
-    std::vector<float>  chisq, ndof, validHitsFrac;
+    std::vector<float>  ptError, chisq, ndof, validHitsFrac;
     std::vector<bool>   hasDedxRef;
     std::vector<float>  dedx;
     std::vector<int>    numOfStrips, numOfSatStrips, charge;
@@ -66,7 +70,7 @@ public:
     void reset() {
         pt.clear(); beta.clear(); eta.clear(); phi.clear(); deltaR.clear();
         qoverp.clear(); lambda.clear(); dxy.clear(); dz.clear();
-        charge.clear(); chisq.clear(); ndof.clear();
+        charge.clear(); chisq.clear(); ndof.clear(); ptError.clear();
         trackQual.clear(); trackAlgo.clear();
         validHitsNum.clear(); validHitsFrac.clear();
         hasDedxRef.clear(); dedx.clear();
@@ -146,18 +150,20 @@ private:
     // TTree and variables
     TFile*      outputFile_;
     std::string outputFileName_;
+    bool        saveNtuple_;
     TTree       *tree_;
     int         run_, event_;
-    TH1I        *CutFlow;
 
     GenPart*        cls_genpart     = new GenPart;
     Tracks*         cls_tracks      = new Tracks;
     RecHits_Ecal*   cls_rechitsEcal = new RecHits_Ecal;
     TrackAssoc*     cls_trackAssoc  = new TrackAssoc;
 
-    // Helper functions - NOT implemented
-    //reco::TrackRef getBestMatchedTrack(const reco::GenParticle&, const reco::TrackCollection&);
-    //const EcalRecHit* getMaxEnergyEcalRecHit(const GlobalPoint&, const EcalRecHitCollection&, double&);
+    // Definitions in HistogramManager.h
+    std::unique_ptr<HistogramManager> histManager;
+    std::vector<TrackCut> trackCuts;
+    std::vector<SRCut> signalCuts;
+    
 };
 
 #endif

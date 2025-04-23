@@ -2,6 +2,13 @@ import FWCore.ParameterSet.Config as cms
 from FWCore.ParameterSet.VarParsing import VarParsing
 
 options = VarParsing('analysis')
+
+options.register('saveNtuple', False,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.bool,
+    "Save genMatched TTrees? True or False"
+)
+
 options.parseArguments()
 
 process = cms.Process("MyAnalyzerProcess")
@@ -35,7 +42,8 @@ process.source = cms.Source("PoolSource",
 )
 
 # Set the maximum number of events to process
-process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(1000)) #-1
+#process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(1000)) #-1
+process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(3000)) #-1
 #process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(20)) #-1
 
 # Load your analyzer from the package and set its parameters
@@ -50,12 +58,18 @@ process.GenTrackEcalAnalyzer = process.GenTrackEcalAnalyzer.clone(
     deltaRCutoff_EB = cms.double(0.1),
 	dedxHits = cms.InputTag("dedxHitInfo"),
 	Ih2Collection = cms.InputTag("dedxHarmonic2","","RECO"),
-    outputFile = cms.string(options.outputFile)
+    outputFile = cms.string(options.outputFile),
+    saveNtuple = cms.bool(options.saveNtuple)
 )
 
+
+process.TFileService = cms.Service("TFileService",
+    fileName = cms.string(options.outputFile)
+)
+ 
 # Define the analyzer path
 process.p = cms.Path(process.GenTrackEcalAnalyzer)
 
-# MessageLogger settings (optional, useful for debugging)
-process.MessageLogger.cerr.FwkReport.reportEvery = 100  # Prints event number every 100 events
+# Prints message after every N-events
+process.MessageLogger.cerr.FwkReport.reportEvery = 500  
 
