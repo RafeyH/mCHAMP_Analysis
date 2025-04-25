@@ -37,7 +37,7 @@ if data_files:
 			all_files.append(line.split()[0])
 
 if workflow == 'Signal':
-    pSet    = '/eos/home-r/rhashmi/work/hscp/CMSSW_10_6_39/src/genTrackEcalAnalyzer/GenTrackEcalAnalyzer/python/ConfFile_cfg.py'
+    pSet    = '/eos/home-r/rhashmi/work/mchamp/CMSSW_10_6_39/src/mCHAMP_Analysis/mchampAnalyzer/python/ConfFile_cfg.py'
     JOBID   = workflow + '_Q' + charge + '_M' + mass + '_' + era
     dataset = '/HSCPmchamp_Q-' + charge + '_M-' + mass + \
                 '_TuneCP2_13TeV_pythia8/RunIISummer20UL18RECO-106X_upgrade' + era + \
