@@ -119,6 +119,7 @@ mchampAnalyzer::mchampAnalyzer(const edm::ParameterSet& iConfig)
 
     // Saving cutFlow cuts and values 
     // enum and structs defined in HistogramManager.h
+    // histograms defined in HistogramManager.cc
     // format {std::string name, double cut, cutFlow_enum::Type, bool one_sided?  }
     trackCuts = {
         { "trigger",        1,      cutFlow_enum::triggers,     true    },
@@ -140,6 +141,15 @@ mchampAnalyzer::mchampAnalyzer(const edm::ParameterSet& iConfig)
         {"SR",              2,          5,      cutFlow_enum::SR}
     };
     
+    // Saving trigger regex
+    compiledTriggerPatterns.reserve(triggerPaths_.size());
+
+    for (const auto& pattern : triggerPaths_)
+    {
+        std::string regexPattern = std::regex_replace(pattern, std::regex("\\*"), ".*");
+        // Need to use emplace_back instead of push_back
+        compiledTriggerPatterns.emplace_back(regexPattern);
+    }
 }
 
 
@@ -426,13 +436,13 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     bool passTriggerSelection = false;
     
-    for (size_t i = 0; i < triggerResults->size(); i++){
+    for (size_t i = 0; i < triggerResults->size(); i++)
+    {
         std::string name = triggerNames.triggerName(i);
 
-        for (const auto& pattern : triggerPaths_){
-            std::string regexPattern = std::regex_replace(pattern, std::regex("\\*"), ".*");
-            
-            if ( ! std::regex_match(name, std::regex(regexPattern)) ) continue;
+        for (const auto& regexPattern : compiledTriggerPatterns)
+        {
+            if ( ! std::regex_match(name, regexPattern) ) continue;
             if (triggerResults->accept(i)) {
                 passTriggerSelection = true;
                 break;

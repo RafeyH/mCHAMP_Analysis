@@ -172,6 +172,8 @@ private:
     std::vector<TrackCut> trackCuts;
     std::vector<SRCut> signalCuts;
     
+    // Saving trigger regex patterns
+    std::vector<std::regex> compiledTriggerPatterns;
 };
 
 #endif
