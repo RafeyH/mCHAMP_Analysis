@@ -56,11 +56,13 @@ public:
     explicit HistogramManager( TFileService& fs );
     void fillHistograms(const std::string& category, 
                                     const std::string& variable, 
-                                    float value);
+                                    float value,
+                                    float weight);
     void fillHistograms(const std::string& category, 
                                     const std::string& variable, 
                                     float value_x,
-                                    float value_y);
+                                    float value_y,
+                                    float weight);
 
 private:
     std::map<std::string, TFileDirectory> dirs;

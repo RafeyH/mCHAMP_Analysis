@@ -77,6 +77,7 @@ ClassImp(TrackAssoc);
 mchampAnalyzer::mchampAnalyzer(const edm::ParameterSet& iConfig)
  :  
   	genParticlesToken_(consumes<reco::GenParticleCollection>(iConfig.getParameter<edm::InputTag>("genParticles"))),
+  	genEventInfoToken_(consumes<GenEventInfoProduct>(edm::InputTag("generator"))),
 	tracksToken_(consumes<reco::TrackCollection>(iConfig.getParameter<edm::InputTag>("tracks"))),
     ecalRecHitsToken_(consumes<EcalRecHitCollection>(iConfig.getParameter<edm::InputTag>("ecalRecHits"))),
     vertexToken_(consumes<reco::VertexCollection>(iConfig.getParameter<edm::InputTag>("offlinePV"))),
@@ -172,6 +173,12 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     edm::Handle<reco::GenParticleCollection> genParticles;
     iEvent.getByToken(genParticlesToken_, genParticles);
 
+    // Get GenEventInfo
+    edm::Handle<GenEventInfoProduct> genEventInfo;
+    iEvent.getByToken(genEventInfoToken_, genEventInfo);
+    double genWeight = 1.0;
+    if (genEventInfo.isValid()) genWeight = genEventInfo->weight();
+    
     // Get Tracks
     edm::Handle<reco::TrackCollection> tracks;
     iEvent.getByToken(tracksToken_, tracks);
@@ -466,7 +473,7 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     //    ## ##    ##    ##    ##      #     #   ##  # #  ##
     // ##### ##### ##### ##### #####   #   #####  ###  #   #
 
-    histManager->fillHistograms("Overall", "CutFlow_event", cutFlow_enum::events+1 ); 
+    histManager->fillHistograms("Overall", "CutFlow_event", cutFlow_enum::events+1, 1); 
     
     int     Num_candidates_preSel   =   0   ;
     int     Num_candidates_postSel  =   0   ;
@@ -542,16 +549,17 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         float t_pt_err  = track.ptError();
         
         histManager->fillHistograms("Overall", "CutFlow_candidate", 
-                                                        cutFlow_enum::allTracks ); 
+                                                        cutFlow_enum::allTracks, 1 ); 
         
         // 3x3 energy around max E xtal
-        histManager->fillHistograms("Vars_Candidate_b4PS", "Ecal_maxE", maxDep_E);
+        histManager->fillHistograms("Vars_Candidate_b4PS", "Ecal_maxE", maxDep_E, 1);
         
         histManager->fillHistograms("Vars_Candidate_b4PS", "Ecal_maxE_3x3",
-                    info.nXnEnergy(maxDep_E_detid, TrackDetMatchInfo::EcalRecHits, 1));
+                    info.nXnEnergy(maxDep_E_detid, TrackDetMatchInfo::EcalRecHits, 1), 1);
         
         // Time for max E xtal
-        histManager->fillHistograms("Vars_Candidate_b4PS", "Ecal_maxE_time", maxDep_time);
+        histManager->fillHistograms("Vars_Candidate_b4PS", "Ecal_maxE_time", 
+                    maxDep_time, 1);
         
         // Delta R b/w Max E and track pos at ECAL 
         float EBEta = barrelGeometry->getGeometry(maxDep_E_detid)->getPosition().eta();
@@ -559,14 +567,14 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         math::XYZPoint trackPos = info.trkGlobPosAtEcal;
         double deltaR = reco::deltaR(trackPos.eta(), trackPos.phi(), EBEta, EBPhi);
 
-        histManager->fillHistograms("Vars_Candidate_b4PS", "Ecal_maxE_dR", deltaR);
+        histManager->fillHistograms("Vars_Candidate_b4PS", "Ecal_maxE_dR", deltaR, 1);
 
         histManager->fillHistograms("Vars_Candidate_b4PS", "sigPt_V_pT_high",
-                                                    t_pt, t_pt_err);
+                                                    t_pt, t_pt_err, 1);
         histManager->fillHistograms("Vars_Candidate_b4PS", "sigPt_V_pT",
-                                                    t_pt, t_pt_err);
+                                                    t_pt, t_pt_err, 1);
         histManager->fillHistograms("Vars_Candidate_b4PS", "sigPt_V_pT_low",
-                                                    t_pt, t_pt_err);
+                                                    t_pt, t_pt_err, 1);
         
         Num_candidates_preSel++; // Counting all tracks passing basic selection
         if (firstTwo == 0) firstTwo=1;
@@ -575,7 +583,7 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         reco::DeDxHitInfoRef dedxHitsRef = dedxCollH->get(trackRef.key());
         if (dedxHitsRef.isNull()) continue;
         histManager->fillHistograms("Overall", "CutFlow_candidate", 
-                                                        cutFlow_enum::technical ); 
+                                                        cutFlow_enum::technical, 1); 
         if (firstTwo == 1) firstTwo=2;
 
         const reco::DeDxHitInfo* dedxHits = &(*dedxHitsRef);
@@ -646,7 +654,7 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
                 if (abs(value) <= cutValue) selectionBitmask |= (1<<i); // setting ith bit 1
             }
             
-            histManager->fillHistograms("Preselection_No", varName, value); 
+            histManager->fillHistograms("Preselection_No", varName, value, genWeight); 
         }
 
         for (size_t i = 0; i<signalCuts.size(); i++)
@@ -667,29 +675,32 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             {
                 const std::string& varName = trackCuts[i].name;
                 histManager->fillHistograms("Preselection", varName, 
-                                        SelectionValues[varName]);
+                                        SelectionValues[varName], genWeight);
                 histManager->fillHistograms("Preselection_Nm1", varName, 
-                                        SelectionValues[varName]);
+                                        SelectionValues[varName], genWeight);
             }
             
             // 3x3 energy around max E xtal
-            histManager->fillHistograms("Vars_Candidate", "Ecal_maxE", maxDep_E);
+            histManager->fillHistograms("Vars_Candidate", "Ecal_maxE", maxDep_E, genWeight);
             
             histManager->fillHistograms("Vars_Candidate", "Ecal_maxE_3x3",
-                        info.nXnEnergy(maxDep_E_detid, TrackDetMatchInfo::EcalRecHits, 1));
+                        info.nXnEnergy(maxDep_E_detid, TrackDetMatchInfo::EcalRecHits, 1),
+                        genWeight);
             
             // Time for max E xtal
-            histManager->fillHistograms("Vars_Candidate", "Ecal_maxE_time", maxDep_time);
+            histManager->fillHistograms("Vars_Candidate", "Ecal_maxE_time", maxDep_time,
+                        genWeight);
             
             // Delta R b/w Max E and track pos at ECAL 
-            histManager->fillHistograms("Vars_Candidate", "Ecal_maxE_dR", deltaR);
+            histManager->fillHistograms("Vars_Candidate", "Ecal_maxE_dR", deltaR,
+                        genWeight);
 
             histManager->fillHistograms("Vars_Candidate", "sigPt_V_pT_high",
-                                                        t_pt, t_pt_err);
+                                                        t_pt, t_pt_err, genWeight);
             histManager->fillHistograms("Vars_Candidate", "sigPt_V_pT",
-                                                        t_pt, t_pt_err);
+                                                        t_pt, t_pt_err, genWeight);
             histManager->fillHistograms("Vars_Candidate", "sigPt_V_pT_low",
-                                                        t_pt, t_pt_err);
+                                                        t_pt, t_pt_err, genWeight);
         }
         // For only N-1 selection
         else 
@@ -699,7 +710,7 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
                 const std::string& varName = trackCuts[i].name;
                 if (allPass == ((1<<i) | selectionBitmask))
                 histManager->fillHistograms("Preselection_Nm1", varName, 
-                                        SelectionValues[varName]);
+                                        SelectionValues[varName], genWeight);
             }
         }
 
@@ -709,7 +720,7 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             if (trackCuts[i].enumVal == cutFlow_enum::count) continue;
             if (selectionBitmask != ((1<<i) | selectionBitmask) ) break;
             histManager->fillHistograms("Overall", "CutFlow_candidate", 
-                                                        trackCuts[i].enumVal); 
+                                                        trackCuts[i].enumVal, 1); 
         }
         // Filling signal region cutflow only when all preselection passes
         if (selectionBitmask != allPass) continue;
@@ -717,7 +728,7 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         for (size_t i = 0; i<signalCuts.size(); i++){
             if (signalBitmask != ((1<<i) | signalBitmask)) continue;
             histManager->fillHistograms("Overall", "CutFlow_candidate",
-                                                        signalCuts[i].enumVal);
+                                                        signalCuts[i].enumVal, 1);
         }
     } // END - for loop on tracks
     
@@ -727,27 +738,27 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             break;
         case 1: 
             histManager->fillHistograms("Overall", "CutFlow_event", 
-                                                            cutFlow_enum::allTracks+1 ); 
+                                                        cutFlow_enum::allTracks+1, 1); 
             break;
         case 2:
             histManager->fillHistograms("Overall", "CutFlow_event", 
-                                                            cutFlow_enum::allTracks+1 ); 
+                                                        cutFlow_enum::allTracks+1, 1); 
             histManager->fillHistograms("Overall", "CutFlow_event", 
-                                                            cutFlow_enum::technical+1 ); 
+                                                        cutFlow_enum::technical+1, 1); 
             
             for (size_t i =0; i<trackCuts.size(); i++)
             { 
                 // Exits after hitting the first 0
                 if (largest_bitmask != ((1<<i) | largest_bitmask)) break;
                 histManager->fillHistograms("Overall", "CutFlow_event",
-                                                                trackCuts[i].enumVal+1 ); 
+                                                        trackCuts[i].enumVal+1, 1); 
             }
 
             for (size_t i=0; i<signalCuts.size(); i++)
             {
                 if (largest_bitmask_SR != ((1<<i) | largest_bitmask_SR)) continue;
                 histManager->fillHistograms("Overall", "CutFlow_event",
-                                                                signalCuts[i].enumVal+1);
+                                                        signalCuts[i].enumVal+1, 1);
             }
             
             break;
@@ -755,8 +766,10 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             std::cout<<"ERROR: value of 'firstTwo' (0/1/2) set to: "<<firstTwo<<std::endl;
     }
 
-    histManager->fillHistograms("Overall", "Num_of_cand_noSel", Num_candidates_preSel ); 
-    histManager->fillHistograms("Overall", "Num_of_cand_postSel", Num_candidates_postSel ); 
+    histManager->fillHistograms("Overall", "Num_of_cand_noSel", 
+                                                        Num_candidates_preSel, 1); 
+    histManager->fillHistograms("Overall", "Num_of_cand_postSel", 
+                                                        Num_candidates_postSel, 1); 
 
 }
 

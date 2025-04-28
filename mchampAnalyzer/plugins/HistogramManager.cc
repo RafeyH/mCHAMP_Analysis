@@ -273,19 +273,22 @@ HistogramManager::HistogramManager(TFileService& fs) {
 
 void HistogramManager::fillHistograms(const std::string& category, 
                                             const std::string& variable, 
-                                            float value) {
+                                            float value,
+                                            float weight) {
     if (histograms.find(category) != histograms.end() && 
                 histograms[category].find(variable) != histograms[category].end()) {
-        histograms[category][variable]->Fill(value);
+        histograms[category][variable]->Fill(value, weight);
     }
 }
 
 void HistogramManager::fillHistograms(const std::string& category, 
                                             const std::string& variable, 
-                                            float value_x, float value_y) {
+                                            float value_x, 
+                                            float value_y,
+                                            float weight) {
     if (histograms_2d.find(category) != histograms_2d.end() && 
                 histograms_2d[category].find(variable) != histograms_2d[category].end()) {
-        histograms_2d[category][variable]->Fill(value_x, value_y);
+        histograms_2d[category][variable]->Fill(value_x, value_y, weight);
     }
 }
 

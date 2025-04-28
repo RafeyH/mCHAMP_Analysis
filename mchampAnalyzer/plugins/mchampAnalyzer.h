@@ -35,6 +35,8 @@
 #include "FWCore/Common/interface/TriggerNames.h"
 #include "DataFormats/Common/interface/TriggerResults.h"
 
+#include "SimDataFormats/GeneratorProducts/interface/GenEventInfoProduct.h"
+
 #include "HistogramManager.h"
 
 // Setup for the TTrees
@@ -136,6 +138,7 @@ private:
 
     // Input Tags
     edm::EDGetTokenT<reco::GenParticleCollection>   genParticlesToken_;
+    edm::EDGetTokenT<GenEventInfoProduct>           genEventInfoToken_;
     edm::EDGetTokenT<reco::TrackCollection>         tracksToken_;
     edm::EDGetTokenT<EcalRecHitCollection>          ecalRecHitsToken_;
     edm::EDGetTokenT<reco::VertexCollection>        vertexToken_;
