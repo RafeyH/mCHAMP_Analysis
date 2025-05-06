@@ -29,10 +29,11 @@ HistogramManager::HistogramManager(TFileService& fs) {
         {"eta",         50, -2.5, 2.5, "#eta",              "Tracks / 0.1"},
         {"validHitsFrac",20, 0, 1,     "f_{valid/all hits}","Tracks / 0.05"},
         {"dEdxHits",    40, 0, 40,     "N_{dEdx hits}",     "Tracks / 1"},
-        {"highPurity",  2, -0.5, 1.5,  "High Purity",       "Tracks / 1"},
+        {"highPurity",  2, -0.5, 1.5,  "High Purity",       "Tracks / bin"},
         {"Chi2Ondof",   20, 0, 20,     "#chi^{2} / N_{dof}","Tracks / 1"},
         {"dxy",         50, -0.1, 0.1, "d_{xy} [cm]",       "Tracks / 0.004 cm"},
         {"dz",          50, -0.3, 0.3, "d_{z} [cm]",        "Tracks / 0.012 cm"},
+        {"trigger",     2, -0.5, 1.5,  "Trigger Pass",      "Tracks / bin"},
         {"Ih",          50, 0, 50,     "I_{h} [MeV/cm]",    "Tracks / 1 MeV/cm"}
     };
 
@@ -173,6 +174,17 @@ HistogramManager::HistogramManager(TFileService& fs) {
                         "Num_of_cand_postSel",
                         "Number of candidates after preselection;Candidates;Events",
                         10, -0.5, 9.5);
+    
+    histograms["Overall"]["Num_Events"] = fs.make<TH1F>(
+                        "Num_Events",
+                        "Number of Events;;Entries / category",
+                        5, -0.5, 4.5);
+    histograms["Overall"]["Num_Events"]->SetMinimum(0);
+    histograms["Overall"]["Num_Events"]->GetXaxis()->SetBinLabel(1, "Total");
+    histograms["Overall"]["Num_Events"]->GetXaxis()->SetBinLabel(2, "Passing Trigger");
+    histograms["Overall"]["Num_Events"]->GetXaxis()->SetBinLabel(3, "With Candidates");
+    histograms["Overall"]["Num_Events"]->GetXaxis()->SetBinLabel(4, "Pass PreSel");
+    histograms["Overall"]["Num_Events"]->GetXaxis()->SetBinLabel(5, "Pass PreSel and Trigger");
     
     // Varibales associates with candidates 
     

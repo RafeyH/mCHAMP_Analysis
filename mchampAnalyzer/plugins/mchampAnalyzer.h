@@ -169,6 +169,8 @@ private:
     Tracks*         cls_tracks      = new Tracks;
     RecHits_Ecal*   cls_rechitsEcal = new RecHits_Ecal;
     TrackAssoc*     cls_trackAssoc  = new TrackAssoc;
+    
+    int ignore_trig_bit_pos;
 
     // Definitions in HistogramManager.h
     std::unique_ptr<HistogramManager> histManager;
