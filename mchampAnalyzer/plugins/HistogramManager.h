@@ -63,6 +63,7 @@ public:
                                     float value_x,
                                     float value_y,
                                     float weight);
+    void scaleAllHistograms(const double value);
 
 private:
     std::map<std::string, TFileDirectory> dirs;

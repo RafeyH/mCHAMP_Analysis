@@ -2,13 +2,14 @@
 
 HistogramManager::HistogramManager(TFileService& fs) {
     
-    // Setting up Preselection directories and histograms
+    // Setting up directories and histograms
     
+    //dirs["Trigger_Turn_On"]     = fs.mkdir("Trigger_Turn_On");
     dirs["Vars_Candidate_b4PS"] = fs.mkdir("Vars_Candidate_b4PS");
-    dirs["Preselection_No"] = fs.mkdir("Preselection_No");
-    dirs["Preselection_Nm1"] = fs.mkdir("Preselection_Nm1");
-    dirs["Preselection"] = fs.mkdir("Preselection");
-    dirs["Vars_Candidate"] = fs.mkdir("Vars_Candidate");
+    dirs["Preselection_No"]     = fs.mkdir("Preselection_No");
+    dirs["Preselection_Nm1"]    = fs.mkdir("Preselection_Nm1");
+    dirs["Preselection"]        = fs.mkdir("Preselection");
+    dirs["Vars_Candidate"]      = fs.mkdir("Vars_Candidate");
 
     // Define histograms w/ binning and axis labels
     struct HistDefinition {
@@ -186,6 +187,12 @@ HistogramManager::HistogramManager(TFileService& fs) {
     histograms["Overall"]["Num_Events"]->GetXaxis()->SetBinLabel(4, "Pass PreSel");
     histograms["Overall"]["Num_Events"]->GetXaxis()->SetBinLabel(5, "Pass PreSel and Trigger");
     
+    histograms_2d["Overall"]["Ih_V_pT"] = fs.make<TH2F>(
+                        "Ih_V_pT",
+                        "I_{h} vs p_{T};p_{T} [GeV];I_{h} [MeV/cm]",
+                        /*pT range*/    600, 0, 600,
+                        /*Ih range*/    100, 0, 50);
+    
     // Varibales associates with candidates 
     
     histograms["Vars_Candidate_b4PS"]["Ecal_maxE"] = 
@@ -286,7 +293,8 @@ HistogramManager::HistogramManager(TFileService& fs) {
 void HistogramManager::fillHistograms(const std::string& category, 
                                             const std::string& variable, 
                                             float value,
-                                            float weight) {
+                                            float weight) 
+{
     if (histograms.find(category) != histograms.end() && 
                 histograms[category].find(variable) != histograms[category].end()) {
         histograms[category][variable]->Fill(value, weight);
@@ -297,10 +305,25 @@ void HistogramManager::fillHistograms(const std::string& category,
                                             const std::string& variable, 
                                             float value_x, 
                                             float value_y,
-                                            float weight) {
+                                            float weight) 
+{
     if (histograms_2d.find(category) != histograms_2d.end() && 
                 histograms_2d[category].find(variable) != histograms_2d[category].end()) {
         histograms_2d[category][variable]->Fill(value_x, value_y, weight);
+    }
+}
+
+void HistogramManager::scaleAllHistograms(const double value) 
+{
+    for (auto& cat : histograms) 
+    {
+        for (auto& hist : cat.second) 
+            hist.second->Scale(value);
+    }
+    for (auto& cat : histograms_2d) 
+    {
+        for (auto& hist : cat.second) 
+            hist.second->Scale(value);
     }
 }
 

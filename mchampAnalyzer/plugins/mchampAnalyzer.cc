@@ -181,6 +181,7 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     iEvent.getByToken(genEventInfoToken_, genEventInfo);
     double genWeight = 1.0;
     if (genEventInfo.isValid()) genWeight = genEventInfo->weight();
+    sum_gen_weights += genWeight;
     //std::cout<<genWeight<<"\n";
 
     // Get Tracks
@@ -697,6 +698,8 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
                                         SelectionValues[varName], genWeight);
             }
             
+            histManager->fillHistograms("Overall", "Ih_V_pT", t_pt, temp.dEdx(), genWeight);
+
             // 3x3 energy around max E xtal
             histManager->fillHistograms("Vars_Candidate", "Ecal_maxE", maxDep_E, genWeight);
             
@@ -818,6 +821,9 @@ mchampAnalyzer::beginJob()
 void
 mchampAnalyzer::endJob()
 {
+    // Scale all histograms by (1 / sum of gen_weights)
+    if (sum_gen_weights == 0) sum_gen_weights = 1;
+    histManager->scaleAllHistograms( 1/sum_gen_weights );
 }
 
 

@@ -172,6 +172,8 @@ private:
     
     int ignore_trig_bit_pos;
 
+    double sum_gen_weights = 0;
+
     // Definitions in HistogramManager.h
     std::unique_ptr<HistogramManager> histManager;
     std::vector<TrackCut> trackCuts;
