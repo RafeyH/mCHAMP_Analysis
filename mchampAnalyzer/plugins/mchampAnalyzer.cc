@@ -823,7 +823,8 @@ mchampAnalyzer::endJob()
 {
     // Scale all histograms by (1 / sum of gen_weights)
     if (sum_gen_weights == 0) sum_gen_weights = 1;
-    histManager->scaleAllHistograms( 1/sum_gen_weights );
+    histManager->fillHistograms("Overall", "Total_Gen_Weight", 1, sum_gen_weights);
+    //histManager->scaleAllHistograms( 1/sum_gen_weights );
 }
 
 

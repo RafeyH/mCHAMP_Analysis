@@ -13,12 +13,13 @@ HistogramManager::HistogramManager(TFileService& fs) {
 
     // Define histograms w/ binning and axis labels
     struct HistDefinition {
-        std::string name;
-        int         bins;
-        double      min;
-        double      max;
-        std::string x_label;
-        std::string y_label;
+        //std::vector<std::string>    dir_name;
+        std::string                 name;
+        int                         bins;
+        double                      min;
+        double                      max;
+        std::string                 x_label;
+        std::string                 y_label;
     };
 
     std::vector<HistDefinition> histDefinitions = {
@@ -41,7 +42,7 @@ HistogramManager::HistogramManager(TFileService& fs) {
     // Loop over categories and histograms to create them
     for (const auto& category : {"Preselection_No", "Preselection_Nm1", "Preselection"}) {
         for (const auto& hist : histDefinitions) {
-            histograms[category][hist.name] = dirs[category].make<TH1F>(
+            histograms[category][hist.name] = dirs[category].make<TH1D>(
                 (hist.name + "_" + category).c_str(),
                 (hist.name + " distribution;" + hist.x_label + ";" + hist.y_label).c_str(),
                 hist.bins, hist.min, hist.max
@@ -51,7 +52,7 @@ HistogramManager::HistogramManager(TFileService& fs) {
     
     // Setting up CutFlow histograms
     
-    histograms["Overall"]["CutFlow_candidate"] = fs.make<TH1F>(
+    histograms["Overall"]["CutFlow_candidate"] = fs.make<TH1D>(
                             "CutFlow_per_candidate",
                             "CutFlow per Candidate;;Tracks / category",
                             cutFlow_enum::count, -0.5, cutFlow_enum::count-0.5);
@@ -112,7 +113,7 @@ HistogramManager::HistogramManager(TFileService& fs) {
     //histograms["Overall"]["CutFlow_candidate"]->GetXaxis()->SetBinLabel(20, "SR2");
     //histograms["Overall"]["CutFlow_candidate"]->GetXaxis()->SetBinLabel(21, "SR2 with SFs");
     
-    histograms["Overall"]["CutFlow_event"] = fs.make<TH1F>(
+    histograms["Overall"]["CutFlow_event"] = fs.make<TH1D>(
                             "CutFlow_per_event",
                             "CutFlow per Event;;Tracks / category",
                             cutFlow_enum::count+1, -0.5, cutFlow_enum::count+0.5);
@@ -163,20 +164,27 @@ HistogramManager::HistogramManager(TFileService& fs) {
     histograms["Overall"]["CutFlow_event"]->GetXaxis()->SetBinLabel( 
                                                         cutFlow_enum::SR+2, 
                                                         "SR");
-    
+    // To save sum of gen weights
+
+    histograms["Overall"]["Total_Gen_Weight"] = fs.make<TH1D>(
+                        "Total_Gen_Weight",
+                        "Sum of Gen Weights;;Total",
+                        1, 0.5, 1.5);
+    histograms["Overall"]["Total_Gen_Weight"]->GetXaxis()->SetBinLabel(1, "Total Gen Weight");
+
     // Number of candidates in an event
     
-    histograms["Overall"]["Num_of_cand_noSel"] = fs.make<TH1F>(
+    histograms["Overall"]["Num_of_cand_noSel"] = fs.make<TH1D>(
                         "Num_of_cand_noSel",
                         "Number of candidates before preselection;Candidates;Events",
                         10, -0.5, 9.5);
     
-    histograms["Overall"]["Num_of_cand_postSel"] = fs.make<TH1F>(
+    histograms["Overall"]["Num_of_cand_postSel"] = fs.make<TH1D>(
                         "Num_of_cand_postSel",
                         "Number of candidates after preselection;Candidates;Events",
                         10, -0.5, 9.5);
     
-    histograms["Overall"]["Num_Events"] = fs.make<TH1F>(
+    histograms["Overall"]["Num_Events"] = fs.make<TH1D>(
                         "Num_Events",
                         "Number of Events;;Entries / category",
                         5, -0.5, 4.5);
@@ -196,28 +204,28 @@ HistogramManager::HistogramManager(TFileService& fs) {
     // Varibales associates with candidates 
     
     histograms["Vars_Candidate_b4PS"]["Ecal_maxE"] = 
-                    dirs["Vars_Candidate_b4PS"].make<TH1F>(
+                    dirs["Vars_Candidate_b4PS"].make<TH1D>(
                         "Ecal_maxE",
                         "Energy of maxE xtal associated w/ track before PreSelection;\
                         Energy [GeV]; Candidates / 0.5 GeV",
                         120, 0, 60);
     
     histograms["Vars_Candidate_b4PS"]["Ecal_maxE_3x3"] = 
-                    dirs["Vars_Candidate_b4PS"].make<TH1F>(
+                    dirs["Vars_Candidate_b4PS"].make<TH1D>(
                         "Ecal_maxE_3x3",
                         "Total energy in #DeltaR<0.05 of maxE xtal associated w/ track \
                         before PreSelection; Energy [GeV]; Candidates / 0.5 GeV",
                         120, 0, 60);
     
     histograms["Vars_Candidate_b4PS"]["Ecal_maxE_time"] = 
-                    dirs["Vars_Candidate_b4PS"].make<TH1F>(
+                    dirs["Vars_Candidate_b4PS"].make<TH1D>(
                         "Ecal_maxE_time",
                         "Time of arrival from maxE xtal associated w/ track \
                         before PreSelection;Time [ns]; Candidates / 0.5 ns",
                         50, -5, 20);
     
     histograms["Vars_Candidate_b4PS"]["Ecal_maxE_dR"] = 
-                    dirs["Vars_Candidate_b4PS"].make<TH1F>(
+                    dirs["Vars_Candidate_b4PS"].make<TH1D>(
                         "Ecal_maxE_dR",
                         "#DeltaR b/w track at ECAL and maxE xtal before PreSelection;\
                         #DeltaR; Candidates / 0.005",
@@ -247,25 +255,25 @@ HistogramManager::HistogramManager(TFileService& fs) {
                         /*pT range*/    60, 0, 60,
                         /*sig range*/   40, 0, 6);
     
-    histograms["Vars_Candidate"]["Ecal_maxE"] = dirs["Vars_Candidate"].make<TH1F>(
+    histograms["Vars_Candidate"]["Ecal_maxE"] = dirs["Vars_Candidate"].make<TH1D>(
                         "Ecal_maxE",
                         "Energy of maxE xtal associated w/ track;\
                         Energy [GeV]; Candidates / 0.5 GeV",
                         120, 0, 60);
     
-    histograms["Vars_Candidate"]["Ecal_maxE_3x3"] = dirs["Vars_Candidate"].make<TH1F>(
+    histograms["Vars_Candidate"]["Ecal_maxE_3x3"] = dirs["Vars_Candidate"].make<TH1D>(
                         "Ecal_maxE_3x3",
                         "Total energy in #DeltaR<0.05 of maxE xtal associated w/ track;\
                         Energy [GeV]; Candidates / 0.5 GeV",
                         120, 0, 60);
     
-    histograms["Vars_Candidate"]["Ecal_maxE_time"] = dirs["Vars_Candidate"].make<TH1F>(
+    histograms["Vars_Candidate"]["Ecal_maxE_time"] = dirs["Vars_Candidate"].make<TH1D>(
                         "Ecal_maxE_time",
                         "Time of arrival from maxE xtal associated w/ track;\
                         Time [ns]; Candidates / 0.5 ns",
                         50, -5, 20);
     
-    histograms["Vars_Candidate"]["Ecal_maxE_dR"] = dirs["Vars_Candidate"].make<TH1F>(
+    histograms["Vars_Candidate"]["Ecal_maxE_dR"] = dirs["Vars_Candidate"].make<TH1D>(
                         "Ecal_maxE_dR",
                         "#DeltaR b/w track at ECAL and maxE xtal;\
                         #DeltaR; Candidates / 0.005",
@@ -299,6 +307,10 @@ void HistogramManager::fillHistograms(const std::string& category,
                 histograms[category].find(variable) != histograms[category].end()) {
         histograms[category][variable]->Fill(value, weight);
     }
+    else { 
+        throw std::invalid_argument("No such 1D histogram found: " + category + " " +
+                                                                        variable);
+    }
 }
 
 void HistogramManager::fillHistograms(const std::string& category, 
@@ -310,6 +322,10 @@ void HistogramManager::fillHistograms(const std::string& category,
     if (histograms_2d.find(category) != histograms_2d.end() && 
                 histograms_2d[category].find(variable) != histograms_2d[category].end()) {
         histograms_2d[category][variable]->Fill(value_x, value_y, weight);
+    }
+    else { 
+        throw std::invalid_argument("No such 2D histogram found: " + category + " " +
+                                                                        variable);
     }
 }
 

@@ -67,7 +67,7 @@ public:
 
 private:
     std::map<std::string, TFileDirectory> dirs;
-    std::map<std::string, std::map<std::string, TH1F*>> histograms;
+    std::map<std::string, std::map<std::string, TH1D*>> histograms;
     std::map<std::string, std::map<std::string, TH2F*>> histograms_2d;
 };
 
