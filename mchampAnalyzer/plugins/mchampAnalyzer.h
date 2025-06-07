@@ -29,6 +29,9 @@
 #include "DataFormats/TrackReco/interface/DeDxHitInfo.h"
 #include "DataFormats/TrackReco/interface/DeDxData.h"
 
+#include "DataFormats/JetReco/interface/PFJet.h"
+#include "DataFormats/METReco/interface/PFMET.h"
+
 #include "TrackingTools/TrackAssociator/interface/TrackDetectorAssociator.h"
 #include "TrackingTools/TrackAssociator/interface/TrackAssociatorParameters.h"
 
@@ -158,6 +161,10 @@ private:
     TrackDetectorAssociator     trackAssociator_;
     TrackAssociatorParameters   trackAssociatorParams_;
 
+    // Adding Jets and MET
+    edm::EDGetTokenT<std::vector<reco::PFJet>>  jetToken_;
+    edm::EDGetTokenT<std::vector<reco::PFMET>>  metToken_;
+    
     // TTree and variables
     TFile*      outputFile_;
     std::string outputFileName_;

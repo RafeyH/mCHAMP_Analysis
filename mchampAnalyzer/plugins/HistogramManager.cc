@@ -10,6 +10,7 @@ HistogramManager::HistogramManager(TFileService& fs) {
     dirs["Preselection_Nm1"]    = fs.mkdir("Preselection_Nm1");
     dirs["Preselection"]        = fs.mkdir("Preselection");
     dirs["Vars_Candidate"]      = fs.mkdir("Vars_Candidate");
+    dirs["Event_Kinematics"]    = fs.mkdir("Event_Kinematics");
 
     // Define histograms w/ binning and axis labels
     struct HistDefinition {
@@ -171,6 +172,29 @@ HistogramManager::HistogramManager(TFileService& fs) {
                         "Sum of Gen Weights;;Total",
                         1, 0.5, 1.5);
     histograms["Overall"]["Total_Gen_Weight"]->GetXaxis()->SetBinLabel(1, "Total Gen Weight");
+
+    // Event Kinematics - Jet MET
+    
+    histograms["Event_Kinematics"]["Lead_jet_Pt"] = dirs["Event_Kinematics"].make<TH1D>(
+                        "Lead_jet_Pt",
+                        "p_{T} of leading Jet in Event;p_T [GeV];Entries / 10 GeV",
+                        120, 0, 1200);
+    
+    histograms["Event_Kinematics"]["All_jet_Pt"] = dirs["Event_Kinematics"].make<TH1D>(
+                        "All_jet_Pt",
+                        "p_{T} of all Jets in Event;p_T [GeV];Entries / 10 GeV",
+                        120, 0, 1200);
+    
+    histograms["Event_Kinematics"]["HT"] = dirs["Event_Kinematics"].make<TH1D>(
+                        "HT",
+                        "Event HT (Scalar sum of Jet p_{T});p_T [GeV];Entries / 20 GeV",
+                        150, 0, 3000);
+    
+    histograms["Event_Kinematics"]["MET"] = dirs["Event_Kinematics"].make<TH1D>(
+                        "MET",
+                        "Event MET;p_T [GeV];Entries / 10 GeV",
+                        50, 0, 500);
+    
 
     // Number of candidates in an event
     

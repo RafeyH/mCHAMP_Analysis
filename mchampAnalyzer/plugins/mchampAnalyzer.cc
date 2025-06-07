@@ -88,6 +88,8 @@ mchampAnalyzer::mchampAnalyzer(const edm::ParameterSet& iConfig)
 	Ih2Token_(consumes<reco::DeDxDataCollection>(iConfig.getParameter<edm::InputTag>("Ih2Collection"))),
     triggerResultsToken_(consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("triggerResults"))),
     triggerPaths_(iConfig.getParameter<std::vector<std::string>>("triggerPaths")),
+  	jetToken_(consumes<std::vector<reco::PFJet>>(edm::InputTag("ak4PFJets"))),
+  	metToken_(consumes<std::vector<reco::PFMET>>(edm::InputTag("pfMet"))),
     outputFileName_(iConfig.getParameter<std::string>("outputFile")),
     saveNtuple_(iConfig.getParameter<bool>("saveNtuple"))
 {
@@ -210,6 +212,14 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     
     // Trigger names
     const edm::TriggerNames& triggerNames = iEvent.triggerNames(*triggerResults);
+    
+    // Jets collection - why is pfJet collection not a default thing?
+    edm::Handle<std::vector<reco::PFJet>> jetCollection;
+    iEvent.getByToken(jetToken_, jetCollection);
+   
+    // MET collection - is a vector and not just a number
+    edm::Handle<std::vector<reco::PFMET>> metCollection;
+    iEvent.getByToken(metToken_, metCollection);
     
     // Get EcalRecHits
     edm::Handle<EcalRecHitCollection> EBRecHits;
@@ -467,8 +477,49 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             break;
         }
     }
-    
-    
+
+    /* ********************************************************
+         _____                 _                          
+        | ____|_   _____ _ __ | |_                        
+        |  _| \ \ / / _ \ '_ \| __|                       
+        | |___ \ V /  __/ | | | |_                        
+        |_____| \_/ \___|_| |_|\__|                       
+         _  ___                            _   _          
+        | |/ (_)_ __   ___ _ __ ___   __ _| |_(_) ___ ___ 
+        | ' /| | '_ \ / _ \ '_ ` _ \ / _` | __| |/ __/ __|
+        | . \| | | | |  __/ | | | | | (_| | |_| | (__\__ \
+        |_|\_\_|_| |_|\___|_| |_| |_|\__,_|\__|_|\___|___/
+ 
+       ********************************************************
+    */
+
+    double ht = 0.0;
+    const reco::PFJet* leadJet = nullptr;
+    double maxPt = -1.0;
+
+    std::vector<reco::PFJet>::const_iterator itJet;
+    for (itJet = (*jetCollection).begin(); itJet != (*jetCollection).end(); ++itJet) 
+    {
+        histManager->fillHistograms("Event_Kinematics","All_jet_Pt",itJet->pt(), genWeight);
+        ht += itJet->pt();
+        if (itJet->pt() > maxPt) 
+        {
+            maxPt = itJet->pt();
+            leadJet = &(*itJet);
+        }
+    }
+    histManager->fillHistograms("Event_Kinematics","HT", ht, genWeight);
+
+    const reco::MET met = (*metCollection).front(); // Getting the first element of the vector
+    histManager->fillHistograms("Event_Kinematics","MET", met.pt(), genWeight);
+
+    if (leadJet){
+        histManager->fillHistograms("Event_Kinematics",
+                                    "Lead_jet_Pt", leadJet->pt(), genWeight);
+    }
+
+
+
     // #####  ###  #   # ####  ##### ####   ###  ##### #####
     // ##    ##  # ##  # ##  #   #   ##  # ##  #   #   ##
     // ##    ##  # ### # ##  #   #   ##  # ##  #   #   ####

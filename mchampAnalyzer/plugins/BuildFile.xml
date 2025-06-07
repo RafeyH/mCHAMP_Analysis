@@ -10,6 +10,8 @@
 <use name="DataFormats/RecoCandidate"/>
 <use name="DataFormats/EcalRecHit"/>
 <use name="DataFormats/VertexReco"/>
+<use name="DataFormats/METReco"/>
+<use name="DataFormats/JetReco"/>
 
 <use name="TrackingTools/TrackAssociator"/>
 <use name="TrackingTools/Records"/>

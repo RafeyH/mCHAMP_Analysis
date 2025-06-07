@@ -42,9 +42,7 @@ process.source = cms.Source("PoolSource",
 )
 
 # Set the maximum number of events to process
-#process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(1000)) #-1
 process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(3000)) #-1
-#process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(20)) #-1
 
 # Load your analyzer from the package and set its parameters
 from mCHAMP_Analysis.mchampAnalyzer.triggerList_cff import triggerList
