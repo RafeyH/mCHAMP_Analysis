@@ -11,6 +11,8 @@ HistogramManager::HistogramManager(TFileService& fs) {
     dirs["Preselection"]        = fs.mkdir("Preselection");
     dirs["Vars_Candidate"]      = fs.mkdir("Vars_Candidate");
     dirs["Event_Kinematics"]    = fs.mkdir("Event_Kinematics");
+    dirs["Mass_Plots_b4PS"]     = fs.mkdir("Mass_Plots_b4PS");
+    dirs["Mass_Plots"]          = fs.mkdir("Mass_Plots");
 
     // Define histograms w/ binning and axis labels
     struct HistDefinition {
@@ -195,6 +197,11 @@ HistogramManager::HistogramManager(TFileService& fs) {
                         "Event MET;p_T [GeV];Entries / 10 GeV",
                         50, 0, 500);
     
+    histograms["Event_Kinematics"]["num_PV"] = dirs["Event_Kinematics"].make<TH1D>(
+                        "num_PV",
+                        "Number of primary vertices;PVs;Entries / PV",
+                        101, -0.5, 100.5);
+    
 
     // Number of candidates in an event
     
@@ -279,6 +286,14 @@ HistogramManager::HistogramManager(TFileService& fs) {
                         /*pT range*/    60, 0, 60,
                         /*sig range*/   40, 0, 6);
     
+    histograms_2d["Vars_Candidate_b4PS"]["candPt_vs_isolation"] = 
+                    dirs["Vars_Candidate_b4PS"].make<TH2F>(
+                        "candPt_vs_isolation",
+                        "Candidate p_{T} vs Track Isolation  before PreSelection;\
+                        p_{T} [GeV];#Sigma_{#DeltaR<0.3} p_{T} [GeV]",
+                        /*pT range*/    200, 0, 200,
+                        /*sig range*/   100, 0, 100);
+    
     histograms["Vars_Candidate"]["Ecal_maxE"] = dirs["Vars_Candidate"].make<TH1D>(
                         "Ecal_maxE",
                         "Energy of maxE xtal associated w/ track;\
@@ -320,6 +335,97 @@ HistogramManager::HistogramManager(TFileService& fs) {
                         "#sigma(p_{T}) vs p_{T};p_{T} [GeV];#sigma(p_{T}) [GeV]",
                         /*pT range*/    60, 0, 60,
                         /*sig range*/   40, 0, 6);
+    
+    histograms_2d["Vars_Candidate"]["candPt_vs_isolation"] = 
+                    dirs["Vars_Candidate"].make<TH2F>(
+                        "candPt_vs_isolation",
+                        "Candidate p_{T} vs Track Isolation;\
+                        p_{T} [GeV];#Sigma_{#DeltaR<0.3} p_{T} [GeV]",
+                        /*pT range*/    200, 0, 200,
+                        /*sig range*/   100, 0, 100);
+    
+    // Mass plots
+    
+    histograms["Mass_Plots_b4PS"]["MaxPt_Invariant_Mass"] = dirs["Mass_Plots_b4PS"].make<TH1D>(
+                        "MaxPt_Invariant_Mass",
+                        "Invariant Mass of two lead candidates;Mass [GeV];Entries",
+                        200, 0, 200);
+    
+    histograms["Mass_Plots_b4PS"]["MaxPt_Invariant_Mass_0to20"] = dirs["Mass_Plots_b4PS"].make<TH1D>(
+                        "MaxPt_Invariant_Mass_0to20",
+                        "Invariant Mass of two lead candidates;Mass [GeV];Entries",
+                        200, 0, 20);
+    
+    histograms["Mass_Plots_b4PS"]["AllCand_Invariant_Mass"] = dirs["Mass_Plots_b4PS"].make<TH1D>(
+                        "AllCand_Invariant_Mass",
+                        "Invariant Mass of all candidates;Mass [GeV];Entries",
+                        200, 0, 200);
+    
+    histograms["Mass_Plots_b4PS"]["AllCand_Invariant_Mass_0to20"] = dirs["Mass_Plots_b4PS"].make<TH1D>(
+                        "AllCand_Invariant_Mass_0to20",
+                        "Invariant Mass of all candidates;Mass [GeV];Entries",
+                        200, 0, 20);
+    
+    histograms["Mass_Plots_b4PS"]["All_OS_Invariant_Mass"] = dirs["Mass_Plots_b4PS"].make<TH1D>(
+                        "All_OS_Invariant_Mass",
+                        "Invariant Mass of all OS candidates;Mass [GeV];Entries",
+                        200, 0, 200);
+    
+    histograms["Mass_Plots_b4PS"]["All_OS_Invariant_Mass_0to20"] = dirs["Mass_Plots_b4PS"].make<TH1D>(
+                        "All_OS_Invariant_Mass_0to20",
+                        "Invariant Mass of all OS candidates;Mass [GeV];Entries",
+                        200, 0, 20);
+    
+    histograms["Mass_Plots_b4PS"]["All_SS_Invariant_Mass"] = dirs["Mass_Plots_b4PS"].make<TH1D>(
+                        "All_SS_Invariant_Mass",
+                        "Invariant Mass of all SS candidates;Mass [GeV];Entries",
+                        200, 0, 200);
+    
+    histograms["Mass_Plots_b4PS"]["All_SS_Invariant_Mass_0to20"] = dirs["Mass_Plots_b4PS"].make<TH1D>(
+                        "All_SS_Invariant_Mass_0to20",
+                        "Invariant Mass of all SS candidates;Mass [GeV];Entries",
+                        200, 0, 20);
+    
+    histograms["Mass_Plots"]["MaxPt_Invariant_Mass"] = dirs["Mass_Plots"].make<TH1D>(
+                        "MaxPt_Invariant_Mass",
+                        "Invariant Mass of two lead candidates;Mass [GeV];Entries",
+                        200, 0, 200);
+    
+    histograms["Mass_Plots"]["MaxPt_Invariant_Mass_0to20"] = dirs["Mass_Plots"].make<TH1D>(
+                        "MaxPt_Invariant_Mass_0to20",
+                        "Invariant Mass of two lead candidates;Mass [GeV];Entries",
+                        200, 0, 20);
+    
+    histograms["Mass_Plots"]["AllCand_Invariant_Mass"] = dirs["Mass_Plots"].make<TH1D>(
+                        "AllCand_Invariant_Mass",
+                        "Invariant Mass of all candidates;Mass [GeV];Entries",
+                        200, 0, 200);
+    
+    histograms["Mass_Plots"]["AllCand_Invariant_Mass_0to20"] = dirs["Mass_Plots"].make<TH1D>(
+                        "AllCand_Invariant_Mass_0to20",
+                        "Invariant Mass of all candidates;Mass [GeV];Entries",
+                        200, 0, 20);
+    
+    histograms["Mass_Plots"]["All_OS_Invariant_Mass"] = dirs["Mass_Plots"].make<TH1D>(
+                        "All_OS_Invariant_Mass",
+                        "Invariant Mass of all OS candidates;Mass [GeV];Entries",
+                        200, 0, 200);
+    
+    histograms["Mass_Plots"]["All_OS_Invariant_Mass_0to20"] = dirs["Mass_Plots"].make<TH1D>(
+                        "All_OS_Invariant_Mass_0to20",
+                        "Invariant Mass of all OS candidates;Mass [GeV];Entries",
+                        200, 0, 20);
+    
+    histograms["Mass_Plots"]["All_SS_Invariant_Mass"] = dirs["Mass_Plots"].make<TH1D>(
+                        "All_SS_Invariant_Mass",
+                        "Invariant Mass of all SS candidates;Mass [GeV];Entries",
+                        200, 0, 200);
+    
+    histograms["Mass_Plots"]["All_SS_Invariant_Mass_0to20"] = dirs["Mass_Plots"].make<TH1D>(
+                        "All_SS_Invariant_Mass_0to20",
+                        "Invariant Mass of all SS candidates;Mass [GeV];Entries",
+                        200, 0, 20);
+    
 }
 
 void HistogramManager::fillHistograms(const std::string& category, 

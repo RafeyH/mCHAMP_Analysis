@@ -45,6 +45,13 @@
 // Setup for the TTrees
 // Add pragma in the Linkdef file if adding new classes for TTree
 
+struct Candidates {
+    float pt;
+    float eta;
+    float phi;
+    int charge;
+};
+    
 class GenPart : public TObject {
     
 public:
@@ -138,6 +145,9 @@ private:
     virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
     void beginJob() override;
     void endJob() override;
+    double diCandMass(const Candidates&, const Candidates&);
+    std::map<const reco::Track*, float> trackIsolation(const edm::Event&,
+                                                std::vector<reco::Track> const &); 
 
     // Input Tags
     edm::EDGetTokenT<reco::GenParticleCollection>   genParticlesToken_;
@@ -169,8 +179,10 @@ private:
     TFile*      outputFile_;
     std::string outputFileName_;
     bool        saveNtuple_;
+    bool        isDATA_;
+    TTree       *EventInfoTree_;
     TTree       *tree_;
-    int         run_, event_;
+    int         run_, event_, lumi_;
 
     GenPart*        cls_genpart     = new GenPart;
     Tracks*         cls_tracks      = new Tracks;

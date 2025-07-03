@@ -91,7 +91,8 @@ mchampAnalyzer::mchampAnalyzer(const edm::ParameterSet& iConfig)
   	jetToken_(consumes<std::vector<reco::PFJet>>(edm::InputTag("ak4PFJets"))),
   	metToken_(consumes<std::vector<reco::PFMET>>(edm::InputTag("pfMet"))),
     outputFileName_(iConfig.getParameter<std::string>("outputFile")),
-    saveNtuple_(iConfig.getParameter<bool>("saveNtuple"))
+    saveNtuple_(iConfig.getParameter<bool>("saveNtuple")),
+    isDATA_(iConfig.getParameter<bool>("isDATA"))
 {
     
     // Initialize TrackDetectorAssociator and parameters
@@ -108,6 +109,13 @@ mchampAnalyzer::mchampAnalyzer(const edm::ParameterSet& iConfig)
     }
                     
 
+    if (isDATA_){
+        EventInfoTree_ = fs->make<TTree>("EventInfo", "EventInfo");
+        EventInfoTree_->Branch("Run", &run_, "Run/I");
+        EventInfoTree_->Branch("Event", &event_, "Event/I");
+        EventInfoTree_->Branch("Lumi", &lumi_, "Lumi/I");
+    }
+    
     if (saveNtuple_){
         tree_ = fs->make<TTree>("Ntuple", "Ntuple");
         tree_->Branch("Run", &run_, "Run/I");
@@ -136,13 +144,17 @@ mchampAnalyzer::mchampAnalyzer(const edm::ParameterSet& iConfig)
         { "eta",            1.4,    cutFlow_enum::eta,          false   },
         //{ "sigPtOPt",       0.25,   cutFlow_enum::count,        false   },
         { "pt",             15,     cutFlow_enum::pt,           true    },
+        //{ "pt",             30,     cutFlow_enum::pt,           true    },
         { "trigger",        1,      cutFlow_enum::triggers,     true    },
     };
     
     // format {std::string name, double timeCut, double energyCut, cutFlow_enum::Type }
-    signalCuts = {
-        {"SR",              2,          5,      cutFlow_enum::SR}
-    };
+    if (isDATA_) signalCuts = {};
+    else {
+        signalCuts = {
+            {"SR",              2,          5,      cutFlow_enum::SR}
+        };
+    }
     
     // Saving trigger regex
     compiledTriggerPatterns.reserve(triggerPaths_.size());
@@ -171,21 +183,25 @@ mchampAnalyzer::~mchampAnalyzer()
 void
 mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 {
-    run_ = iEvent.id().run();
-    event_ = iEvent.id().event();
-    
-    // Get GenParticles
+    run_    = iEvent.id().run();
+    event_  = iEvent.id().event();
+    lumi_   = iEvent.luminosityBlock();
+    if (isDATA_) EventInfoTree_->Fill();
+
     edm::Handle<reco::GenParticleCollection> genParticles;
-    iEvent.getByToken(genParticlesToken_, genParticles);
-
-    // Get GenEventInfo
     edm::Handle<GenEventInfoProduct> genEventInfo;
-    iEvent.getByToken(genEventInfoToken_, genEventInfo);
+    
     double genWeight = 1.0;
-    if (genEventInfo.isValid()) genWeight = genEventInfo->weight();
-    sum_gen_weights += genWeight;
-    //std::cout<<genWeight<<"\n";
+    if (!isDATA_){
+        // Get GenParticles
+        iEvent.getByToken(genParticlesToken_, genParticles);
 
+        // Get GenEventInfo
+        iEvent.getByToken(genEventInfoToken_, genEventInfo);
+        if (genEventInfo.isValid()) genWeight = genEventInfo->weight();
+        sum_gen_weights += genWeight;
+    }
+    
     // Get Tracks
     edm::Handle<reco::TrackCollection> tracks;
     iEvent.getByToken(tracksToken_, tracks);
@@ -193,6 +209,19 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     // Get Vertices
     edm::Handle<reco::VertexCollection> vertices;
     iEvent.getByToken(vertexToken_, vertices);
+    
+    // Good vertex definition from
+    // https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookVertexReco
+    int nVertices = 0;
+    for (const auto& vtx : *vertices) {
+        if (!vtx.isFake() && 
+                vtx.ndof() > 4 && 
+                fabs(vtx.z()) <= 24 && 
+                vtx.position().Rho() <= 2) {
+            nVertices++;
+        }
+    }
+    histManager->fillHistograms("Event_Kinematics", "num_PV", nVertices, genWeight);
     
     // Get dedx collection
 	edm::Handle<reco::DeDxHitInfoAss> dedxCollH = iEvent.getHandle(dedxToken_);
@@ -230,14 +259,17 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 	iSetup.get<CaloGeometryRecord>().get(geoHandle);
 	const CaloSubdetectorGeometry* barrelGeometry = geoHandle->getSubdetectorGeometry(DetId::Ecal, EcalBarrel);
    
-    //  #### ##### #   #       #   #  ###  ##### ##### ##  #
-    // ##    ##    ##  #       ## ## ##  #   #   ##    ##  #
-    // ## ## ####  ### # ##### # # # ##  #   #   ##    #####
-    // ##  # ##    # ###       #   # #####   #   ##    ##  #
-    // ##  # ##    #  ##       #   # ##  #   #   ##    ##  #
-    //  #### ##### #   #       #   # ##  #   #   ##### ##  #
+    /* ********************************************************
+       ____                  __  __       _       _     
+      / ___| ___ _ __       |  \/  | __ _| |_ ___| |__  
+     | |  _ / _ \ '_ \ _____| |\/| |/ _` | __/ __| '_ \
+     | |_| |  __/ | | |_____| |  | | (_| | || (__| | | |
+      \____|\___|_| |_|     |_|  |_|\__,_|\__\___|_| |_| 
+       
+      ********************************************************
+    */
 
-    if (saveNtuple_){
+    if (saveNtuple_ && !isDATA_){
     // Loop over genParticles and match to PDG id
     for (const auto& genParticle : *genParticles) {
         
@@ -449,13 +481,16 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     }   // END if - saveNtuple
     
 
-    // ##### ####  #####  ####  #### ##### ####  #####
-    //   #   ##  #   #   ##    ##    ##    ##  # ##   
-    //   #   #####   #   ## ## ## ## ####  #####   ##  
-    //   #   ##  #   #   ##  # ##  # ##    ##  #    ## 
-    //   #   ##  #   #   ##  # ##  # ##    ##  #    ##
-    //   #   ##  # #####  ####  #### ##### ##  # #####
-
+    /* ********************************************************
+       _____       _                                
+      |_   _|_ __ (_)  __ _   __ _   ___  _ __  ___ 
+        | | | '__|| | / _` | / _` | / _ \| '__|/ __|
+        | | | |   | || (_| || (_| ||  __/| |   \__ \
+        |_| |_|   |_| \__, | \__, | \___||_|   |___/
+                      |___/  |___/                   
+      ********************************************************
+    */
+    
     bool passTriggerSelection = false;
     
     for (size_t i = 0; i < triggerResults->size(); i++)
@@ -520,24 +555,27 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
 
 
-    // #####  ###  #   # ####  ##### ####   ###  ##### #####
-    // ##    ##  # ##  # ##  #   #   ##  # ##  #   #   ##
-    // ##    ##  # ### # ##  #   #   ##  # ##  #   #   ####
-    // ##    ##### # ### ##  #   #   ##  # #####   #   ##
-    // ##    ##  # #  ## ##  #   #   ##  # ##  #   #   ##
-    // ##### ##  # #   # ####  ##### ####  ##  #   #   #####
-
-    // ##### ##### ##    ##### ##### ##### #####  ###  #   #
-    // ##    ##    ##    ##    ##      #     #   ##  # ##  #
-    //   ##  ####  ##    ####  ##      #     #   ##  # ### #
-    //    ## ##    ##    ##    ##      #     #   ##  # # ###
-    //    ## ##    ##    ##    ##      #     #   ##  # #  ##
-    // ##### ##### ##### ##### #####   #   #####  ###  #   #
+    /* ********************************************************
+        ____                   _  _      _         _        
+       / ___| __ _  _ __    __| |(_)  __| |  __ _ | |_  ___ 
+      | |    / _` || '_ \  / _` || | / _` | / _` || __|/ _ \
+      | |___| (_| || | | || (_| || || (_| || (_| || |_|  __/
+       \____|\__,_||_| |_| \__,_||_| \__,_| \__,_| \__|\___|
+       ____         _              _    _                   
+      / ___|   ___ | |  ___   ___ | |_ (_)  ___   _ __      
+      \___ \  / _ \| | / _ \ / __|| __|| | / _ \ | '_ \
+       ___) ||  __/| ||  __/| (__ | |_ | || (_) || | | |    
+      |____/  \___||_| \___| \___| \__||_| \___/ |_| |_|    
+                                                             
+       ********************************************************
+    */
 
     histManager->fillHistograms("Overall", "CutFlow_event", 
                     cutFlow_enum::events+1, genWeight); 
     histManager->fillHistograms("Overall", "Num_Events", 0, genWeight);
 
+    std::vector<reco::Track> candTrks_b4PS, candTrks;
+    
     int     Num_candidates_preSel   =   0   ;
     int     Num_candidates_postSel  =   0   ;
     // To keep track for event cutflow     
@@ -559,8 +597,15 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     
     // CandSel ecal cuts
     float   cand_ecal_maxE_cut       =   2   ;
-    float   cand_ecal_maxE_error_cut =   0.5 ;
-    float   cand_ecal_T_cut          =   1   ;
+    // Removed timing cut and energy error
+    //float   cand_ecal_maxE_error_cut =   0.5 ;
+    
+    // Removed timing cut and energy error
+
+    //float   cand_ecal_T_cut          =   1   ;
+    //float   cand_ecal_T_cut          =   0.5   ;
+    //float   cand_ecal_T_cut          =   0.25   ;
+    //float   cand_ecal_T_cut          =   0   ;
     //float   ecal_5x5_cut    =   5;
 
     // for dedx measurements without cluster cleaning
@@ -570,6 +615,8 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     bool usePixel = false;
     bool useStrip = true;
     bool useClusterCleaning = false;
+
+    std::vector<Candidates> cands, cands_b4PS;
 
     int pos = -1;
     for (const auto& track : *tracks)
@@ -609,14 +656,16 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             maxDep_E_detid  = det;
 
             if ( (maxDep_E > cand_ecal_maxE_cut) && 
-                    (hit.energyError() < cand_ecal_maxE_error_cut) && 
-                    (hit.isTimeErrorValid()) && (maxDep_time > cand_ecal_T_cut) ) 
+                    //(hit.energyError() < cand_ecal_maxE_error_cut) && 
+                    (hit.isTimeErrorValid()) )// && (maxDep_time > cand_ecal_T_cut) ) 
                 flag_ecalSelection = 1;
             break;
         }
 
         // In case ecal thgresholds aren't cleared
         if (!flag_ecalSelection) continue;
+        
+        candTrks_b4PS.push_back(track);
         
         float t_pt      = track.pt();
         float t_pt_err  = track.ptError();
@@ -654,6 +703,11 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         
         Num_candidates_preSel++; // Counting all tracks passing basic selection
         if (firstTwo == 0) firstTwo=1;
+        
+        if (passTriggerSelection){ 
+            cands_b4PS.push_back({t_pt, (float)track.eta(), (float)track.phi(),
+                                    (int)track.charge()});
+        }
 
         const reco::TrackRef trackRef = reco::TrackRef(tracks, pos);
         reco::DeDxHitInfoRef dedxHitsRef = dedxCollH->get(trackRef.key());
@@ -739,7 +793,11 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         // If all bits are turned on, fill presel AND N-1
         if (selectionBitmask == allPass)
         {
+            candTrks.push_back(track);
             Num_candidates_postSel++; // Counting all tracks passing all pre selection
+            cands.push_back({t_pt, (float)track.eta(), (float)track.phi(), 
+                                (int)track.charge()});
+
             for (size_t i =0; i<trackCuts.size(); i++)
             {
                 const std::string& varName = trackCuts[i].name;
@@ -854,6 +912,156 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             std::cout<<"ERROR: value of 'firstTwo' (0/1/2) set to: "<<firstTwo<<std::endl;
     }
 
+    if (Num_candidates_postSel >= 2){
+        std::sort(cands.begin(), cands.end(), [](const Candidates& a, const Candidates& b) {
+            return a.pt > b.pt;
+        });
+        
+        const Candidates& cand1 = cands[0];
+        Candidates cand2;
+        bool found = false;
+
+        for (size_t i = 1; i < cands.size(); ++i) {
+            if (cands[i].charge == -(cand1.charge) ) {
+                cand2 = cands[i];
+                found = true;
+                break;
+            }
+        }
+        
+        if (found){
+            //float d_phi = reco::deltaPhi(cand1.phi, cand2.phi);
+            //float d_eta = cand1.eta - cand2.eta;
+
+            //float inv_mass = std::sqrt( 2 * cand1.pt * cand2.pt * (
+            //                            std::cosh( d_eta ) -
+            //                            std::cos(  d_phi ) ));
+
+            double inv_mass = diCandMass(cand1, cand2);
+            histManager->fillHistograms("Mass_Plots", "MaxPt_Invariant_Mass",
+                                inv_mass, genWeight);
+            histManager->fillHistograms("Mass_Plots", "MaxPt_Invariant_Mass_0to20",
+                                inv_mass, genWeight);
+        }
+
+        for (size_t i = 0; i < cands_b4PS.size(); ++i) 
+        {
+            for (size_t j = i + 1; j < cands_b4PS.size(); ++j) 
+            {
+                const Candidates& ci = cands_b4PS[i];
+                const Candidates& cj = cands_b4PS[j];
+
+                double inv_mass = diCandMass(ci, cj);
+
+                // Fill all pairs
+                histManager->fillHistograms("Mass_Plots", "AllCand_Invariant_Mass", 
+                                                inv_mass, genWeight);
+                histManager->fillHistograms("Mass_Plots", "AllCand_Invariant_Mass_0to20", 
+                                                inv_mass, genWeight);
+
+                if (ci.charge * cj.charge < 0) { // Opposite sign
+                    histManager->fillHistograms("Mass_Plots", "All_OS_Invariant_Mass", 
+                                                inv_mass, genWeight);
+                    histManager->fillHistograms("Mass_Plots", "All_OS_Invariant_Mass_0to20", 
+                                                inv_mass, genWeight);
+                } else if (ci.charge * cj.charge > 0) { // Same sign
+                    histManager->fillHistograms("Mass_Plots", "All_SS_Invariant_Mass", 
+                                                inv_mass, genWeight);
+                    histManager->fillHistograms("Mass_Plots", "All_SS_Invariant_Mass_0to20", 
+                                                inv_mass, genWeight);
+                }
+            }
+        }
+    }
+
+    if ( cands_b4PS.size() >= 2){
+        std::sort(cands_b4PS.begin(), cands_b4PS.end(), 
+                    [](const Candidates& a, const Candidates& b) {
+            return a.pt > b.pt;
+        });
+        
+        const Candidates& cand1 = cands_b4PS[0];
+        Candidates cand2;
+        bool found = false;
+
+        for (size_t i = 1; i < cands_b4PS.size(); ++i) {
+            if (cands_b4PS[i].charge == -(cand1.charge) ) {
+                cand2 = cands_b4PS[i];
+                found = true;
+                break;
+            }
+        }
+        
+        if (found){
+            //float d_phi = reco::deltaPhi(cand1.phi, cand2.phi);
+            //float d_eta = cand1.eta - cand2.eta;
+            //
+            //float inv_mass = std::sqrt( 2 * cand1.pt * cand2.pt * (
+            //                            std::cosh( d_eta ) -
+            //                            std::cos(  d_phi ) ));
+            double inv_mass = diCandMass(cand1, cand2);
+            histManager->fillHistograms("Mass_Plots_b4PS", "MaxPt_Invariant_Mass",
+                                inv_mass, genWeight);
+            histManager->fillHistograms("Mass_Plots_b4PS", "MaxPt_Invariant_Mass_0to20",
+                                inv_mass, genWeight);
+        }
+
+        for (size_t i = 0; i < cands_b4PS.size(); ++i) 
+        {
+            for (size_t j = i + 1; j < cands_b4PS.size(); ++j) 
+            {
+                const Candidates& ci = cands_b4PS[i];
+                const Candidates& cj = cands_b4PS[j];
+
+                double inv_mass = diCandMass(ci, cj);
+
+                // Fill all pairs
+                histManager->fillHistograms("Mass_Plots_b4PS", 
+                                            "AllCand_Invariant_Mass", 
+                                            inv_mass, genWeight);
+                histManager->fillHistograms("Mass_Plots_b4PS", 
+                                            "AllCand_Invariant_Mass_0to20", 
+                                            inv_mass, genWeight);
+
+                if (ci.charge * cj.charge < 0) { // Opposite sign
+                    histManager->fillHistograms("Mass_Plots_b4PS", 
+                                                "All_OS_Invariant_Mass", 
+                                                inv_mass, genWeight);
+                    histManager->fillHistograms("Mass_Plots_b4PS", 
+                                                "All_OS_Invariant_Mass_0to20", 
+                                                inv_mass, genWeight);
+                } else if (ci.charge * cj.charge > 0) { // Same sign
+                    histManager->fillHistograms("Mass_Plots_b4PS", 
+                                                "All_SS_Invariant_Mass", 
+                                                inv_mass, genWeight);
+                    histManager->fillHistograms("Mass_Plots_b4PS", 
+                                                "All_SS_Invariant_Mass_0to20", 
+                                                inv_mass, genWeight);
+                }
+            }
+        }
+    }
+
+    // Calculate Track pt isolation and fill hists
+    std::map<const reco::Track*, float> isolationTrk_b4PS = trackIsolation(iEvent, 
+                                                                    candTrks_b4PS);
+    std::map<const reco::Track*, float> isolationTrk      = trackIsolation(iEvent, 
+                                                                    candTrks);
+
+    for (auto const mapIsoTrk_b4PS : isolationTrk_b4PS){
+        histManager->fillHistograms("Vars_Candidate_b4PS", "candPt_vs_isolation",
+                            mapIsoTrk_b4PS.first->pt(),
+                            mapIsoTrk_b4PS.second,
+                            genWeight ); 
+    }
+
+    for (auto const mapIsoTrk : isolationTrk){
+        histManager->fillHistograms("Vars_Candidate", "candPt_vs_isolation",
+                            mapIsoTrk.first->pt(),
+                            mapIsoTrk.second,
+                            genWeight ) ;
+    }
+
     histManager->fillHistograms("Overall", "Num_of_cand_noSel", 
                             Num_candidates_preSel, genWeight); 
     histManager->fillHistograms("Overall", "Num_of_cand_postSel", 
@@ -878,6 +1086,46 @@ mchampAnalyzer::endJob()
     //histManager->scaleAllHistograms( 1/sum_gen_weights );
 }
 
+// ----------- method to calculate di candidate mass -------------------------------------
+double
+mchampAnalyzer::diCandMass(const Candidates &cand1, const Candidates &cand2)
+{
+    float d_phi = reco::deltaPhi(cand1.phi, cand2.phi);
+    float d_eta = cand1.eta - cand2.eta;
+    
+    float inv_mass = std::sqrt( 2 * cand1.pt * cand2.pt * (
+                                std::cosh( d_eta ) -
+                                std::cos(  d_phi ) ));
+    
+    return(inv_mass);
+}
+
+// ----------- method to calculate track isolation for a vector of tracks ----------------
+std::map<const reco::Track*, float> 
+mchampAnalyzer::trackIsolation(
+                const edm::Event& iEvent,
+                std::vector<reco::Track> const &trk_list )
+{
+    // Get Tracks
+    edm::Handle<reco::TrackCollection> tracks;
+    iEvent.getByToken(tracksToken_, tracks);
+
+    // Set-up map for track isolation
+    std::map<const reco::Track*, float> isolation_map;
+    
+    for (const reco::Track& cand_track : trk_list){
+        float sum_pt = 0;
+        for (const reco::Track track : *tracks){
+            if ( reco::deltaR(cand_track.eta(), cand_track.phi(), 
+                                track.eta(), track.phi()) < 0.3 )
+                sum_pt += track.pt(); 
+        }
+        
+        sum_pt -= cand_track.pt();
+        isolation_map[&cand_track] = sum_pt;
+    }
+    return(isolation_map);
+}
 
 //define this as a plug-in
 DEFINE_FWK_MODULE(mchampAnalyzer);

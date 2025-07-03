@@ -9,6 +9,12 @@ options.register('saveNtuple', False,
     "Save genMatched TTrees? True or False"
 )
 
+options.register('isDATA', False,
+    VarParsing.multiplicity.singleton,
+    VarParsing.varType.bool,
+    "Check if input dataset is data - and switch off signal region"
+)
+
 options.parseArguments()
 
 process = cms.Process("MyAnalyzerProcess")
@@ -43,6 +49,7 @@ process.source = cms.Source("PoolSource",
 
 # Set the maximum number of events to process
 process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(3000)) #-1
+#process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1)) #-1
 
 # Load your analyzer from the package and set its parameters
 from mCHAMP_Analysis.mchampAnalyzer.triggerList_cff import triggerList
@@ -60,8 +67,9 @@ process.mchampAnalyzer = process.mchampAnalyzer.clone(
 	Ih2Collection   = cms.InputTag("dedxHarmonic2","","RECO"),
     triggerResults  = cms.InputTag("TriggerResults","","HLT"),
     triggerPaths    = triggerList,
-    outputFile = cms.string(options.outputFile),
-    saveNtuple = cms.bool(options.saveNtuple)
+    outputFile      = cms.string(options.outputFile),
+    saveNtuple      = cms.bool(options.saveNtuple),
+    isDATA          = cms.bool(options.isDATA)
 )
 
 
