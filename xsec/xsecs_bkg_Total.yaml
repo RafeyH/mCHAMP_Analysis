@@ -1,0 +1,162 @@
+DYJetsToLL:
+    M-50:
+      err: 12.65
+      xsec: 5321.0
+    M-4to50:
+        HT-100to200:
+            err: 1.24
+            xsec: 190.1
+        HT-200to400:
+            err: 0.1709
+            xsec: 42.79
+        HT-400to600:
+            err: 0.01642
+            xsec: 4.073
+        HT-600toInf:
+            err: 0.006523
+            xsec: 1.204
+        HT-70to100:
+            err: 1.311
+            xsec: 317.2
+WJets:
+    WJetsToLNu:
+        0J:
+          err: 234.7
+          xsec: 53310.0
+        1J:
+          err: 59.7
+          xsec: 9001.0
+        2J:
+          err: 48.74
+          xsec: 3290.0
+    WJetsToQQ:
+        HT-200to400:
+          err: 13.53
+          xsec: 2574.0
+        HT-400to600:
+          err: 3.489
+          xsec: 270.6
+        HT-600to800:
+          err: 0.2372
+          xsec: 59.57
+        HT-800toInf:
+          err: 0.2709
+          xsec: 29.12
+TTBar:
+    TTTo2L2Nu:
+      err: 0.5174
+      xsec: 687.1
+    TTToHadronic:
+      err: 0.5174
+      xsec: 687.1
+    TTToSemiLeptonic:
+      err: 0.5174
+      xsec: 687.1
+QCD:
+  Pt-1000to1400:
+    err: 0.03737
+    xsec: 7.463
+  Pt-120to170:
+    err: 2610.0
+    xsec: 408700.0
+  Pt-1400to1800:
+    err: 0.006929
+    xsec: 0.6492
+  Pt-15to30:
+    err: 5917000.0
+    xsec: 1247000000.0
+  Pt-170to300:
+    err: 529.8
+    xsec: 102900.0
+  Pt-1800to2400:
+    err: 0.0005657
+    xsec: 0.08858
+  Pt-2400to3200:
+    err: 4.676e-05
+    xsec: 0.005183
+  Pt-300to470:
+    err: 35.52
+    xsec: 6894.0
+  Pt-30to50:
+    err: 500600.0
+    xsec: 106300000.0
+  Pt-3200toInf:
+    err: not found
+    xsec: not found
+  Pt-470to600:
+    err: 3.379
+    xsec: 550.5
+  Pt-50to80:
+    err: 73490.0
+    xsec: 15740000.0
+  Pt-600to800:
+    err: 0.7854
+    xsec: 156.5
+  Pt-800to1000:
+    err: 0.1553
+    xsec: 26.07
+  Pt-80to120:
+    err: 12720.0
+    xsec: 2335000.0
+  EMEnriched:
+    Pt-120to170:
+      err: 656.4
+      xsec: 66860.0
+    Pt-15to20:
+      err: 14960.0
+      xsec: 1342000.0
+    Pt-170to300:
+      err: 199.0
+      xsec: 16500.0
+    Pt-20to30:
+      err: 15360.0
+      xsec: 4897000.0
+    Pt-300toInf:
+      err: 23.11
+      xsec: 1114.0
+    Pt-30to50:
+      err: 64700.0
+      xsec: 6283000.0
+    Pt-50to80:
+      err: 19780.0
+      xsec: 1969000.0
+    Pt-80to120:
+      err: 4430.0
+      xsec: 367500.0
+  MuEnrichedPt5:
+    Pt-1000:
+      err: 0.01321
+      xsec: 1.069
+    Pt-120To170:
+      err: 220.0
+      xsec: 21570.0
+    Pt-15To20:
+      err: 19760.0
+      xsec: 2781000.0
+    Pt-170To300:
+      err: 88.66
+      xsec: 7019.0
+    Pt-20To30:
+      err: 20440.0
+      xsec: 2490000.0
+    Pt-300To470:
+      err: 7.772
+      xsec: 620.6
+    Pt-30To50:
+      err: 14320.0
+      xsec: 1360000.0
+    Pt-470To600:
+      err: 0.5961
+      xsec: 59.0
+    Pt-50To80:
+      err: 4454.0
+      xsec: 374500.0
+    Pt-600To800:
+      err: 0.2262
+      xsec: 18.36
+    Pt-800To1000:
+      err: 0.03293
+      xsec: 3.253
+    Pt-80To120:
+      err: 1131.0
+      xsec: 87510.0
