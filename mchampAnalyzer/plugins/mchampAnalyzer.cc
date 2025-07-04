@@ -640,6 +640,7 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
         DetId maxDep = info.findMaxDeposition(TrackDetMatchInfo::EcalRecHits);
         float maxDep_E      = -999;
+        float maxDep_EErr   = -999;
         float maxDep_time   = -999;
         EBDetId maxDep_E_detid; 
 
@@ -652,6 +653,7 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             if (det.rawId() != maxDep.rawId()) continue;
             
             maxDep_E        = hit.energy();
+            maxDep_EErr     = hit.energyError();
             maxDep_time     = hit.time();
             maxDep_E_detid  = det;
 
@@ -676,6 +678,9 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         // 3x3 energy around max E xtal
         histManager->fillHistograms("Vars_Candidate_b4PS", "Ecal_maxE", 
                     maxDep_E, genWeight);
+        
+        histManager->fillHistograms("Vars_Candidate_b4PS", "Ecal_maxE_V_EErr", 
+                    maxDep_E, maxDep_EErr, genWeight);
         
         histManager->fillHistograms("Vars_Candidate_b4PS", "Ecal_maxE_3x3",
                     info.nXnEnergy(maxDep_E_detid, TrackDetMatchInfo::EcalRecHits, 1),
@@ -812,6 +817,9 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             // 3x3 energy around max E xtal
             histManager->fillHistograms("Vars_Candidate", "Ecal_maxE", maxDep_E, genWeight);
             
+            histManager->fillHistograms("Vars_Candidate", "Ecal_maxE_V_EErr", 
+                        maxDep_E, maxDep_EErr, genWeight);
+        
             histManager->fillHistograms("Vars_Candidate", "Ecal_maxE_3x3",
                         info.nXnEnergy(maxDep_E_detid, TrackDetMatchInfo::EcalRecHits, 1),
                         genWeight);

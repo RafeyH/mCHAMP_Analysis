@@ -262,6 +262,14 @@ HistogramManager::HistogramManager(TFileService& fs) {
                         #DeltaR; Candidates / 0.005",
                         20, 0, 0.1);
     
+    histograms_2d["Vars_Candidate_b4PS"]["Ecal_maxE_V_EErr"] = 
+                    dirs["Vars_Candidate_b4PS"].make<TH2F>(
+                        "Ecal_maxE_V_EErr",
+                        "ECAL maxE vs ECAL maxE Err before PreSelection;\
+                        ECAL maxE Energy [GeV];maxE Err [GeV]",
+                        /*maxE range*/    120, 0, 60,
+                        /*EErr range*/    50, 0, 5);
+    
     histograms_2d["Vars_Candidate_b4PS"]["sigPt_V_pT_high"] = 
                     dirs["Vars_Candidate_b4PS"].make<TH2F>(
                         "sigPt_V_pT_high",
@@ -317,6 +325,14 @@ HistogramManager::HistogramManager(TFileService& fs) {
                         "#DeltaR b/w track at ECAL and maxE xtal;\
                         #DeltaR; Candidates / 0.005",
                         20, 0, 0.1);
+    
+    histograms_2d["Vars_Candidate"]["Ecal_maxE_V_EErr"] = 
+                    dirs["Vars_Candidate"].make<TH2F>(
+                        "Ecal_maxE_V_EErr",
+                        "ECAL maxE vs ECAL maxE Err;\
+                        ECAL maxE Energy [GeV];maxE Err [GeV]",
+                        /*maxE range*/    120, 0, 60,
+                        /*EErr range*/    50, 0, 5);
     
     histograms_2d["Vars_Candidate"]["sigPt_V_pT_high"] = dirs["Vars_Candidate"].make<TH2F>(
                         "sigPt_V_pT_high",
