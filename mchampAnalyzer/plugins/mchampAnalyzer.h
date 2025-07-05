@@ -146,6 +146,7 @@ private:
     void beginJob() override;
     void endJob() override;
     double diCandMass(const Candidates&, const Candidates&);
+    double trackIsolation(reco::TrackCollection const &, reco::Track const &);
     std::map<const reco::Track*, float> trackIsolation(const edm::Event&,
                                                 std::vector<reco::Track> const &); 
 

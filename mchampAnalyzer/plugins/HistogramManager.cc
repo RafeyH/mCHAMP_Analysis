@@ -39,7 +39,9 @@ HistogramManager::HistogramManager(TFileService& fs) {
         {"dxy",         50, -0.1, 0.1, "d_{xy} [cm]",       "Tracks / 0.004 cm"},
         {"dz",          50, -0.3, 0.3, "d_{z} [cm]",        "Tracks / 0.012 cm"},
         {"trigger",     2, -0.5, 1.5,  "Trigger Pass",      "Tracks / bin"},
-        {"Ih",          50, 0, 50,     "I_{h} [MeV/cm]",    "Tracks / 1 MeV/cm"}
+        {"Ih",          50, 0, 50,     "I_{h} [MeV/cm]",    "Tracks / 1 MeV/cm"},
+        {"trackPtIso",  100, 0, 100,   "#Sigma_{#DeltaR<0.3} p_{T} [GeV]",    
+                                                            "Tracks / 1 GeV"}
     };
 
     // Loop over categories and histograms to create them
@@ -98,6 +100,9 @@ HistogramManager::HistogramManager(TFileService& fs) {
     histograms["Overall"]["CutFlow_candidate"]->GetXaxis()->SetBinLabel( 
                                                         cutFlow_enum::Ih+1, 
                                                         "Ih");
+    histograms["Overall"]["CutFlow_candidate"]->GetXaxis()->SetBinLabel( 
+                                                        cutFlow_enum::trackPtIso+1, 
+                                                        "#Sigma_{#DeltaR<0.3} p_{T}");
     histograms["Overall"]["CutFlow_candidate"]->GetXaxis()->SetBinLabel( 
                                                         cutFlow_enum::sigPtOPt2+1, 
                                                         "#sigma(p_{T})/p_{T}^{2}");
@@ -161,6 +166,9 @@ HistogramManager::HistogramManager(TFileService& fs) {
     histograms["Overall"]["CutFlow_event"]->GetXaxis()->SetBinLabel( 
                                                         cutFlow_enum::Ih+2, 
                                                         "Ih");
+    histograms["Overall"]["CutFlow_event"]->GetXaxis()->SetBinLabel( 
+                                                        cutFlow_enum::trackPtIso+2, 
+                                                        "#Sigma_{#DeltaR<0.3} p_{T}");
     histograms["Overall"]["CutFlow_event"]->GetXaxis()->SetBinLabel( 
                                                         cutFlow_enum::sigPtOPt2+2, 
                                                         "#sigma(p_{T})/p_{T}^{2}");

@@ -134,6 +134,7 @@ mchampAnalyzer::mchampAnalyzer(const edm::ParameterSet& iConfig)
     // format {std::string name, double cut, cutFlow_enum::Type, bool one_sided?  }
     trackCuts = {
         { "sigPtOPt2",      0.003,  cutFlow_enum::sigPtOPt2,    false   },
+        { "trackPtIso",     30,     cutFlow_enum::trackPtIso,   false   },
         { "Ih",             3,      cutFlow_enum::Ih,           true    },
         { "dxy",            0.5,    cutFlow_enum::dxy,          false   },
         { "dz",             0.5,    cutFlow_enum::dz,           false   },
@@ -167,7 +168,7 @@ mchampAnalyzer::mchampAnalyzer(const edm::ParameterSet& iConfig)
     }
 
     // hardcoded pop, change later
-    ignore_trig_bit_pos = 10;
+    ignore_trig_bit_pos = 11;
 }
 
 
@@ -760,6 +761,7 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         SelectionValues["dEdxHits"]         = dedxHits->size();
         SelectionValues["highPurity"]       = track.quality( reco::TrackBase::highPurity );
         SelectionValues["Chi2Ondof"]        = track.chi2()/track.ndof();
+        SelectionValues["trackPtIso"]       = trackIsolation(*tracks, track);
         SelectionValues["Ih"]               = temp.dEdx();
         
         // To store selection and fill no-preselection
@@ -1106,6 +1108,28 @@ mchampAnalyzer::diCandMass(const Candidates &cand1, const Candidates &cand2)
                                 std::cos(  d_phi ) ));
     
     return(inv_mass);
+}
+
+// ----------- method to calculate track isolation for a track ---------------------------
+double
+mchampAnalyzer::trackIsolation(
+                reco::TrackCollection const &tracks,
+                reco::Track const &cand_track )
+{
+    double sum_pt = 0;
+    const float eta_cand = cand_track.eta();
+    const float phi_cand = cand_track.phi();
+    
+    for (const auto& track : tracks){
+        if (std::abs(track.eta() - eta_cand) > 0.3) continue;
+        if (std::abs(reco::deltaPhi(track.phi(), phi_cand)) > 0.3) continue;
+
+        if ( reco::deltaR(cand_track.eta(), cand_track.phi(), 
+                            track.eta(), track.phi()) < 0.3 )
+            sum_pt += track.pt(); 
+    }
+    sum_pt -= cand_track.pt();
+    return(sum_pt);
 }
 
 // ----------- method to calculate track isolation for a vector of tracks ----------------
