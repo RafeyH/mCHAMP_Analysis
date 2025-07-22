@@ -198,7 +198,7 @@ HistogramManager::HistogramManager(TFileService& fs) {
     histograms["Event_Kinematics"]["Num_of_jets"] = dirs["Event_Kinematics"].make<TH1D>(
                         "Num_of_jets",
                         "Number of Jets in Event;p_T [GeV];Entries / 10 GeV",
-                        10, -0.5, 9.5);
+                        20, -0.5, 19.5);
     
     histograms["Event_Kinematics"]["HT"] = dirs["Event_Kinematics"].make<TH1D>(
                         "HT",
@@ -246,6 +246,27 @@ HistogramManager::HistogramManager(TFileService& fs) {
                         /*Ih range*/    100, 0, 50);
     
     // Varibales associates with candidates 
+    
+    histograms["Vars_Candidate_b4PS"]["noL1_pixB_hits"] = 
+                    dirs["Vars_Candidate_b4PS"].make<TH1D>(
+                        "noL1_pixB_hits",
+                        "Number of non-layer1 track pixel barrel hits before PreSelection;\
+                        Num of hits; Candidates / hit",
+                        11, -0.5, 10);
+    
+    histograms["Vars_Candidate_b4PS"]["pixE_hits"] = 
+                    dirs["Vars_Candidate_b4PS"].make<TH1D>(
+                        "pixE_hits",
+                        "Number of track pixel endcaps hits before PreSelection;\
+                        Num of hits; Candidates / hit",
+                        11, -0.5, 10);
+    
+    histograms["Vars_Candidate_b4PS"]["all_pix_hits"] = 
+                    dirs["Vars_Candidate_b4PS"].make<TH1D>(
+                        "all_pix_hits",
+                        "Number of track pixel (endcaps + barrel L2-L4) hits before PreSelection;\
+                        Num of hits; Candidates / hit",
+                        11, -0.5, 10);
     
     histograms["Vars_Candidate_b4PS"]["Ecal_maxE"] = 
                     dirs["Vars_Candidate_b4PS"].make<TH1D>(
@@ -314,6 +335,27 @@ HistogramManager::HistogramManager(TFileService& fs) {
                         p_{T} [GeV];#Sigma_{#DeltaR<0.3} p_{T} [GeV]",
                         /*pT range*/    200, 0, 200,
                         /*sig range*/   100, 0, 100);
+    
+    histograms["Vars_Candidate"]["noL1_pixB_hits"] = 
+                    dirs["Vars_Candidate"].make<TH1D>(
+                        "noL1_pixB_hits",
+                        "Number of non-layer1 track pixel barrel hits before PreSelection;\
+                        Num of hits; Candidates / hit",
+                        11, -0.5, 10);
+    
+    histograms["Vars_Candidate"]["pixE_hits"] = 
+                    dirs["Vars_Candidate"].make<TH1D>(
+                        "pixE_hits",
+                        "Number of track pixel endcaps hits before PreSelection;\
+                        Num of hits; Candidates / hit",
+                        11, -0.5, 10);
+    
+    histograms["Vars_Candidate"]["all_pix_hits"] = 
+                    dirs["Vars_Candidate"].make<TH1D>(
+                        "all_pix_hits",
+                        "Number of track pixel (endcaps + barrel L2-L4) hits before PreSelection;\
+                        Num of hits; Candidates / hit",
+                        11, -0.5, 10);
     
     histograms["Vars_Candidate"]["Ecal_maxE"] = dirs["Vars_Candidate"].make<TH1D>(
                         "Ecal_maxE",

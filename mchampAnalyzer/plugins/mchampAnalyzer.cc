@@ -31,6 +31,7 @@
 #include "FWCore/Utilities/interface/InputTag.h"
 #include "DataFormats/TrackReco/interface/Track.h"
 #include "DataFormats/TrackReco/interface/TrackBase.h"
+#include "DataFormats/TrackReco/interface/HitPattern.h"
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
 #include "DataFormats/TrackReco/interface/TrackFwd.h"
@@ -695,6 +696,24 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         
         float t_pt      = track.pt();
         float t_pt_err  = track.ptError();
+       
+        const reco::HitPattern& hp = track.hitPattern();
+        int pix_barrel_hits = 0;
+        int pix_endcap_hits = 0;
+        for (int i = 0; i < hp.numberOfAllHits(reco::HitPattern::TRACK_HITS); i++)
+        {
+            uint32_t hit = hp.getHitPattern(reco::HitPattern::HitCategory::TRACK_HITS, i);
+            if (!hp.validHitFilter(hit)) continue;
+            if (hp.pixelBarrelHitFilter(hit) && hp.getLayer(hit)>1) pix_barrel_hits += 1;
+            if (hp.pixelEndcapHitFilter(hit)) pix_endcap_hits += 1;
+            
+        }
+        histManager->fillHistograms("Vars_Candidate_b4PS", "noL1_pixB_hits",
+                    pix_barrel_hits, genWeight);
+        histManager->fillHistograms("Vars_Candidate_b4PS", "pixE_hits",
+                    pix_endcap_hits, genWeight);
+        histManager->fillHistograms("Vars_Candidate_b4PS", "all_pix_hits",
+                    pix_barrel_hits+pix_endcap_hits, genWeight);
         
         histManager->fillHistograms("Overall", "CutFlow_candidate", 
                     cutFlow_enum::allTracks, genWeight ); 
@@ -839,6 +858,14 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             
             histManager->fillHistograms("Overall", "Ih_V_pT", t_pt, temp.dEdx(), genWeight);
 
+            // Pixel hits
+            histManager->fillHistograms("Vars_Candidate", "noL1_pixB_hits",
+                        pix_barrel_hits, genWeight);
+            histManager->fillHistograms("Vars_Candidate", "pixE_hits",
+                        pix_endcap_hits, genWeight);
+            histManager->fillHistograms("Vars_Candidate", "all_pix_hits",
+                        pix_barrel_hits+pix_endcap_hits, genWeight);
+            
             // 3x3 energy around max E xtal
             histManager->fillHistograms("Vars_Candidate", "Ecal_maxE", maxDep_E, genWeight);
             
