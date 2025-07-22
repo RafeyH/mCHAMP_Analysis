@@ -195,6 +195,11 @@ HistogramManager::HistogramManager(TFileService& fs) {
                         "p_{T} of all Jets in Event;p_T [GeV];Entries / 10 GeV",
                         120, 0, 1200);
     
+    histograms["Event_Kinematics"]["Num_of_jets"] = dirs["Event_Kinematics"].make<TH1D>(
+                        "Num_of_jets",
+                        "Number of Jets in Event;p_T [GeV];Entries / 10 GeV",
+                        10, -0.5, 9.5);
+    
     histograms["Event_Kinematics"]["HT"] = dirs["Event_Kinematics"].make<TH1D>(
                         "HT",
                         "Event HT (Scalar sum of Jet p_{T});p_T [GeV];Entries / 20 GeV",

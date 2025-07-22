@@ -88,7 +88,7 @@ mchampAnalyzer::mchampAnalyzer(const edm::ParameterSet& iConfig)
 	Ih2Token_(consumes<reco::DeDxDataCollection>(iConfig.getParameter<edm::InputTag>("Ih2Collection"))),
     triggerResultsToken_(consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("triggerResults"))),
     triggerPaths_(iConfig.getParameter<std::vector<std::string>>("triggerPaths")),
-  	jetToken_(consumes<std::vector<reco::PFJet>>(edm::InputTag("ak4PFJets"))),
+  	jetToken_(consumes<std::vector<reco::PFJet>>(edm::InputTag("ak4PFJetsCHS"))),
   	metToken_(consumes<std::vector<reco::PFMET>>(edm::InputTag("pfMet"))),
     outputFileName_(iConfig.getParameter<std::string>("outputFile")),
     saveNtuple_(iConfig.getParameter<bool>("saveNtuple")),
@@ -532,10 +532,30 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     double ht = 0.0;
     const reco::PFJet* leadJet = nullptr;
     double maxPt = -1.0;
+    int num_of_jets = 0;
 
+    // AK4PFJetsCHS recommended cleaning criteria from twiki:
+    // https://twiki.cern.ch/twiki/bin/view/CMS/JetID13TeVUL
+    
     std::vector<reco::PFJet>::const_iterator itJet;
     for (itJet = (*jetCollection).begin(); itJet != (*jetCollection).end(); ++itJet) 
     {
+        // 2017/18 UL requirements
+        // This motivated by QCD 15GeV min pT sample
+        if (itJet->pt() < 15)   continue;
+        // --------------------------
+        if (itJet->eta() > 2.6) continue;
+        if (itJet->neutralHadronEnergyFraction() >= 0.90)   continue;
+        if (itJet->neutralEmEnergyFraction()  >= 0.90)      continue;
+        float NumConst = itJet->chargedMultiplicity() + itJet->neutralMultiplicity();
+        if (NumConst <= 1)      continue;
+        if (itJet->muonEnergyFraction() >= 0.80)        continue;
+        if (itJet->chargedHadronEnergyFraction()  <= 0) continue;
+        if (itJet->chargedMultiplicity()  <= 0)         continue;
+        if (itJet->chargedEmEnergyFraction() >= 0.80)   continue;
+        // -------------------------
+
+        num_of_jets += 1;
         histManager->fillHistograms("Event_Kinematics","All_jet_Pt",itJet->pt(), genWeight);
         ht += itJet->pt();
         if (itJet->pt() > maxPt) 
@@ -544,15 +564,18 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             leadJet = &(*itJet);
         }
     }
-    histManager->fillHistograms("Event_Kinematics","HT", ht, genWeight);
-
-    const reco::MET met = (*metCollection).front(); // Getting the first element of the vector
-    histManager->fillHistograms("Event_Kinematics","MET", met.pt(), genWeight);
-
+    
     if (leadJet){
         histManager->fillHistograms("Event_Kinematics",
                                     "Lead_jet_Pt", leadJet->pt(), genWeight);
+        histManager->fillHistograms("Event_Kinematics","HT", ht, genWeight);
+        histManager->fillHistograms("Event_Kinematics","Num_of_jets", 
+                                                        num_of_jets, genWeight);
     }
+
+
+    const reco::MET met = (*metCollection).front(); // Getting the first element of the vector
+    histManager->fillHistograms("Event_Kinematics","MET", met.pt(), genWeight);
 
 
 
