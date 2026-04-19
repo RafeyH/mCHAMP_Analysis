@@ -11,7 +11,7 @@ data_year = 'DATA_YEAR_I'
 StorageSite = 'T3_CH_CERNBOX'
 data_files = False
 splitting = 'FileBased'
-Nunits = 5               # Files per job
+Nunits = 3               # Files per job
 total_units = 600         # Total files 
 pSet = '/eos/home-r/rhashmi/work/mchamp/CMSSW_10_6_39/src/mCHAMP_Analysis/mchampAnalyzer/python/ConfFile_cfg.py'
 
@@ -35,12 +35,14 @@ config.section_('JobType')
 config.JobType.psetName = pSet
 config.JobType.pluginName = 'Analysis'
 config.JobType.maxMemoryMB = 2500
+config.JobType.inputFiles = ['template_2018D_v5.root']
 config.JobType.outputFiles = [outFile]
 config.JobType.pyCfgParams = ['outputFile=%s' % outFile, 'isDATA=True']
 
 config.section_('Data')
 config.Data.ignoreLocality = False
 config.Data.inputDBS = 'global'
+config.Data.lumiMask = 'https://cms-service-dqmdc.web.cern.ch/CAF/certification/Collisions18/13TeV/Legacy_2018/Cert_314472-325175_13TeV_Legacy2018_Collisions18_JSON.txt'
 config.Data.splitting = splitting
 config.Data.unitsPerJob = Nunits
 config.Data.totalUnits = total_units

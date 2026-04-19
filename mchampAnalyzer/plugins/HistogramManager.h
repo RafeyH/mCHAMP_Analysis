@@ -28,10 +28,20 @@ namespace cutFlow_enum {
         Ih,
         trackPtIso,
         sigPtOPt2,
+        //lowPtEle,
         //energy,
         //time,
         SR,
         count
+    };
+
+    enum num_events
+    {
+        TOTAL_EVTS = 0,
+        TRIGGER_PASS,
+        WITH_CANDIDATE,
+        PASS_PRESELECTION,
+        PASS_PRESEL_AND_TRIGGER
     };
 }
 

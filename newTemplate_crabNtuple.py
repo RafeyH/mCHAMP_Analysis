@@ -11,14 +11,15 @@ bkg_subType = 'BKG_SUBTYPE_I'
 StorageSite = 'T3_CH_CERNBOX'
 data_files = False
 splitting = 'FileBased'
-Nunits = 5               # Files per job
-total_units = 600         # Total files 
+Nunits = 3               # Files per job
+total_units = 1000         # Total files 
 pSet = '/eos/home-r/rhashmi/work/mchamp/CMSSW_10_6_39/src/mCHAMP_Analysis/mchampAnalyzer/python/ConfFile_cfg.py'
+workArea = '/eos/home-r/rhashmi/work/mchamp/crab_projects/'
 
 if workflow == 'Background':
-    JOBID = "{}_{}_{}_{}_NoTCut".format(workflow, bkg_type, bkg_subType, era)
+    JOBID = "{}_{}_{}_{}".format(workflow, bkg_type, bkg_subType, era)
     dataset = 'DATASET_I'
-    workArea = "bkg_{}_{}_".format(bkg_type, bkg_subType)
+    workArea = workArea + "bkg_{}_{}_".format(bkg_type, bkg_subType)
     outFile = "bkg_{}_{}.root".format(bkg_type, bkg_subType)
 
 print 'Ntuples will appear in subdirectory ' + JOBID
@@ -35,6 +36,7 @@ config.section_('JobType')
 config.JobType.psetName = pSet
 config.JobType.pluginName = 'Analysis'
 config.JobType.maxMemoryMB = 2500
+config.JobType.inputFiles = ['template_2018MC_v5.root']
 config.JobType.outputFiles = [outFile]
 config.JobType.pyCfgParams = ['outputFile=%s' % outFile, 'isDATA=False']
 

@@ -48,8 +48,9 @@ process.source = cms.Source("PoolSource",
 )
 
 # Set the maximum number of events to process
-process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(3000)) #-1
-#process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(-1)) #-1
+#process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(3000)) #-1
+#process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(20000)) #-1
+process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(10)) #-1
 
 # Load your analyzer from the package and set its parameters
 from mCHAMP_Analysis.mchampAnalyzer.triggerList_cff import triggerList
@@ -66,10 +67,14 @@ process.mchampAnalyzer = process.mchampAnalyzer.clone(
 	dedxHits        = cms.InputTag("dedxHitInfo"),
 	Ih2Collection   = cms.InputTag("dedxHarmonic2","","RECO"),
     triggerResults  = cms.InputTag("TriggerResults","","HLT"),
+    eventFilters    = cms.InputTag("TriggerResults","","RECO"),
     triggerPaths    = triggerList,
     outputFile      = cms.string(options.outputFile),
     saveNtuple      = cms.bool(options.saveNtuple),
-    isDATA          = cms.bool(options.isDATA)
+    isDATA          = cms.bool(options.isDATA),
+    #dEdxTemplate    = cms.string("mchampAnalyzer/data/template_2018MC_v5.root")
+    #dEdxTemplate    = cms.string("template_2018D_v5.root")
+    dEdxTemplate    = cms.string("template_2018MC_v5.root")
 )
 
 
@@ -81,5 +86,5 @@ process.TFileService = cms.Service("TFileService",
 process.p = cms.Path(process.mchampAnalyzer)
 
 # Prints message after every N-events
-process.MessageLogger.cerr.FwkReport.reportEvery = 500  
+#process.MessageLogger.cerr.FwkReport.reportEvery = 500  
 

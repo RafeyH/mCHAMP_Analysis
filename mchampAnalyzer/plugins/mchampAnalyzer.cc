@@ -57,6 +57,7 @@
 #include "Geometry/CaloGeometry/interface/CaloCellGeometry.h"
 #include "Geometry/CaloGeometry/interface/CaloGeometry.h"
 
+
 // ROOT files
 #include "TTree.h"
 #include "TFile.h"
@@ -64,6 +65,7 @@
 
 #include "mchampAnalyzer.h"
 #include "CommonFunction.h"
+#include "DeDxUtility.h"
 
 // Implement ROOT's dictionary for custom classes (for branches)
 ClassImp(GenPart);
@@ -88,12 +90,18 @@ mchampAnalyzer::mchampAnalyzer(const edm::ParameterSet& iConfig)
 	dedxToken_(consumes<reco::DeDxHitInfoAss>(iConfig.getParameter<edm::InputTag>("dedxHits"))),
 	Ih2Token_(consumes<reco::DeDxDataCollection>(iConfig.getParameter<edm::InputTag>("Ih2Collection"))),
     triggerResultsToken_(consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("triggerResults"))),
+    eventFilterToken_(consumes<edm::TriggerResults>(iConfig.getParameter<edm::InputTag>("eventFilters"))),
     triggerPaths_(iConfig.getParameter<std::vector<std::string>>("triggerPaths")),
   	jetToken_(consumes<std::vector<reco::PFJet>>(edm::InputTag("ak4PFJetsCHS"))),
   	metToken_(consumes<std::vector<reco::PFMET>>(edm::InputTag("pfMet"))),
+    lowPtEleToken_(consumes<reco::GsfElectronCollection>(edm::InputTag("lowPtGsfElectrons"))),
+    lowPtScoreToken_(consumes<edm::ValueMap<float>>(edm::InputTag("lowPtGsfElectronID"))),
+    muonToken_(consumes<reco::MuonCollection>(edm::InputTag("muons"))),
+    trigEventToken_(consumes<trigger::TriggerEvent>(edm::InputTag("hltTriggerSummaryAOD"))),
     outputFileName_(iConfig.getParameter<std::string>("outputFile")),
     saveNtuple_(iConfig.getParameter<bool>("saveNtuple")),
-    isDATA_(iConfig.getParameter<bool>("isDATA"))
+    isDATA_(iConfig.getParameter<bool>("isDATA")),
+    dEdxTemplate_(iConfig.getParameter<std::string>("dEdxTemplate"))
 {
     
     // Initialize TrackDetectorAssociator and parameters
@@ -127,13 +135,105 @@ mchampAnalyzer::mchampAnalyzer(const edm::ParameterSet& iConfig)
         tree_->Branch("TrackAssoc.", &cls_trackAssoc);
     }
 
+    if (!dEdxTemplate_.empty()){
+        bool splitByModuleType = true;
+        dEdxTemplates = loadDeDxTemplate(dEdxTemplate_, splitByModuleType,false,0);
+    }
+
     histManager = std::make_unique<HistogramManager>(*fs);
 
+    ecalTimeResDir_ = fs->mkdir("EcalTimeRes");
+    TH3F* h_ecalTimeRes = ecalTimeResDir_.make<TH3F>(
+                        "ecalTimeRes",
+                        "ECAL timing resulution;Aeff [GeV];t1-t2 [ns];A1/A2",
+                        /*Aeff range*/      100, 0, 15,
+                        /*t1-t2 range*/     100, -10, 10,
+                        /*A1/A2 range*/     100, 0, 10
+                        );
+    ecalTimeResHists_["postSel"] = h_ecalTimeRes;
+    
+    
+    // Dir for Trigger TOCs
+    ttocDir_ = fs->mkdir("TTOC");
+    if (triggerHists_.find("OR_ALL_Triggers") == triggerHists_.end()) {
+        TH1F* hPass = ttocDir_.make<TH1F>("leadPt_OR_ALL_Triggers_pass", 
+                                            ";pT [GeV]",
+                                            100, 0., 500.
+                                        );
+        TH1F* hFail = ttocDir_.make<TH1F>("leadPt_OR_ALL_Triggers_fail", 
+                                            ";pT [GeV]",
+                                            100, 0., 500.
+                                        );
+        hPass->Sumw2(); hFail->Sumw2();
+
+        triggerHists_["OR_ALL_Triggers"] = {hPass, hFail};
+
+        for (const auto& trigPattern : triggerPaths_) {
+            if (triggerHists_.find(trigPattern) == triggerHists_.end()) {
+                std::string safe = trigPattern;
+                std::replace(safe.begin(), safe.end(), '*', '_');
+
+                std::string passName = "leadPt_" + safe + "_pass";
+                std::string failName = "leadPt_" + safe + "_fail";
+
+                TH1F* hPass = ttocDir_.make<TH1F>(passName.c_str(), 
+                                                (passName+";pT [GeV]").c_str(),
+                                                100, 0., 500.);
+                TH1F* hFail = ttocDir_.make<TH1F>(failName.c_str(), 
+                                                (failName+";pT [GeV]").c_str(),
+                                                100, 0., 500.);
+                hPass->Sumw2(); hFail->Sumw2();
+
+                triggerHists_[trigPattern] = {hPass, hFail};
+            } 
+        }
+    }
+
+    //mu50Filter_ = "hltL3fL1sMu22Or25L1f0L2f10QL3Filtered50Q";
+    mu50Filter_ = "hltL3crIsoL1sSingleMu22L1f0L2f10QL3f24QL3trkIsoFiltered0p07";
+    
+    // Dir for Trigger TOCs
+    ttocDir_mu_ = fs->mkdir("TTOC_Mu");
+    if (triggerHists_mu_.find("OR_ALL_Triggers") == triggerHists_mu_.end()) {
+        TH1F* hPass = ttocDir_mu_.make<TH1F>("leadPt_OR_ALL_Triggers_pass_mu", 
+                                            ";pT [GeV]",
+                                            100, 0., 500.
+                                        );
+        TH1F* hFail = ttocDir_mu_.make<TH1F>("leadPt_OR_ALL_Triggers_total_mu", 
+                                            ";pT [GeV]",
+                                            100, 0., 500.
+                                        );
+        hPass->Sumw2(); hFail->Sumw2();
+
+        triggerHists_mu_["OR_ALL_Triggers"] = {hPass, hFail};
+
+        for (const auto& trigPattern : triggerPaths_) {
+            if (triggerHists_mu_.find(trigPattern) == triggerHists_mu_.end()) {
+                std::string safe = trigPattern;
+                std::replace(safe.begin(), safe.end(), '*', '_');
+
+                std::string passName = "leadPt_" + safe + "_pass_mu";
+                std::string failName = "leadPt_" + safe + "_total_mu";
+
+                TH1F* hPass = ttocDir_mu_.make<TH1F>(passName.c_str(), 
+                                                (passName+";pT [GeV]").c_str(),
+                                                100, 0., 500.);
+                TH1F* hFail = ttocDir_mu_.make<TH1F>(failName.c_str(), 
+                                                (failName+";pT [GeV]").c_str(),
+                                                100, 0., 500.);
+                hPass->Sumw2(); hFail->Sumw2();
+
+                triggerHists_mu_[trigPattern] = {hPass, hFail};
+            } 
+        }
+    }
+    
     // Saving cutFlow cuts and values 
     // enum and structs defined in HistogramManager.h
     // histograms defined in HistogramManager.cc
     // format {std::string name, double cut, cutFlow_enum::Type, bool one_sided?  }
     trackCuts = {
+        //{ "lowPtEle",       1,      cutFlow_enum::lowPtEle,     true    },
         { "sigPtOPt2",      0.003,  cutFlow_enum::sigPtOPt2,    false   },
         { "trackPtIso",     30,     cutFlow_enum::trackPtIso,   false   },
         { "Ih",             3,      cutFlow_enum::Ih,           true    },
@@ -143,7 +243,7 @@ mchampAnalyzer::mchampAnalyzer(const edm::ParameterSet& iConfig)
         { "highPurity",     1,      cutFlow_enum::highPurity,   true    },
         { "dEdxHits",       10,     cutFlow_enum::numDedxHits,  true    },
         { "validHitsFrac",  0.8,    cutFlow_enum::fracValidHits,true    },
-        { "eta",            1.4,    cutFlow_enum::eta,          false   },
+        { "eta",            1.0,    cutFlow_enum::eta,          false   },
         //{ "sigPtOPt",       0.25,   cutFlow_enum::count,        false   },
         { "pt",             15,     cutFlow_enum::pt,           true    },
         //{ "pt",             30,     cutFlow_enum::pt,           true    },
@@ -180,6 +280,45 @@ mchampAnalyzer::~mchampAnalyzer()
 //
 // member functions
 //
+
+void mchampAnalyzer::beginRun(const edm::Run& iRun, const edm::EventSetup& iSetup) {
+  // hlt menu might change in data and the index of these triggers might change
+  bool changed = true;
+  if (hltConfig_.init(iRun, iSetup, "HLT", changed)) {
+    triggerIndices_.clear();
+
+    auto cacheIndices = [&](const std::string& base) {
+      std::vector<unsigned int> idx;
+      for (unsigned int i = 0; i < hltConfig_.size(); ++i) {
+        const std::string& name = hltConfig_.triggerName(i);
+        if (name.find(base) == 0) idx.push_back(i);
+      }
+      return idx;
+    };
+
+    // Orthogonal triggers
+    triggerIndices_["HLT_Mu50_v"] = cacheIndices("HLT_Mu50_v");
+    triggerIndices_["HLT_PFMET"] = cacheIndices("HLT_PFMET");
+    triggerIndices_["HLT_PFHT"]  = cacheIndices("HLT_PFHT");
+    triggerIndices_["HLT_MET150"]  = cacheIndices("HLT_MET150");
+    triggerIndices_["HLT_IsoMu24_v"]  = cacheIndices("HLT_IsoMu24_v");
+    triggerIndices_["HLT_MonoCentralPFJet80"]  = cacheIndices("HLT_MonoCentralPFJet80");
+    triggerIndices_[
+        "HLT_PFMET120_PFMHT120_IDTight"] = cacheIndices("HLT_PFMET120_PFMHT120_IDTight");
+    triggerIndices_[
+        "HLT_PFMETNoMu120_PFMHTNoMu120_IDTight"] = cacheIndices("HLT_PFMETNoMu120_PFMHTNoMu120_IDTight");
+    
+    for (const auto& t : triggerPaths_) {
+      std::string base = t.substr(0, t.find('*'));
+      triggerIndices_[t] = cacheIndices(base);
+    }
+    
+
+  } else {
+    edm::LogError("mchampAnalyzer") << "HLTConfigProvider failed to initialize";
+  }
+}
+
 
 // ------------ method called for each event  ------------
 void
@@ -223,7 +362,7 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             nVertices++;
         }
     }
-    histManager->fillHistograms("Event_Kinematics", "num_PV", nVertices, genWeight);
+    
     
     // Get dedx collection
 	edm::Handle<reco::DeDxHitInfoAss> dedxCollH = iEvent.getHandle(dedxToken_);
@@ -240,9 +379,59 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     if (!triggerResults.isValid()){
         edm::LogWarning("mchampAnalyzer") << "TriggerResults not valid";
     }
-    
+
     // Trigger names
     const edm::TriggerNames& triggerNames = iEvent.triggerNames(*triggerResults);
+   
+    // Event filters
+    edm::Handle<edm::TriggerResults> eventFilters;
+    iEvent.getByToken(eventFilterToken_, eventFilters);
+    if (!eventFilters.isValid()){
+        edm::LogWarning("mchampAnalyzer") << "TriggerResults not valid";
+    }
+
+    // filer names
+    const edm::TriggerNames& filterNames = iEvent.triggerNames(*eventFilters);
+    
+    for (unsigned int i = 0; i < eventFilters->size(); ++i) {
+        std::string name = filterNames.triggerName(i);
+        std::cout<<name<<std::endl;
+        if (name.find("Flag_") != std::string::npos) {
+            std::cout << name << std::endl;
+        }
+    }    
+
+    bool passMETFilters = true;
+
+    // helper lambda
+    auto checkFlag = [&](const std::string &name) {
+        unsigned int idx = triggerNames.triggerIndex(name);
+        if (idx < triggerResults->size()) {
+            return triggerResults->accept(idx);
+        }
+        // If filter not found, don't reject event
+        return true;
+    };
+
+    // --- MET POG recommended filters (Run 2 UL AOD) ---
+    // https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2#2018_2017_data_and_MC_UL
+    passMETFilters &= checkFlag("Flag_goodVertices");
+    passMETFilters &= checkFlag("Flag_globalSuperTightHalo2016Filter");
+    passMETFilters &= checkFlag("Flag_HBHENoiseFilter");
+    passMETFilters &= checkFlag("Flag_HBHENoiseIsoFilter");
+    passMETFilters &= checkFlag("Flag_EcalDeadCellTriggerPrimitiveFilter");
+    passMETFilters &= checkFlag("Flag_BadPFMuonFilter");
+    passMETFilters &= checkFlag("Flag_BadPFMuonDzFilter");
+    passMETFilters &= checkFlag("Flag_eeBadScFilter");
+    passMETFilters &= checkFlag("Flag_ecalBadCalibFilter");
+
+    // DATA-only filter
+    //if (iEvent.isRealData()) {
+    //    passMETFilters &= checkFlag("Flag_eeBadScFilter");
+    //}
+
+    // --- Apply event cleaning ---
+    if (!passMETFilters) return;
     
     // Jets collection - why is pfJet collection not a default thing?
     edm::Handle<std::vector<reco::PFJet>> jetCollection;
@@ -361,12 +550,21 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
                 bool useStrip = true;
                 bool useClusterCleaning = false;
 
-                reco::DeDxData temp = computedEdx(run_, year, dedxHits, dedxSF, templateHisto, usePixel, 
+                reco::DeDxData temp   = computedEdx(run_, year, dedxHits, dedxSF, templateHisto, usePixel, 
                                     useStrip, useClusterCleaning);
+                
+                reco::DeDxData t_Ias  = computedEdx(run_, year, dedxHits, dedxSF, dEdxTemplates, usePixel, 
+                                    useStrip, useClusterCleaning);
+                
+                //reco::DeDxData t_ProbQ= computedEdx(run_, year, dedxHits, dedxSF, dEdxTemplates, usePixel, 
+                //                    useStrip, useClusterCleaning, skip_templates_ias = 0, 
+                //                    symmetricSmirnov = false, useMorrisMethod = true);
                 
                 cls_tracks->dedx.push_back(temp.dEdx());
                 cls_tracks->numOfSatStrips.push_back(temp.numberOfSaturatedMeasurements());
                 cls_tracks->numOfStrips.push_back(temp.numberOfMeasurements());
+                cls_tracks->Ias.push_back(t_Ias.dEdx());
+                //cls_tracks->ProbQ.push_back(t_ProbQ.dEdx());
             }   // End of if Else - dedxHitsRef check
             
             //Extrapolating track info 
@@ -515,6 +713,31 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         }
     }
 
+    for (size_t i = 0; i < triggerResults->size(); i++) {
+        if (!triggerResults->accept(i)) continue;
+
+        std::string name = triggerNames.triggerName(i);
+
+        bool regexMatch = false;
+        for (const auto& regexPattern : compiledTriggerPatterns) {
+            if (std::regex_match(name, regexPattern)) {
+                regexMatch = true;
+                break;
+            }
+        }
+
+        bool indexMatch = false;
+        for (const auto& t : triggerPaths_) {
+            for (auto idx : triggerIndices_[t]) {
+                if (idx == i) indexMatch = true;
+            }
+        }
+
+        if (indexMatch && !regexMatch) {
+            std::cout << "MISSED BY REGEX: " << name << std::endl;
+        }
+    }
+
     /* ********************************************************
          _____                 _                          
         | ____|_   _____ _ __ | |_                        
@@ -530,6 +753,10 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
        ********************************************************
     */
 
+    if (passTriggerSelection){
+    
+    histManager->fillHistograms("Event_Kinematics", "num_PV", nVertices, genWeight);
+    
     double ht = 0.0;
     const reco::PFJet* leadJet = nullptr;
     double maxPt = -1.0;
@@ -543,7 +770,7 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     {
         // 2017/18 UL requirements
         // This motivated by QCD 15GeV min pT sample
-        if (itJet->pt() < 15)   continue;
+        if (itJet->pt() < 30)   continue;
         // --------------------------
         if (itJet->eta() > 2.6) continue;
         if (itJet->neutralHadronEnergyFraction() >= 0.90)   continue;
@@ -578,7 +805,7 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     const reco::MET met = (*metCollection).front(); // Getting the first element of the vector
     histManager->fillHistograms("Event_Kinematics","MET", met.pt(), genWeight);
 
-
+    } // Pass trigger selection - to match data
 
     /* ********************************************************
         ____                   _  _      _         _        
@@ -594,6 +821,8 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
                                                              
        ********************************************************
     */
+
+    bool passLowPt = passLowPtElectronSelection(iEvent);
 
     histManager->fillHistograms("Overall", "CutFlow_event", 
                     cutFlow_enum::events+1, genWeight); 
@@ -641,7 +870,7 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     bool useStrip = true;
     bool useClusterCleaning = false;
 
-    std::vector<Candidates> cands, cands_b4PS;
+    std::vector<Candidates> cands, cands_b4PS, cands_onlyPS;
 
     int pos = -1;
     for (const auto& track : *tracks)
@@ -667,7 +896,8 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         float maxDep_E      = -999;
         float maxDep_EErr   = -999;
         float maxDep_time   = -999;
-        EBDetId maxDep_E_detid; 
+        EBDetId maxDep_E_detid;
+        const EcalRecHit* candRechit; 
 
         bool flag_ecalSelection = 0;
         for (auto recHitItr : info.ecalRecHits)
@@ -686,6 +916,8 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
                     //(hit.energyError() < cand_ecal_maxE_error_cut) && 
                     (hit.isTimeErrorValid()) )// && (maxDep_time > cand_ecal_T_cut) ) 
                 flag_ecalSelection = 1;
+            
+            candRechit = &(*recHitItr);
             break;
         }
 
@@ -708,53 +940,63 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             if (hp.pixelEndcapHitFilter(hit)) pix_endcap_hits += 1;
             
         }
-        histManager->fillHistograms("Vars_Candidate_b4PS", "noL1_pixB_hits",
-                    pix_barrel_hits, genWeight);
-        histManager->fillHistograms("Vars_Candidate_b4PS", "pixE_hits",
-                    pix_endcap_hits, genWeight);
-        histManager->fillHistograms("Vars_Candidate_b4PS", "all_pix_hits",
-                    pix_barrel_hits+pix_endcap_hits, genWeight);
         
         histManager->fillHistograms("Overall", "CutFlow_candidate", 
                     cutFlow_enum::allTracks, genWeight ); 
-        
-        // 3x3 energy around max E xtal
-        histManager->fillHistograms("Vars_Candidate_b4PS", "Ecal_maxE", 
-                    maxDep_E, genWeight);
-        
-        histManager->fillHistograms("Vars_Candidate_b4PS", "Ecal_maxE_V_EErr", 
-                    maxDep_E, maxDep_EErr, genWeight);
-        
-        histManager->fillHistograms("Vars_Candidate_b4PS", "Ecal_maxE_3x3",
-                    info.nXnEnergy(maxDep_E_detid, TrackDetMatchInfo::EcalRecHits, 1),
-                    genWeight);
-        
-        // Time for max E xtal
-        histManager->fillHistograms("Vars_Candidate_b4PS", "Ecal_maxE_time", 
-                    maxDep_time, genWeight);
-        
+            
         // Delta R b/w Max E and track pos at ECAL 
         float EBEta = barrelGeometry->getGeometry(maxDep_E_detid)->getPosition().eta();
         float EBPhi = barrelGeometry->getGeometry(maxDep_E_detid)->getPosition().phi();
+        float maxDep_dist = 1.290 * cosh(EBEta); // REcal * cosh (eta)
         math::XYZPoint trackPos = info.trkGlobPosAtEcal;
-        double deltaR = reco::deltaR(trackPos.eta(), trackPos.phi(), EBEta, EBPhi);
+        double deltaR_ECAL = reco::deltaR(trackPos.eta(), trackPos.phi(), EBEta, EBPhi);
 
-        histManager->fillHistograms("Vars_Candidate_b4PS", "Ecal_maxE_dR", 
-                                                    deltaR, genWeight);
+        // tSig = tSM + t_atEcal
+        // beta = v/c = tSM/tSig = 1/ (1 + t_atEcal/tSM)
+        float beta = 1 / (1 + maxDep_time/( maxDep_dist * 10 /3 )); // [ns] units
+            
+        if (passTriggerSelection){
+            histManager->fillHistograms("Vars_Candidate_b4PS", "beta",
+                        beta, genWeight);
+            histManager->fillHistograms("Vars_Candidate_b4PS", "noL1_pixB_hits",
+                        pix_barrel_hits, genWeight);
+            histManager->fillHistograms("Vars_Candidate_b4PS", "pixE_hits",
+                        pix_endcap_hits, genWeight);
+            histManager->fillHistograms("Vars_Candidate_b4PS", "all_pix_hits",
+                        pix_barrel_hits+pix_endcap_hits, genWeight);
+            
+            // 3x3 energy around max E xtal
+            histManager->fillHistograms("Vars_Candidate_b4PS", "Ecal_maxE", 
+                        maxDep_E, genWeight);
+            
+            histManager->fillHistograms("Vars_Candidate_b4PS", "Ecal_maxE_V_EErr", 
+                        maxDep_E, maxDep_EErr, genWeight);
+            
+            histManager->fillHistograms("Vars_Candidate_b4PS", "Ecal_maxE_3x3",
+                        info.nXnEnergy(maxDep_E_detid, TrackDetMatchInfo::EcalRecHits, 1),
+                        genWeight);
+            
+            // Time for max E xtal
+            histManager->fillHistograms("Vars_Candidate_b4PS", "Ecal_maxE_time", 
+                        maxDep_time, genWeight);
+            
+            histManager->fillHistograms("Vars_Candidate_b4PS", "Ecal_maxE_dR", 
+                                                        deltaR_ECAL, genWeight);
 
-        histManager->fillHistograms("Vars_Candidate_b4PS", "sigPt_V_pT_high",
-                                                    t_pt, t_pt_err, genWeight);
-        histManager->fillHistograms("Vars_Candidate_b4PS", "sigPt_V_pT",
-                                                    t_pt, t_pt_err, genWeight);
-        histManager->fillHistograms("Vars_Candidate_b4PS", "sigPt_V_pT_low",
-                                                    t_pt, t_pt_err, genWeight);
-        
+            histManager->fillHistograms("Vars_Candidate_b4PS", "sigPt_V_pT_high",
+                                                        t_pt, t_pt_err, genWeight);
+            histManager->fillHistograms("Vars_Candidate_b4PS", "sigPt_V_pT",
+                                                        t_pt, t_pt_err, genWeight);
+            histManager->fillHistograms("Vars_Candidate_b4PS", "sigPt_V_pT_low",
+                                                        t_pt, t_pt_err, genWeight);
+        } // Passing trigger - to match data
+
         Num_candidates_preSel++; // Counting all tracks passing basic selection
         if (firstTwo == 0) firstTwo=1;
         
         if (passTriggerSelection){ 
             cands_b4PS.push_back({t_pt, (float)track.eta(), (float)track.phi(),
-                                    (int)track.charge()});
+                                    (int)track.charge(), candRechit});
         }
 
         const reco::TrackRef trackRef = reco::TrackRef(tracks, pos);
@@ -789,8 +1031,15 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             }
         }
         
-        reco::DeDxData temp = computedEdx(run_, year, dedxHits, dedxSF, templateHisto, 
+        reco::DeDxData temp   = computedEdx(run_, year, dedxHits, dedxSF, templateHisto, 
                             usePixel, useStrip, useClusterCleaning);
+        
+        reco::DeDxData t_Ias  = computedEdx(run_, year, dedxHits, dedxSF, dEdxTemplates, 
+                            usePixel, useStrip, useClusterCleaning);
+        
+        //reco::DeDxData t_ProbQ= computedEdx(run_, year, dedxHits, dedxSF, dEdxTemplates, usePixel, 
+        //                    useStrip, useClusterCleaning, skip_templates_ias = 0, 
+        //                    symmetricSmirnov = false, useMorrisMethod = true);
         
         SelectionValues["trigger"]          = static_cast<float>(passTriggerSelection);
         SelectionValues["pt"]               = t_pt;
@@ -805,6 +1054,7 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         SelectionValues["Chi2Ondof"]        = track.chi2()/track.ndof();
         SelectionValues["trackPtIso"]       = trackIsolation(*tracks, track);
         SelectionValues["Ih"]               = temp.dEdx();
+        SelectionValues["lowPtEle"]         = passLowPt;
         
         // To store selection and fill no-preselection
         uint16_t selectionBitmask = 0;        
@@ -825,7 +1075,9 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
                 if (abs(value) <= cutValue) selectionBitmask |= (1<<i); // setting ith bit 1
             }
             
-            histManager->fillHistograms("Preselection_No", varName, value, genWeight); 
+            if (passTriggerSelection){ // to match data - background
+                histManager->fillHistograms("Preselection_No", varName, value, genWeight); 
+            }
         }
 
         for (size_t i = 0; i<signalCuts.size(); i++)
@@ -839,13 +1091,19 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         
         if (largest_bitmask_noTrig < (selectionBitmask & ~(1<<ignore_trig_bit_pos)) )  
             largest_bitmask_noTrig = selectionBitmask;
+        // store candidates that pass presel, no trigger selection requirement
+        if ( preselPass == (selectionBitmask & ~(1<<ignore_trig_bit_pos)) ){
+            cands_onlyPS.push_back({t_pt, (float)track.eta(), (float)track.phi(), 
+                                (int)track.charge(), candRechit});
+        }
+        
         // If all bits are turned on, fill presel AND N-1
         if (selectionBitmask == allPass)
         {
             candTrks.push_back(track);
             Num_candidates_postSel++; // Counting all tracks passing all pre selection
             cands.push_back({t_pt, (float)track.eta(), (float)track.phi(), 
-                                (int)track.charge()});
+                                (int)track.charge(), candRechit});
 
             for (size_t i =0; i<trackCuts.size(); i++)
             {
@@ -856,8 +1114,35 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
                                         SelectionValues[varName], genWeight);
             }
             
-            histManager->fillHistograms("Overall", "Ih_V_pT", t_pt, temp.dEdx(), genWeight);
+            if (t_Ias.dEdx()<0.5){
+                histManager->fillHistograms("Overall", "time_V_eta", 
+                            track.eta(), candRechit->time(), genWeight);
+                histManager->fillHistograms("Overall", "time_V_pT", 
+                            t_pt, candRechit->time(), genWeight);
+            }
+            
+            if (!isDATA_ || t_Ias.dEdx()<0.5 || 1./beta<1.15){
+                
+                histManager->fillHistograms("Overall", "Ih_V_pT", 
+                            t_pt, temp.dEdx(), genWeight);
+                histManager->fillHistograms("Overall", "Ih_V_ToF", 
+                            temp.dEdx(), maxDep_time, genWeight);
+                histManager->fillHistograms("Overall", "Ih_V_Beta", 
+                            beta, temp.dEdx(), genWeight);
+            
+                histManager->fillHistograms("Overall", "Ias_V_Beta", 
+                            beta, t_Ias.dEdx(), genWeight);
+                histManager->fillHistograms("Overall", "Ias_V_InvBeta", 
+                            1./beta, t_Ias.dEdx(), genWeight);
+                
+                //histManager->fillHistograms("Overall", "ProbQ_V_Beta", 
+                //            beta, t_ProbQ.dEdx(), genWeight);
+                histManager->fillHistograms("Overall", "InvIh_V_Beta", 
+                            beta, 3.5/temp.dEdx(), genWeight);
+            }
 
+            histManager->fillHistograms("Vars_Candidate", "beta",
+                        beta, genWeight);
             // Pixel hits
             histManager->fillHistograms("Vars_Candidate", "noL1_pixB_hits",
                         pix_barrel_hits, genWeight);
@@ -881,7 +1166,7 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
                         genWeight);
             
             // Delta R b/w Max E and track pos at ECAL 
-            histManager->fillHistograms("Vars_Candidate", "Ecal_maxE_dR", deltaR,
+            histManager->fillHistograms("Vars_Candidate", "Ecal_maxE_dR", deltaR_ECAL,
                         genWeight);
 
             histManager->fillHistograms("Vars_Candidate", "sigPt_V_pT_high",
@@ -972,6 +1257,21 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
             std::cout<<"ERROR: value of 'firstTwo' (0/1/2) set to: "<<firstTwo<<std::endl;
     }
 
+    if (cands_onlyPS.size()>0){
+        std::sort(cands_onlyPS.begin(), 
+                    cands_onlyPS.end(), 
+                    [](const Candidates& a, const Candidates& b) {
+            return a.pt > b.pt;
+        });
+        triggerStudy(*triggerResults, cands_onlyPS[0].pt, passTriggerSelection, genWeight);
+        mu50OrthogonalStudy(iEvent, cands_onlyPS, *triggerResults, *vertices, genWeight);
+
+    }
+    
+    if (Num_candidates_postSel){
+        ecalTimeRecoStudy(cands, *EBRecHits, genWeight);
+    }
+    
     if (Num_candidates_postSel >= 2){
         std::sort(cands.begin(), cands.end(), [](const Candidates& a, const Candidates& b) {
             return a.pt > b.pt;
@@ -1102,6 +1402,7 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         }
     }
 
+
     // Calculate Track pt isolation and fill hists
     std::map<const reco::Track*, float> isolationTrk_b4PS = trackIsolation(iEvent, 
                                                                     candTrks_b4PS);
@@ -1160,6 +1461,47 @@ mchampAnalyzer::diCandMass(const Candidates &cand1, const Candidates &cand2)
     return(inv_mass);
 }
 
+bool 
+mchampAnalyzer::passLowPtElectronSelection(
+                const edm::Event& iEvent )
+{
+    // Get the low pt selection
+    edm::Handle<reco::GsfElectronCollection> lowPtEles;
+    iEvent.getByToken(lowPtEleToken_, lowPtEles);
+
+    // lowPt score
+    edm::Handle<edm::ValueMap<float>> lowPtScore;
+    bool haveLowPtScore = iEvent.getByToken(lowPtScoreToken_, lowPtScore) && lowPtScore.isValid();
+    
+    bool passCondition = false;
+
+    if (lowPtEles.isValid()) {
+        for (size_t i = 0; i < lowPtEles->size(); ++i) {
+            const auto &ele = lowPtEles->at(i);
+
+            if (std::abs(ele.eta()) > 1.4) continue;
+            if (ele.full5x5_sigmaIetaIeta() > 0.03) continue;
+            if (ele.gsfTrack().isNonnull()) {
+                if (ele.gsfTrack()->normalizedChi2() > 0.5) continue;
+            }
+            else continue;
+            if (ele.dr03TkSumPt() > 10) continue;
+            if (ele.dr03EcalRecHitSumEt() > 10) continue;
+            if (ele.dr03HcalTowerSumEt() > 25) continue;
+            if (haveLowPtScore) {
+                edm::Ref<reco::GsfElectronCollection> eleRef(lowPtEles, i);
+                edm::RefToBase<reco::GsfElectron> eleRefToBase(eleRef);
+                if ( ((*lowPtScore)[eleRefToBase] < -3) || ((*lowPtScore)[eleRefToBase] > 1)) continue;
+            }
+            else continue;
+            
+            // If it passes all above!
+            passCondition = true; break;
+        }
+    }
+    return(passCondition);
+}
+
 // ----------- method to calculate track isolation for a track ---------------------------
 double
 mchampAnalyzer::trackIsolation(
@@ -1208,6 +1550,327 @@ mchampAnalyzer::trackIsolation(
     }
     return(isolation_map);
 }
+
+// ----------------------------- Method for trigger study -------------------------------- 
+void 
+mchampAnalyzer::triggerStudy(
+                const edm::TriggerResults& trigResults,
+                double leadPt,
+                bool passTriggerSelection,
+                double genWeight
+) {
+    //if (!preselPass) return;
+
+    // --- check orthogonal triggers ---
+    bool passOrtho = false;
+    for (auto idx : triggerIndices_["HLT_PFMET120_PFMHT120_IDTight"]){
+        if (trigResults.accept(idx)) { 
+            passOrtho = true; 
+            //std::string name = hltConfig_.triggerName(idx);
+            //std::cout << "FIRED MET: " << name << std::endl;
+            break; 
+        }
+    }
+    if (!passOrtho){
+        for (auto idx : triggerIndices_["HLT_PFMETNoMu120_PFMHTNoMu120_IDTight"]){
+            if (trigResults.accept(idx)) { 
+                passOrtho = true; 
+                //std::string name = hltConfig_.triggerName(idx);
+                //std::cout << "FIRED MET: " << name << std::endl;
+                break; 
+            }
+        }
+    }
+    //for (auto idx : triggerIndices_["HLT_PFMETNoMu120_PFMHTNoMu120_IDTight"]){
+    //    if (trigResults.accept(idx)) { 
+    //        //passOrtho = true; 
+    //        std::string name = hltConfig_.triggerName(idx);
+    //        std::cout << "FIRED MET: " << name << std::endl;
+    //        //break; 
+    //    }
+    //}
+    //for (auto idx : triggerIndices_["HLT_MET150"]){
+    //    if (trigResults.accept(idx)) { 
+    //        //passOrtho = true; 
+    //        std::string name = hltConfig_.triggerName(idx);
+    //        std::cout << "FIRED MET: " << name << std::endl;
+    //        //break; 
+    //    }
+    //}
+    //for (auto idx : triggerIndices_["HLT_MonoCentralPFJet80"]){
+    //    if (trigResults.accept(idx)) { 
+    //        //passOrtho = true; 
+    //        std::string name = hltConfig_.triggerName(idx);
+    //        std::cout << "FIRED MET: " << name << std::endl;
+    //        //break; 
+    //    }
+    //}
+
+    //if (!passOrtho) {
+    //for (auto idx : triggerIndices_["HLT_PFHT"]){
+    //    if (trigResults.accept(idx)) { 
+    //        passOrtho = true;
+    //
+    //        std::string name = hltConfig_.triggerName(idx);
+    //        std::cout << "FIRED MHT: " << name << std::endl;
+    //        //break; 
+    //    }
+    //}
+    //}
+
+    
+    if (!passOrtho) return;
+    
+    if (passTriggerSelection){  triggerHists_["OR_ALL_Triggers"].first->Fill(leadPt, genWeight);}
+    else                     {  triggerHists_["OR_ALL_Triggers"].second->Fill(leadPt, genWeight);}
+
+    // --- loop over triggers of interest ---
+    for (const auto& trigPattern : triggerPaths_) {
+        bool trigFired = false;
+        for (auto idx : triggerIndices_[trigPattern]) {
+            if (trigResults.accept(idx)) { trigFired = true; break; }
+        }
+
+        // Fill
+        if (trigFired) triggerHists_[trigPattern].first->Fill(leadPt, genWeight);
+        else           triggerHists_[trigPattern].second->Fill(leadPt, genWeight);
+    }
+}
+
+// ---------------------- Method for ECAL time resolution study --------------------------- 
+
+void 
+mchampAnalyzer::ecalTimeRecoStudy(
+    const std::vector<Candidates>& candidates,
+    const EcalRecHitCollection& EBRecHits,
+    //const CaloGeometry* geom,
+    double genWeight
+)
+{
+    std::map<const EcalRecHit*, const EcalRecHit*> rechitMap;
+
+    for (const auto& cand : candidates) {
+
+        const EcalRecHit* seedHit = cand.rechit;
+        if (!seedHit) continue;
+
+        EBDetId seedId(seedHit->detid());
+
+        int ieta = seedId.ieta();
+        int iphi = seedId.iphi();
+
+        float A1 = seedHit->energy();
+        if (A1 <= 0) continue;
+
+        const EcalRecHit* bestNeighbor = nullptr;
+        float bestMetric = 1e9;
+
+        // --- loop over ±1 neighbors ---
+        for (int deta = -1; deta <= 1; ++deta) {
+            for (int dphi = -1; dphi <= 1; ++dphi) {
+
+                //if (abs(deta+dphi) != 1) continue;
+                if (deta == 0 && dphi == 0) continue;
+
+                int newIeta = ieta + deta;
+                int newIphi = iphi + dphi;
+
+                // --- phi wrapping ---
+                if (newIphi < 1) newIphi += 360;
+                if (newIphi > 360) newIphi -= 360;
+
+                // --- EB limits ---
+                if (newIeta == 0) continue;
+                if (std::abs(newIeta) > 85) continue;
+
+                EBDetId neighId(newIeta, newIphi);
+
+                auto it = EBRecHits.find(neighId);
+                if (it == EBRecHits.end()) continue;
+
+                const EcalRecHit* neighHit = &(*it);
+
+                float A2 = neighHit->energy();
+                if (A2 <= 0) continue;
+
+                // --- your criterion: closest energy ---
+                float metric = std::abs(A1 - A2);
+
+                if (metric < bestMetric) {
+                    bestMetric = metric;
+                    bestNeighbor = neighHit;
+                }
+            }
+        }
+
+        if (!bestNeighbor) continue;
+
+        rechitMap[seedHit] = bestNeighbor;
+    }
+
+    // loop over map and fill TH3F
+
+    for (const auto& kv : rechitMap) {
+
+        const EcalRecHit* h1 = kv.first;
+        const EcalRecHit* h2 = kv.second;
+
+        float A1 = h1->energy();
+        float A2 = h2->energy();
+
+        float t1 = h1->time();
+        float t2 = h2->time();
+
+        if (A1 < 0.5 || A2 < 0.5) continue;
+        if (std::abs(t1) > 50 || std::abs(t2) > 50) continue;
+
+        float deltaT = t1 - t2;
+
+        float Aeff = (A1 * A2) / sqrt(A1*A1 + A2*A2);
+
+        float ratio = A1 / A2;
+
+        if (ratio > 10 || ratio < 0.1) continue;
+
+        //h_ecalTimeRes->Fill(Aeff, deltaT, ratio, genWeight);
+        ecalTimeResHists_["postSel"]->Fill(Aeff, deltaT, ratio, genWeight);
+    }
+}
+
+void mchampAnalyzer::mu50OrthogonalStudy(
+    const edm::Event& iEvent,
+    const std::vector<Candidates>& candidates,
+    const edm::TriggerResults& trigResults,
+    const reco::VertexCollection& vertices,
+    double genWeight)
+{
+    if (vertices.empty()) return;
+    const reco::Vertex& pv = vertices[0];
+
+    // ============================================================
+    // STEP 1: Check HLT_Mu50 fired
+    // ============================================================
+    bool passMu50 = false;
+
+    for (auto idx : triggerIndices_["HLT_IsoMu24_v"]) {
+    //for (auto idx : triggerIndices_["HLT_Mu50_v"]) {
+        if (trigResults.accept(idx)) {
+            passMu50 = true;
+            break;
+        }
+    }
+
+    if (!passMu50) return;
+
+    // ============================================================
+    // STEP 2: Get triggerEvent + muons from event
+    // ============================================================
+    edm::Handle<trigger::TriggerEvent> trigEvent;
+    iEvent.getByToken(trigEventToken_, trigEvent);
+
+    if (!trigEvent.isValid()) {
+        return;
+    }
+    edm::Handle<reco::MuonCollection> muons;
+    iEvent.getByToken(muonToken_, muons);
+
+    if (!muons.isValid()) return;
+
+    // ============================================================
+    // STEP 3: Extract Mu50 trigger objects
+    // ============================================================
+    //std::vector<math::XYZTLorentzVector> trigObjs;
+    std::vector<std::pair<float, float>> trigObjs;
+
+    const trigger::TriggerObjectCollection& allObjs = trigEvent->getObjects();
+
+    size_t filterIndex =
+        trigEvent->filterIndex(edm::InputTag(mu50Filter_, "", "HLT"));
+
+    if (filterIndex < trigEvent->sizeFilters()) {
+
+        const trigger::Keys& keys = trigEvent->filterKeys(filterIndex);
+
+        for (auto key : keys) {
+            //trigObjs.push_back(allObjs[key].p4());
+            const auto& obj = allObjs[key];
+            trigObjs.emplace_back(obj.eta(), obj.phi());
+        }
+    }
+
+    if (trigObjs.empty()) {
+        return;
+    }
+
+    for (const auto& mu : *muons) {
+
+        // --------------------------------------------------------
+        // STEP 4: Match to trigger object
+        // --------------------------------------------------------
+        bool matchedToTrigger = false;
+
+        for (const auto& obj : trigObjs) {
+            if (reco::deltaR(mu.eta(), mu.phi(),
+                             obj.first, obj.second) < 0.1) {
+                matchedToTrigger = true;
+                break;
+            }
+        }
+
+        if (!matchedToTrigger) continue;
+
+        // --------------------------------------------------------
+        // STEP 5: Tight ID (official CMS)
+        // --------------------------------------------------------
+        if (!muon::isTightMuon(mu, pv)) continue;
+
+        // --------------------------------------------------------
+        // STEP 6: Remove overlap with candidates
+        // --------------------------------------------------------
+        bool overlaps = false;
+
+        for (const auto& cand : candidates) {
+            if (reco::deltaR(mu.eta(), mu.phi(),
+                             cand.eta, cand.phi) < 0.1) {
+                overlaps = true;
+                break;
+            }
+        }
+
+        if (overlaps) continue;
+
+        // --------------------------------------------------------
+        // STEP 7: Fill PASS / TOTAL
+        // --------------------------------------------------------
+        
+        // already ordered before function call
+        float pt = candidates[0].pt;
+        bool passTriggerSelection = false;
+        for (const auto& trigPattern : triggerPaths_) {
+            bool trigFired = false;
+            for (auto idx : triggerIndices_[trigPattern]) {
+                if (trigResults.accept(idx)) {
+                    trigFired = true;
+                    passTriggerSelection = true;
+                    break;
+                }
+            }
+
+            // TOTAL
+            triggerHists_mu_[trigPattern].second->Fill(pt, genWeight);
+
+            // PASS
+            if (trigFired) {
+                triggerHists_mu_[trigPattern].first->Fill(pt, genWeight);
+            }
+        }
+        triggerHists_mu_["OR_ALL_Triggers"].second->Fill(pt, genWeight);
+        if (passTriggerSelection){  
+            triggerHists_mu_["OR_ALL_Triggers"].first->Fill(pt, genWeight);
+        }
+    }
+}
+
 
 //define this as a plug-in
 DEFINE_FWK_MODULE(mchampAnalyzer);

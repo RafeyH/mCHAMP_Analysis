@@ -1588,7 +1588,7 @@ reco::DeDxData computedEdx(const int& run_number,
 
       //if (crossTalkInvAlgo>0) amplitudes = CrossTalkInv(amplitudes, 0.10, 0.04, true);
 
-crossTalkInvAlgo=1;
+        crossTalkInvAlgo=1;
 
       if (crossTalkInvAlgo == 1){
 		//cout<<"dedx#: "<<h<<endl<<"Amplitudes bfore: ";

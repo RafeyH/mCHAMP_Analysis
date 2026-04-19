@@ -4,8 +4,10 @@ import os
 
 # Load YAML entries
 yaml_file = 'AOD_datasets_oneFile.yaml'
+#yaml_file = '../scripts/datasets_oneFile.yaml'
 output_dir = 'temp'
 os.makedirs(output_dir, exist_ok=True)
+is_bg=False
 
 with open(yaml_file, 'r') as file:
     data = yaml.safe_load(file)
@@ -13,12 +15,16 @@ with open(yaml_file, 'r') as file:
 # Loop over each entry in the YAML file
 for key, content in data.items():
     file_path = list(content['files'].keys())[0]
+    if is_bg:
+        key = key.split('/')[1]
     output_file = os.path.join(output_dir, f"{key}.root")
 
     cmsRun_command = [
         'cmsRun', 'mchampAnalyzer/python/ConfFile_cfg.py',
         'inputFiles=' + file_path,
-        'outputFile=' + output_file
+        'outputFile=' + output_file,
+        #'saveNtuple=True',
+        'isDATA=False'
     ]
 
     try:
