@@ -5,6 +5,7 @@ HistogramManager::HistogramManager(TFileService& fs) {
     // Setting up directories and histograms
     
     //dirs["Trigger_Turn_On"]     = fs.mkdir("Trigger_Turn_On");
+    dirs["Event_Filters"]       = fs.mkdir("Event_Filters");
     dirs["Vars_Candidate_b4PS"] = fs.mkdir("Vars_Candidate_b4PS");
     dirs["Preselection_No"]     = fs.mkdir("Preselection_No");
     dirs["Preselection_Nm1"]    = fs.mkdir("Preselection_Nm1");
@@ -56,8 +57,54 @@ HistogramManager::HistogramManager(TFileService& fs) {
         }
     }
     
-    // Setting up CutFlow histograms
+    // Setting up MET Filters histogram
+    histograms["Event_Filters"]["METFilters"] = dirs["Event_Filters"].make<TH1D>(
+                                                    "METFilters_per_event",
+                                                    "Met filters;;Eventss / category",
+                                                    metFilter_enum::nFilters, 
+                                                    -0.5, 
+                                                    metFilter_enum::nFilters-0.5);
     
+    //histograms["Event_Filters"]["METFilters"]->SetMinimum(0);
+    histograms["Event_Filters"]["METFilters"]->GetXaxis()->SetBinLabel(
+                                                        metFilter_enum::total + 1, 
+                                                        "Total");
+    histograms["Event_Filters"]["METFilters"]->GetXaxis()->SetBinLabel(
+                                                        metFilter_enum::goodVertices + 1, 
+                                                        "goodVertices");
+    histograms["Event_Filters"]["METFilters"]->GetXaxis()->SetBinLabel(
+                                                        metFilter_enum::halo + 1, 
+                                                        "halo");
+    histograms["Event_Filters"]["METFilters"]->GetXaxis()->SetBinLabel(
+                                                        metFilter_enum::HBHE + 1, 
+                                                        "HBHE");
+    histograms["Event_Filters"]["METFilters"]->GetXaxis()->SetBinLabel(
+                                                        metFilter_enum::HBHEIso + 1, 
+                                                        "HBHEIso");
+    histograms["Event_Filters"]["METFilters"]->GetXaxis()->SetBinLabel(
+                                                        metFilter_enum::EcalDeadCell + 1, 
+                                                        "EcalDeadCell");
+    histograms["Event_Filters"]["METFilters"]->GetXaxis()->SetBinLabel(
+                                                        metFilter_enum::BadPFMuon + 1, 
+                                                        "BadPFMuon");
+    histograms["Event_Filters"]["METFilters"]->GetXaxis()->SetBinLabel(
+                                                        metFilter_enum::BadPFMuonDz + 1, 
+                                                        "BadPFMuonDz");
+    histograms["Event_Filters"]["METFilters"]->GetXaxis()->SetBinLabel(
+                                                        metFilter_enum::HfNoisyHits + 1, 
+                                                        "HFNoisyHits");
+    histograms["Event_Filters"]["METFilters"]->GetXaxis()->SetBinLabel(
+                                                        metFilter_enum::eeBadSc + 1, 
+                                                        "EEBadSc");
+    histograms["Event_Filters"]["METFilters"]->GetXaxis()->SetBinLabel(
+                                                        metFilter_enum::ecalBadCalib + 1, 
+                                                        "EcalBadCalib");
+    histograms["Event_Filters"]["METFilters"]->GetXaxis()->SetBinLabel(
+                                                        metFilter_enum::all + 1, 
+                                                        "All Pass");
+    
+    
+    // Setting up CutFlow histograms
     histograms["Overall"]["CutFlow_candidate"] = fs.make<TH1D>(
                             "CutFlow_per_candidate",
                             "CutFlow per Candidate;;Tracks / category",

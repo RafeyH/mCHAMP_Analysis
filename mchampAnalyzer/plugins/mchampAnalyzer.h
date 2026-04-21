@@ -171,6 +171,7 @@ private:
                                                 std::vector<reco::Track> const &); 
     void triggerStudy(const edm::TriggerResults& trigResults,
                         double leadPt,
+                        double maxE,
                         bool passTriggerSelection,
                         double);
     void ecalTimeRecoStudy(const std::vector<Candidates> &,
@@ -179,6 +180,7 @@ private:
                             double );
     void mu50OrthogonalStudy(const edm::Event &,
                             const std::vector<Candidates> &,
+                            double ,
                             const edm::TriggerResults &,
                             const reco::VertexCollection &,
                             double );
@@ -232,11 +234,22 @@ private:
     std::string dEdxTemplate_;
     TH3F* dEdxTemplates = nullptr;
 
+    edm::EDGetTokenT<bool> haloFilterToken_;
+    edm::EDGetTokenT<bool> hbheToken_;
+    edm::EDGetTokenT<bool> hbheIsoToken_;
+    edm::EDGetTokenT<bool> ecalDeadCellToken_;
+    edm::EDGetTokenT<bool> badPFMuonToken_;
+    edm::EDGetTokenT<bool> badPFMuonDzToken_; 
+    edm::EDGetTokenT<bool> hfNoisyHitsToken_;
+    edm::EDGetTokenT<bool> eeBadScToken_;
+    edm::EDGetTokenT<bool> ecalBadCalibToken_; 
+    
     // cache of trigger indices per base name ("HLT_PFMET") - lookup everytime costs a lot
     std::map<std::string, std::vector<unsigned int>> triggerIndices_;
 
     // histograms for triggers of interest
-    std::map<std::string, std::pair<TH1F*, TH1F*>> triggerHists_, triggerHists_mu_;
+    std::map<std::string, std::pair<TH1F*, TH1F*>> triggerHists_, triggerHists_E_;
+    std::map<std::string, std::pair<TH1F*, TH1F*>> triggerHists_mu_, triggerHists_mu_E_;
     // histograms for ecal time resolution
     std::map<std::string, TH3F*> ecalTimeResHists_;
     

@@ -116,6 +116,21 @@ mchampAnalyzer::mchampAnalyzer(const edm::ParameterSet& iConfig)
     if (!fs.isAvailable()) {
         throw cms::Exception("MissingService") << "TFileService is not available!";
     }
+    
+    //goodVerticesToken_  = consumes<bool>(edm::InputTag("primaryVertexFilter"));
+    haloFilterToken_    = consumes<bool>(edm::InputTag("globalSuperTightHalo2016Filter"));
+    hbheToken_          = consumes<bool>(edm::InputTag("HBHENoiseFilterResultProducer", 
+                                                            "HBHENoiseFilterResult"));
+    hbheIsoToken_       = consumes<bool>(edm::InputTag("HBHENoiseFilterResultProducer", 
+                                                            "HBHEIsoNoiseFilterResult"));
+    //hbheToken_          = consumes<bool>(edm::InputTag("HBHENoiseFilter"));
+    //hbheIsoToken_       = consumes<bool>(edm::InputTag("HBHENoiseIsoFilter"));
+    ecalDeadCellToken_  = consumes<bool>(edm::InputTag("EcalDeadCellTriggerPrimitiveFilter"));
+    badPFMuonToken_     = consumes<bool>(edm::InputTag("BadPFMuonFilter"));
+    badPFMuonDzToken_   = consumes<bool>(edm::InputTag("BadPFMuonDzFilter"));
+    hfNoisyHitsToken_   = consumes<bool>(edm::InputTag("hfNoisyHitsFilter"));
+    eeBadScToken_       = consumes<bool>(edm::InputTag("eeBadScFilter"));
+    ecalBadCalibToken_  = consumes<bool>(edm::InputTag("ecalBadCalibFilter"));
                     
 
     if (isDATA_){
@@ -160,13 +175,23 @@ mchampAnalyzer::mchampAnalyzer(const edm::ParameterSet& iConfig)
                                             ";pT [GeV]",
                                             100, 0., 500.
                                         );
-        TH1F* hFail = ttocDir_.make<TH1F>("leadPt_OR_ALL_Triggers_fail", 
+        TH1F* hTot  = ttocDir_.make<TH1F>("leadPt_OR_ALL_Triggers_total", 
                                             ";pT [GeV]",
                                             100, 0., 500.
                                         );
-        hPass->Sumw2(); hFail->Sumw2();
+        hPass->Sumw2(); hTot->Sumw2();
+        TH1F* hPass_E = ttocDir_.make<TH1F>("xtalE_OR_ALL_Triggers_pass", 
+                                            ";E [GeV]",
+                                            100, 0., 200.
+                                        );
+        TH1F* hTot_E  = ttocDir_.make<TH1F>("xtalE_OR_ALL_Triggers_total", 
+                                            ";E [GeV]",
+                                            100, 0., 200.
+                                        );
+        hPass_E->Sumw2(); hTot_E->Sumw2();
 
-        triggerHists_["OR_ALL_Triggers"] = {hPass, hFail};
+        triggerHists_["OR_ALL_Triggers"] = {hPass, hTot};
+        triggerHists_E_["OR_ALL_Triggers"] = {hPass_E, hTot_E};
 
         for (const auto& trigPattern : triggerPaths_) {
             if (triggerHists_.find(trigPattern) == triggerHists_.end()) {
@@ -174,21 +199,32 @@ mchampAnalyzer::mchampAnalyzer(const edm::ParameterSet& iConfig)
                 std::replace(safe.begin(), safe.end(), '*', '_');
 
                 std::string passName = "leadPt_" + safe + "_pass";
-                std::string failName = "leadPt_" + safe + "_fail";
+                std::string totName = "leadPt_" + safe + "_total";
+                std::string passName_E = "xtalE_" + safe + "_pass_mu";
+                std::string totName_E = "xtalE_" + safe + "_total_mu";
 
                 TH1F* hPass = ttocDir_.make<TH1F>(passName.c_str(), 
                                                 (passName+";pT [GeV]").c_str(),
                                                 100, 0., 500.);
-                TH1F* hFail = ttocDir_.make<TH1F>(failName.c_str(), 
-                                                (failName+";pT [GeV]").c_str(),
+                TH1F* hTot  = ttocDir_.make<TH1F>(totName.c_str(), 
+                                                (totName+";pT [GeV]").c_str(),
                                                 100, 0., 500.);
-                hPass->Sumw2(); hFail->Sumw2();
+                hPass->Sumw2(); hTot->Sumw2();
+                TH1F* hPass_E = ttocDir_.make<TH1F>(passName_E.c_str(), 
+                                                (passName_E+";pT [GeV]").c_str(),
+                                                100, 0., 200.);
+                TH1F* hTot_E = ttocDir_.make<TH1F>(totName_E.c_str(), 
+                                                (totName_E+";pT [GeV]").c_str(),
+                                                100, 0., 200.);
+                hPass_E->Sumw2(); hTot_E->Sumw2();
 
-                triggerHists_[trigPattern] = {hPass, hFail};
+                triggerHists_[trigPattern] = {hPass, hTot};
+                triggerHists_E_[trigPattern] = {hPass_E, hTot_E};
             } 
         }
     }
 
+    // Mu trigger filters: https://twiki.cern.ch/twiki/bin/viewauth/CMS/MuonHLT2018
     //mu50Filter_ = "hltL3fL1sMu22Or25L1f0L2f10QL3Filtered50Q";
     mu50Filter_ = "hltL3crIsoL1sSingleMu22L1f0L2f10QL3f24QL3trkIsoFiltered0p07";
     
@@ -199,13 +235,23 @@ mchampAnalyzer::mchampAnalyzer(const edm::ParameterSet& iConfig)
                                             ";pT [GeV]",
                                             100, 0., 500.
                                         );
-        TH1F* hFail = ttocDir_mu_.make<TH1F>("leadPt_OR_ALL_Triggers_total_mu", 
+        TH1F* hTot  = ttocDir_mu_.make<TH1F>("leadPt_OR_ALL_Triggers_total_mu", 
                                             ";pT [GeV]",
                                             100, 0., 500.
                                         );
-        hPass->Sumw2(); hFail->Sumw2();
+        hPass->Sumw2(); hTot->Sumw2();
+        TH1F* hPass_E = ttocDir_mu_.make<TH1F>("xtalE_OR_ALL_Triggers_pass_mu", 
+                                            ";E [GeV]",
+                                            100, 0., 200.
+                                        );
+        TH1F* hTot_E = ttocDir_mu_.make<TH1F>("xtalE_OR_ALL_Triggers_total_mu", 
+                                            ";E [GeV]",
+                                            100, 0., 200.
+                                        );
+        hPass_E->Sumw2(); hTot_E->Sumw2();
 
-        triggerHists_mu_["OR_ALL_Triggers"] = {hPass, hFail};
+        triggerHists_mu_["OR_ALL_Triggers"] = {hPass, hTot};
+        triggerHists_mu_E_["OR_ALL_Triggers"] = {hPass_E, hTot_E};
 
         for (const auto& trigPattern : triggerPaths_) {
             if (triggerHists_mu_.find(trigPattern) == triggerHists_mu_.end()) {
@@ -213,17 +259,27 @@ mchampAnalyzer::mchampAnalyzer(const edm::ParameterSet& iConfig)
                 std::replace(safe.begin(), safe.end(), '*', '_');
 
                 std::string passName = "leadPt_" + safe + "_pass_mu";
-                std::string failName = "leadPt_" + safe + "_total_mu";
+                std::string totName = "leadPt_" + safe + "_total_mu";
+                std::string passName_E = "xtalE_" + safe + "_pass_mu";
+                std::string totName_E = "xtalE_" + safe + "_total_mu";
 
                 TH1F* hPass = ttocDir_mu_.make<TH1F>(passName.c_str(), 
                                                 (passName+";pT [GeV]").c_str(),
                                                 100, 0., 500.);
-                TH1F* hFail = ttocDir_mu_.make<TH1F>(failName.c_str(), 
-                                                (failName+";pT [GeV]").c_str(),
+                TH1F* hTot = ttocDir_mu_.make<TH1F>(totName.c_str(), 
+                                                (totName+";pT [GeV]").c_str(),
                                                 100, 0., 500.);
-                hPass->Sumw2(); hFail->Sumw2();
+                hPass->Sumw2(); hTot->Sumw2();
+                TH1F* hPass_E = ttocDir_mu_.make<TH1F>(passName_E.c_str(), 
+                                                (passName_E+";E [GeV]").c_str(),
+                                                100, 0., 200.);
+                TH1F* hTot_E = ttocDir_mu_.make<TH1F>(totName_E.c_str(), 
+                                                (totName_E+";E [GeV]").c_str(),
+                                                100, 0., 200.);
+                hPass_E->Sumw2(); hTot_E->Sumw2();
 
-                triggerHists_mu_[trigPattern] = {hPass, hFail};
+                triggerHists_mu_[trigPattern] = {hPass, hTot};
+                triggerHists_mu_E_[trigPattern] = {hPass_E, hTot_E};
             } 
         }
     }
@@ -353,6 +409,7 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     
     // Good vertex definition from
     // https://twiki.cern.ch/twiki/bin/view/CMSPublic/WorkBookVertexReco
+    bool goodVertices = false;
     int nVertices = 0;
     for (const auto& vtx : *vertices) {
         if (!vtx.isFake() && 
@@ -360,16 +417,80 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
                 fabs(vtx.z()) <= 24 && 
                 vtx.position().Rho() <= 2) {
             nVertices++;
+            if (!goodVertices) goodVertices = true;
         }
     }
+
+    // MET Filtes
+    // https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2#2018_2017_data_and_MC_UL
+    edm::Handle<bool> halo;
+    edm::Handle<bool> hbhe;
+    edm::Handle<bool> hbheIso;
+    edm::Handle<bool> ecalDead;
+    edm::Handle<bool> badPFMuon;
+    edm::Handle<bool> badPFMuonDz;
+    edm::Handle<bool> hfNoise;
+    edm::Handle<bool> eeBadSc;
+    edm::Handle<bool> ecalBadCalib;
+    
+    iEvent.getByToken(  haloFilterToken_,     halo);
+    iEvent.getByToken(  hbheToken_,           hbhe);
+    iEvent.getByToken(hbheIsoToken_,      hbheIso);
+    iEvent.getByToken(  ecalDeadCellToken_,   ecalDead);
+    iEvent.getByToken(  badPFMuonToken_,      badPFMuon);
+    iEvent.getByToken(  badPFMuonDzToken_,    badPFMuonDz);
+    iEvent.getByToken(  hfNoisyHitsToken_,    hfNoise);
+    iEvent.getByToken(  eeBadScToken_,        eeBadSc);
+    iEvent.getByToken(  ecalBadCalibToken_,   ecalBadCalib);
+
+    bool passMETFilters = 
+        (goodVertices) &&
+        (*halo) &&
+        (*hbhe) &&
+        (*hbheIso) &&
+        (*ecalDead) &&
+        (*badPFMuon) &&
+        (*badPFMuonDz) &&
+        (*hfNoise) &&
+        (*eeBadSc) &&
+        (*ecalBadCalib);
+    
+    histManager->fillHistograms("Event_Filters", "METFilters", 
+                        metFilter_enum::total, genWeight);
+
+    if (goodVertices)  histManager->fillHistograms("Event_Filters", "METFilters", 
+                                            metFilter_enum::goodVertices, genWeight);
+    if (*halo)          histManager->fillHistograms("Event_Filters", "METFilters", 
+                                            metFilter_enum::halo, genWeight);
+    if (*hbhe)          histManager->fillHistograms("Event_Filters", "METFilters", 
+                                            metFilter_enum::HBHE, genWeight);
+    if (*hbheIso)       histManager->fillHistograms("Event_Filters", "METFilters", 
+                                            metFilter_enum::HBHEIso, genWeight);
+    if (*ecalDead)      histManager->fillHistograms("Event_Filters", "METFilters", 
+                                            metFilter_enum::EcalDeadCell, genWeight);
+    if (*badPFMuon)     histManager->fillHistograms("Event_Filters", "METFilters", 
+                                            metFilter_enum::BadPFMuon, genWeight);
+    if (*badPFMuonDz)   histManager->fillHistograms("Event_Filters", "METFilters", 
+                                            metFilter_enum::BadPFMuonDz, genWeight);
+    if (*hfNoise)       histManager->fillHistograms("Event_Filters", "METFilters", 
+                                            metFilter_enum::HfNoisyHits, genWeight);
+    if (*eeBadSc)       histManager->fillHistograms("Event_Filters", "METFilters", 
+                                            metFilter_enum::eeBadSc, genWeight);
+    if (*ecalBadCalib)  histManager->fillHistograms("Event_Filters", "METFilters", 
+                                            metFilter_enum::ecalBadCalib, genWeight);
+
+    if (!passMETFilters) {
+        std::cout<<"MET Filters not passed! Event: "<<event_<<" rejected\n";
+        return;
+    }
+    histManager->fillHistograms("Event_Filters", "METFilters", 
+                                    metFilter_enum::all, genWeight);
     
     
     // Get dedx collection
 	edm::Handle<reco::DeDxHitInfoAss> dedxCollH = iEvent.getHandle(dedxToken_);
 	//std::cout<<"dedxCollH size: "<<dedxCollH->size()<<"\n";
     
-	// declaration for necessary stuff for compute-dedx()
-		
 	// Ih2 handle
 	edm::Handle<reco::DeDxDataCollection> Ih2CollH = iEvent.getHandle(Ih2Token_);
     
@@ -377,61 +498,11 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     edm::Handle<edm::TriggerResults> triggerResults;
     iEvent.getByToken(triggerResultsToken_, triggerResults);
     if (!triggerResults.isValid()){
-        edm::LogWarning("mchampAnalyzer") << "TriggerResults not valid";
+        edm::LogWarning("mchampAnalyzer") << "TriggerResults not valid\n";
     }
 
     // Trigger names
     const edm::TriggerNames& triggerNames = iEvent.triggerNames(*triggerResults);
-   
-    // Event filters
-    edm::Handle<edm::TriggerResults> eventFilters;
-    iEvent.getByToken(eventFilterToken_, eventFilters);
-    if (!eventFilters.isValid()){
-        edm::LogWarning("mchampAnalyzer") << "TriggerResults not valid";
-    }
-
-    // filer names
-    const edm::TriggerNames& filterNames = iEvent.triggerNames(*eventFilters);
-    
-    for (unsigned int i = 0; i < eventFilters->size(); ++i) {
-        std::string name = filterNames.triggerName(i);
-        std::cout<<name<<std::endl;
-        if (name.find("Flag_") != std::string::npos) {
-            std::cout << name << std::endl;
-        }
-    }    
-
-    bool passMETFilters = true;
-
-    // helper lambda
-    auto checkFlag = [&](const std::string &name) {
-        unsigned int idx = triggerNames.triggerIndex(name);
-        if (idx < triggerResults->size()) {
-            return triggerResults->accept(idx);
-        }
-        // If filter not found, don't reject event
-        return true;
-    };
-
-    // --- MET POG recommended filters (Run 2 UL AOD) ---
-    // https://twiki.cern.ch/twiki/bin/viewauth/CMS/MissingETOptionalFiltersRun2#2018_2017_data_and_MC_UL
-    passMETFilters &= checkFlag("Flag_goodVertices");
-    passMETFilters &= checkFlag("Flag_globalSuperTightHalo2016Filter");
-    passMETFilters &= checkFlag("Flag_HBHENoiseFilter");
-    passMETFilters &= checkFlag("Flag_HBHENoiseIsoFilter");
-    passMETFilters &= checkFlag("Flag_EcalDeadCellTriggerPrimitiveFilter");
-    passMETFilters &= checkFlag("Flag_BadPFMuonFilter");
-    passMETFilters &= checkFlag("Flag_BadPFMuonDzFilter");
-    passMETFilters &= checkFlag("Flag_eeBadScFilter");
-    passMETFilters &= checkFlag("Flag_ecalBadCalibFilter");
-
-    // DATA-only filter
-    //if (iEvent.isRealData()) {
-    //    passMETFilters &= checkFlag("Flag_eeBadScFilter");
-    //}
-
-    // --- Apply event cleaning ---
-    if (!passMETFilters) return;
     
     // Jets collection - why is pfJet collection not a default thing?
     edm::Handle<std::vector<reco::PFJet>> jetCollection;
@@ -1263,8 +1334,30 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
                     [](const Candidates& a, const Candidates& b) {
             return a.pt > b.pt;
         });
-        triggerStudy(*triggerResults, cands_onlyPS[0].pt, passTriggerSelection, genWeight);
-        mu50OrthogonalStudy(iEvent, cands_onlyPS, *triggerResults, *vertices, genWeight);
+
+        std::vector<Candidates> cands_energySorted = cands_onlyPS;
+
+        std::sort(cands_energySorted.begin(),
+                  cands_energySorted.end(),
+                  [](const Candidates& a, const Candidates& b) {
+            float ea = a.rechit ? a.rechit->energy() : -1.0f;
+            float eb = b.rechit ? b.rechit->energy() : -1.0f;
+            return ea > eb;
+        });
+
+        triggerStudy(*triggerResults, 
+                        cands_onlyPS[0].pt, 
+                        cands_energySorted[0].rechit->energy(), 
+                        passTriggerSelection, 
+                        genWeight
+        );
+        mu50OrthogonalStudy(iEvent, 
+                        cands_onlyPS, 
+                        cands_energySorted[0].rechit->energy(), 
+                        *triggerResults, 
+                        *vertices, 
+                        genWeight
+        );
 
     }
     
@@ -1556,6 +1649,7 @@ void
 mchampAnalyzer::triggerStudy(
                 const edm::TriggerResults& trigResults,
                 double leadPt,
+                double maxE,
                 bool passTriggerSelection,
                 double genWeight
 ) {
@@ -1621,8 +1715,13 @@ mchampAnalyzer::triggerStudy(
     
     if (!passOrtho) return;
     
-    if (passTriggerSelection){  triggerHists_["OR_ALL_Triggers"].first->Fill(leadPt, genWeight);}
-    else                     {  triggerHists_["OR_ALL_Triggers"].second->Fill(leadPt, genWeight);}
+    triggerHists_["OR_ALL_Triggers"].second->Fill(leadPt, genWeight);
+    triggerHists_E_["OR_ALL_Triggers"].second->Fill(maxE, genWeight);
+    
+    if (passTriggerSelection){  
+        triggerHists_["OR_ALL_Triggers"].first->Fill(leadPt, genWeight);
+        triggerHists_E_["OR_ALL_Triggers"].first->Fill(maxE, genWeight);
+    }
 
     // --- loop over triggers of interest ---
     for (const auto& trigPattern : triggerPaths_) {
@@ -1632,8 +1731,13 @@ mchampAnalyzer::triggerStudy(
         }
 
         // Fill
-        if (trigFired) triggerHists_[trigPattern].first->Fill(leadPt, genWeight);
-        else           triggerHists_[trigPattern].second->Fill(leadPt, genWeight);
+        triggerHists_[trigPattern].second->Fill(leadPt, genWeight);
+        triggerHists_E_[trigPattern].second->Fill(maxE, genWeight);
+        
+        if (trigFired){ 
+            triggerHists_[trigPattern].first->Fill(leadPt, genWeight);
+            triggerHists_E_[trigPattern].first->Fill(maxE, genWeight);
+        }
     }
 }
 
@@ -1740,6 +1844,7 @@ mchampAnalyzer::ecalTimeRecoStudy(
 void mchampAnalyzer::mu50OrthogonalStudy(
     const edm::Event& iEvent,
     const std::vector<Candidates>& candidates,
+    double maxE,
     const edm::TriggerResults& trigResults,
     const reco::VertexCollection& vertices,
     double genWeight)
@@ -1858,15 +1963,19 @@ void mchampAnalyzer::mu50OrthogonalStudy(
 
             // TOTAL
             triggerHists_mu_[trigPattern].second->Fill(pt, genWeight);
+            triggerHists_mu_E_[trigPattern].second->Fill(maxE, genWeight);
 
             // PASS
             if (trigFired) {
                 triggerHists_mu_[trigPattern].first->Fill(pt, genWeight);
+                triggerHists_mu_E_[trigPattern].first->Fill(maxE, genWeight);
             }
         }
         triggerHists_mu_["OR_ALL_Triggers"].second->Fill(pt, genWeight);
+        triggerHists_mu_E_["OR_ALL_Triggers"].second->Fill(maxE, genWeight);
         if (passTriggerSelection){  
             triggerHists_mu_["OR_ALL_Triggers"].first->Fill(pt, genWeight);
+            triggerHists_mu_E_["OR_ALL_Triggers"].first->Fill(maxE, genWeight);
         }
     }
 }

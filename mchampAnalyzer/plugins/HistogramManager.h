@@ -45,6 +45,26 @@ namespace cutFlow_enum {
     };
 }
 
+// Namespace for met filters
+namespace metFilter_enum {
+    enum MetFilter {
+        total = 0,
+        goodVertices,
+        halo,
+        HBHE,
+        HBHEIso,
+        EcalDeadCell,
+        BadPFMuon,
+        BadPFMuonDz,
+        HfNoisyHits,
+        eeBadSc,
+        ecalBadCalib,
+        all,   // final decision
+        nFilters
+    };
+}
+
+
 // To store Pre-selection cut values and refrence to cutflow
 struct TrackCut {
     std::string name;
