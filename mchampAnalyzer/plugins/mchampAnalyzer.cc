@@ -117,20 +117,23 @@ mchampAnalyzer::mchampAnalyzer(const edm::ParameterSet& iConfig)
         throw cms::Exception("MissingService") << "TFileService is not available!";
     }
     
-    //goodVerticesToken_  = consumes<bool>(edm::InputTag("primaryVertexFilter"));
     haloFilterToken_    = consumes<bool>(edm::InputTag("globalSuperTightHalo2016Filter"));
     hbheToken_          = consumes<bool>(edm::InputTag("HBHENoiseFilterResultProducer", 
                                                             "HBHENoiseFilterResult"));
     hbheIsoToken_       = consumes<bool>(edm::InputTag("HBHENoiseFilterResultProducer", 
                                                             "HBHEIsoNoiseFilterResult"));
-    //hbheToken_          = consumes<bool>(edm::InputTag("HBHENoiseFilter"));
-    //hbheIsoToken_       = consumes<bool>(edm::InputTag("HBHENoiseIsoFilter"));
     ecalDeadCellToken_  = consumes<bool>(edm::InputTag("EcalDeadCellTriggerPrimitiveFilter"));
     badPFMuonToken_     = consumes<bool>(edm::InputTag("BadPFMuonFilter"));
     badPFMuonDzToken_   = consumes<bool>(edm::InputTag("BadPFMuonDzFilter"));
     hfNoisyHitsToken_   = consumes<bool>(edm::InputTag("hfNoisyHitsFilter"));
     eeBadScToken_       = consumes<bool>(edm::InputTag("eeBadScFilter"));
     ecalBadCalibToken_  = consumes<bool>(edm::InputTag("ecalBadCalibFilter"));
+
+    // Deep CSV tag for b-jets 
+    deepCSV_probb_Token_    = consumes<reco::JetTagCollection>(
+                                    edm::InputTag("pfDeepCSVJetTags", "probb"));
+    deepCSV_probbb_Token_   = consumes<reco::JetTagCollection>(
+                                    edm::InputTag("pfDeepCSVJetTags", "probbb"));
                     
 
     if (isDATA_){
@@ -396,7 +399,6 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         // Get GenEventInfo
         iEvent.getByToken(genEventInfoToken_, genEventInfo);
         if (genEventInfo.isValid()) genWeight = genEventInfo->weight();
-        sum_gen_weights += genWeight;
     }
     
     // Get Tracks
@@ -483,9 +485,15 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         std::cout<<"MET Filters not passed! Event: "<<event_<<" rejected\n";
         return;
     }
+    
+    // Getting total gen weights ONLY from approved/allowed events.
+    // MET Filters are filtering out bad physics events and NOT physics cuts
+    if (!isDATA_){
+        sum_gen_weights += genWeight;
+    }
+    
     histManager->fillHistograms("Event_Filters", "METFilters", 
                                     metFilter_enum::all, genWeight);
-    
     
     // Get dedx collection
 	edm::Handle<reco::DeDxHitInfoAss> dedxCollH = iEvent.getHandle(dedxToken_);
@@ -826,6 +834,13 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
 
     if (passTriggerSelection){
     
+    // Get DeepCSV b-tag collectio
+    edm::Handle<reco::JetTagCollection> deepCSV_probb;
+    edm::Handle<reco::JetTagCollection> deepCSV_probbb;
+
+    iEvent.getByToken(deepCSV_probb_Token_, deepCSV_probb);
+    iEvent.getByToken(deepCSV_probbb_Token_, deepCSV_probbb);
+    
     histManager->fillHistograms("Event_Kinematics", "num_PV", nVertices, genWeight);
     
     double ht = 0.0;
@@ -833,17 +848,30 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     double maxPt = -1.0;
     int num_of_jets = 0;
 
+    // DeepCSV recommended WP:
+    // https://twiki.cern.ch/twiki/bin/view/CMS/BtagRecommendation#Recommendation_for_13_TeV_Data: 
+    // Actual numbers from here: https://gitlab.cern.ch/groups/cms-btv/-/wikis/SFCampaigns/UL2018
+    // Loose:   0.1208
+    // Medium:  0.4168
+    // Tight:   0.7665
+    const float deepCSV_WP = 0.4168; // Medium WP (UL 2018)
+    bool hasBJet = false;
+
     // AK4PFJetsCHS recommended cleaning criteria from twiki:
     // https://twiki.cern.ch/twiki/bin/view/CMS/JetID13TeVUL
     
     std::vector<reco::PFJet>::const_iterator itJet;
     for (itJet = (*jetCollection).begin(); itJet != (*jetCollection).end(); ++itJet) 
     {
+        int jetIndex = std::distance(jetCollection->begin(), itJet);
+
         // 2017/18 UL requirements
         // This motivated by QCD 15GeV min pT sample
         if (itJet->pt() < 30)   continue;
         // --------------------------
-        if (itJet->eta() > 2.6) continue;
+        // Changing eta threshold to 2.4 instead of recommended 2.6 for DeepCSV
+        //if (fabs(itJet->eta()) > 2.6) continue;
+        if (fabs(itJet->eta()) > 2.4) continue;
         if (itJet->neutralHadronEnergyFraction() >= 0.90)   continue;
         if (itJet->neutralEmEnergyFraction()  >= 0.90)      continue;
         float NumConst = itJet->chargedMultiplicity() + itJet->neutralMultiplicity();
@@ -854,8 +882,33 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         if (itJet->chargedEmEnergyFraction() >= 0.80)   continue;
         // -------------------------
 
+        // =========================
+        //  B-TAGGING
+        // =========================
+
+        reco::PFJetRef jetRef(jetCollection, jetIndex);
+        edm::RefToBase<reco::Jet> jetRefBase(jetRef);
+
+        float probb  = (*deepCSV_probb)[jetRefBase];
+        float probbb = (*deepCSV_probbb)[jetRefBase]; 
+
+        float deepCSV = probb + probbb;
+
+        // Apply Medium WP
+        if (deepCSV > deepCSV_WP) {
+            hasBJet = true;
+        }
+
         num_of_jets += 1;
-        histManager->fillHistograms("Event_Kinematics","All_jet_Pt",itJet->pt(), genWeight);
+        histManager->fillHistograms("Event_Kinematics",
+                                    "All_jet_Pt",
+                                    itJet->pt(), 
+                                    genWeight);
+        histManager->fillHistograms("Event_Kinematics",
+                                    "jetPt_Vs_DeepCSV",
+                                    itJet->pt(), 
+                                    deepCSV,
+                                    genWeight);
         ht += itJet->pt();
         if (itJet->pt() > maxPt) 
         {
@@ -876,6 +929,11 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     const reco::MET met = (*metCollection).front(); // Getting the first element of the vector
     histManager->fillHistograms("Event_Kinematics","MET", met.pt(), genWeight);
 
+    if (hasBJet) {
+        //std::cout<<"Event has bjet! rejected!\n";
+        return;
+    }
+    
     } // Pass trigger selection - to match data
 
     /* ********************************************************

@@ -243,6 +243,12 @@ HistogramManager::HistogramManager(TFileService& fs) {
                         "p_{T} of all Jets in Event;p_T [GeV];Entries / 10 GeV",
                         120, 0, 1200);
     
+    histograms_2d["Event_Kinematics"]["jetPt_Vs_DeepCSV"] = dirs["Event_Kinematics"].make<TH2F>(
+                        "jetPt_Vs_DeepCSV",
+                        "p_{T} of all Jets in Event vs DeepCSV score;p_T [GeV];DeepCSV Score",
+                        120, 0, 1200,
+                        100, 0, 1);
+    
     histograms["Event_Kinematics"]["Num_of_jets"] = dirs["Event_Kinematics"].make<TH1D>(
                         "Num_of_jets",
                         "Number of Jets in Event;Number of jets;Entries / 10 GeV",

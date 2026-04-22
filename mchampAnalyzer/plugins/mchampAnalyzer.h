@@ -34,6 +34,10 @@
 
 #include "DataFormats/JetReco/interface/PFJet.h"
 #include "DataFormats/METReco/interface/PFMET.h"
+#include "DataFormats/BTauReco/interface/JetTag.h"
+
+#include "DataFormats/Common/interface/RefToBase.h"
+#include "DataFormats/Common/interface/Ref.h"
 
 #include "DataFormats/EgammaCandidates/interface/GsfElectron.h"
 #include "DataFormats/EgammaCandidates/interface/GsfElectronFwd.h"
@@ -243,6 +247,10 @@ private:
     edm::EDGetTokenT<bool> hfNoisyHitsToken_;
     edm::EDGetTokenT<bool> eeBadScToken_;
     edm::EDGetTokenT<bool> ecalBadCalibToken_; 
+    
+    // DeepCSV tags to identify events with b-jets
+    edm::EDGetTokenT<reco::JetTagCollection> deepCSV_probb_Token_;
+    edm::EDGetTokenT<reco::JetTagCollection> deepCSV_probbb_Token_;
     
     // cache of trigger indices per base name ("HLT_PFMET") - lookup everytime costs a lot
     std::map<std::string, std::vector<unsigned int>> triggerIndices_;
