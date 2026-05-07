@@ -854,8 +854,8 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     // Loose:   0.1208
     // Medium:  0.4168
     // Tight:   0.7665
-    const float deepCSV_WP = 0.4168; // Medium WP (UL 2018)
-    bool hasBJet = false;
+    //const float deepCSV_WP = 0.4168; // Medium WP (UL 2018)
+    //bool hasBJet = false;
 
     // AK4PFJetsCHS recommended cleaning criteria from twiki:
     // https://twiki.cern.ch/twiki/bin/view/CMS/JetID13TeVUL
@@ -895,9 +895,9 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
         float deepCSV = probb + probbb;
 
         // Apply Medium WP
-        if (deepCSV > deepCSV_WP) {
-            hasBJet = true;
-        }
+        //if (deepCSV > deepCSV_WP) {
+        //    hasBJet = true;
+        //}
 
         num_of_jets += 1;
         histManager->fillHistograms("Event_Kinematics",
@@ -929,10 +929,11 @@ mchampAnalyzer::analyze(const edm::Event& iEvent, const edm::EventSetup& iSetup)
     const reco::MET met = (*metCollection).front(); // Getting the first element of the vector
     histManager->fillHistograms("Event_Kinematics","MET", met.pt(), genWeight);
 
-    if (hasBJet) {
+    // REMOVIGN BJET VETO
+    //if (hasBJet) {
         //std::cout<<"Event has bjet! rejected!\n";
-        return;
-    }
+    //    return;
+    //}
     
     } // Pass trigger selection - to match data
 
