@@ -185,11 +185,11 @@ mchampAnalyzer::mchampAnalyzer(const edm::ParameterSet& iConfig)
         hPass->Sumw2(); hTot->Sumw2();
         TH1F* hPass_E = ttocDir_.make<TH1F>("xtalE_OR_ALL_Triggers_pass", 
                                             ";E [GeV]",
-                                            100, 0., 200.
+                                            200, 0., 400.
                                         );
         TH1F* hTot_E  = ttocDir_.make<TH1F>("xtalE_OR_ALL_Triggers_total", 
                                             ";E [GeV]",
-                                            100, 0., 200.
+                                            200, 0., 400.
                                         );
         hPass_E->Sumw2(); hTot_E->Sumw2();
 
@@ -203,8 +203,8 @@ mchampAnalyzer::mchampAnalyzer(const edm::ParameterSet& iConfig)
 
                 std::string passName = "leadPt_" + safe + "_pass";
                 std::string totName = "leadPt_" + safe + "_total";
-                std::string passName_E = "xtalE_" + safe + "_pass_mu";
-                std::string totName_E = "xtalE_" + safe + "_total_mu";
+                std::string passName_E = "xtalE_" + safe + "_pass";
+                std::string totName_E = "xtalE_" + safe + "_total";
 
                 TH1F* hPass = ttocDir_.make<TH1F>(passName.c_str(), 
                                                 (passName+";pT [GeV]").c_str(),
@@ -215,10 +215,10 @@ mchampAnalyzer::mchampAnalyzer(const edm::ParameterSet& iConfig)
                 hPass->Sumw2(); hTot->Sumw2();
                 TH1F* hPass_E = ttocDir_.make<TH1F>(passName_E.c_str(), 
                                                 (passName_E+";pT [GeV]").c_str(),
-                                                100, 0., 200.);
+                                                200, 0., 400.);
                 TH1F* hTot_E = ttocDir_.make<TH1F>(totName_E.c_str(), 
                                                 (totName_E+";pT [GeV]").c_str(),
-                                                100, 0., 200.);
+                                                200, 0., 400.);
                 hPass_E->Sumw2(); hTot_E->Sumw2();
 
                 triggerHists_[trigPattern] = {hPass, hTot};
@@ -245,11 +245,11 @@ mchampAnalyzer::mchampAnalyzer(const edm::ParameterSet& iConfig)
         hPass->Sumw2(); hTot->Sumw2();
         TH1F* hPass_E = ttocDir_mu_.make<TH1F>("xtalE_OR_ALL_Triggers_pass_mu", 
                                             ";E [GeV]",
-                                            100, 0., 200.
+                                            200, 0., 400.
                                         );
         TH1F* hTot_E = ttocDir_mu_.make<TH1F>("xtalE_OR_ALL_Triggers_total_mu", 
                                             ";E [GeV]",
-                                            100, 0., 200.
+                                            200, 0., 400.
                                         );
         hPass_E->Sumw2(); hTot_E->Sumw2();
 
@@ -275,10 +275,10 @@ mchampAnalyzer::mchampAnalyzer(const edm::ParameterSet& iConfig)
                 hPass->Sumw2(); hTot->Sumw2();
                 TH1F* hPass_E = ttocDir_mu_.make<TH1F>(passName_E.c_str(), 
                                                 (passName_E+";E [GeV]").c_str(),
-                                                100, 0., 200.);
+                                                200, 0., 400.);
                 TH1F* hTot_E = ttocDir_mu_.make<TH1F>(totName_E.c_str(), 
                                                 (totName_E+";E [GeV]").c_str(),
-                                                100, 0., 200.);
+                                                200, 0., 400.);
                 hPass_E->Sumw2(); hTot_E->Sumw2();
 
                 triggerHists_mu_[trigPattern] = {hPass, hTot};
@@ -295,7 +295,7 @@ mchampAnalyzer::mchampAnalyzer(const edm::ParameterSet& iConfig)
         //{ "lowPtEle",       1,      cutFlow_enum::lowPtEle,     true    },
         { "sigPtOPt2",      0.003,  cutFlow_enum::sigPtOPt2,    false   },
         { "trackPtIso",     30,     cutFlow_enum::trackPtIso,   false   },
-        { "Ih",             3,      cutFlow_enum::Ih,           true    },
+        { "Ih",             3.5,    cutFlow_enum::Ih,           true    },
         { "dxy",            0.5,    cutFlow_enum::dxy,          false   },
         { "dz",             0.5,    cutFlow_enum::dz,           false   },
         { "Chi2Ondof",      5,      cutFlow_enum::chi2,         false   },

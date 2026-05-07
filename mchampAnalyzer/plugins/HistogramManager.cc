@@ -41,7 +41,7 @@ HistogramManager::HistogramManager(TFileService& fs) {
         {"dz",          50, -0.3, 0.3, "d_{z} [cm]",        "Tracks / 0.012 cm"},
         {"trigger",     2, -0.5, 1.5,  "Trigger Pass",      "Tracks / bin"},
         {"lowPtEle",    2, -0.5, 1.5,  "Low Pt Ele Pass",   "Tracks / bin"},
-        {"Ih",          50, 0, 50,     "I_{h} [MeV/cm]",    "Tracks / 1 MeV/cm"},
+        {"Ih",          100, 0, 50,     "I_{h} [MeV/cm]",    "Tracks / 0.5 MeV/cm"},
         {"trackPtIso",  100, 0, 100,   "#Sigma_{#DeltaR<0.3} p_{T} [GeV]",    
                                                             "Tracks / 1 GeV"}
     };
@@ -332,7 +332,7 @@ HistogramManager::HistogramManager(TFileService& fs) {
     histograms_2d["Overall"]["Ias_V_InvBeta"] = fs.make<TH2F>(
                         "Ias_V_InvBeta",
                         "I_{as} vs 1/#beta;1/#beta;I_{as}",
-                        /*beta range*/    100, 0, 5,
+                        /*beta range*/    250, 0, 5,
                         /*Ias range*/    50, 0, 1);
     
     //histograms_2d["Overall"]["ProbQ_V_Beta"] = fs.make<TH2F>(
@@ -344,7 +344,7 @@ HistogramManager::HistogramManager(TFileService& fs) {
     histograms_2d["Overall"]["InvIh_V_Beta"] = fs.make<TH2F>(
                         "InvIh_V_Beta",
                         "3.5/I_{h} vs #beta;#beta;3.5/I_{h} [MeV/cm]^-1",
-                        /*beta range*/    150, 0, 1.5,
+                        /*beta range*/    200, -0.5, 1.5,
                         /*Ih range*/    110, 0, 1.1);
     
     // Varibales associates with candidates 
@@ -354,7 +354,7 @@ HistogramManager::HistogramManager(TFileService& fs) {
                         "beta",
                         "Beta of candidates from ECAL before PreSelection;\
                         Num of hits; Candidates / hit",
-                        150, 0, 1.5);
+                        200, -0.5, 1.5);
     
     histograms["Vars_Candidate_b4PS"]["noL1_pixB_hits"] = 
                     dirs["Vars_Candidate_b4PS"].make<TH1D>(
@@ -450,7 +450,7 @@ HistogramManager::HistogramManager(TFileService& fs) {
                         "beta",
                         "Beta of candidates from ECAL after PreSelection;\
                         Num of hits; Candidates / hit",
-                        150, 0, 1.5);
+                        200, -0.5, 1.5);
     
     histograms["Vars_Candidate"]["noL1_pixB_hits"] = 
                     dirs["Vars_Candidate"].make<TH1D>(

@@ -1,4 +1,13 @@
 DYJetsToLL:
+    0J:
+        err: 8.924
+        xsec: 5113.0
+    1J:
+        err: 8.609
+        xsec: 953.8
+    2J:
+        err: 5.166
+        xsec: 358.2
     M-50:
       err: 12.65
       xsec: 5321.0
@@ -44,14 +53,14 @@ WJets:
           xsec: 29.12
 TTBar:
     TTTo2L2Nu:
-      err: 0.5174
-      xsec: 687.1
+      err: 4.2
+      xsec: 88.29
     TTToHadronic:
-      err: 0.5174
-      xsec: 687.1
+      err: 18.09
+      xsec: 377.96
     TTToSemiLeptonic:
-      err: 0.5174
-      xsec: 687.1
+      err: 17.52
+      xsec: 365.35
 QCD:
   Pt-1000to1400:
     err: 0.03737
